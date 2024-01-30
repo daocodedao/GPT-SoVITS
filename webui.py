@@ -6,6 +6,11 @@ import platform
 import psutil
 import signal
 
+# import os
+# os.environ['HTTP_PROXY'] = '192.168.0.77:18808'
+# os.environ['HTTPS_PROXY'] = '192.168.0.77:18808'
+
+
 warnings.filterwarnings("ignore")
 torch.manual_seed(233333)
 tmp = os.path.join(now_dir, "TEMP")
