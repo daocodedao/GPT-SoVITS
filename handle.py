@@ -386,6 +386,7 @@ def handle(text, text_language, refer_wav_path="", prompt_text="", prompt_langua
     time_string = time.strftime("%Y%m%d%H%M%S", time.localtime(timestamp))
 
     output_path = "./resource/out/"
+    os.makedirs(output_path,exist_ok=True)
     output_wav_path = os.path.join(output_path, f"{time_string}.wav") 
     sf.write(output_wav_path, audio_data, sampling_rate)
 
