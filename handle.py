@@ -1,7 +1,7 @@
 """
 # handle.py usage
 
-` python handle.py -t "特勒就任德国总理后，随即对共产主义者和社会民主人士展开迫害，活跃在德国政治、文化舞台的作家和艺术家首当其冲"`
+` python handle.py -tp "特勒就任德国总理后，随即对共产主义者和社会民主人士展开迫害，活跃在德国政治、文化舞台的作家和艺术家首当其冲" -tl "zh"`
 
 ` python api.py -dr "123.wav" -dt "一二三。" -dl "zh" `
 
@@ -402,4 +402,4 @@ def handle(refer_wav_path, prompt_text, prompt_language, text, text_language):
 
 
 
-handle(prompt=text_prompt, text_language=text_language)
+handle(text=text_prompt, text_language=text_language)

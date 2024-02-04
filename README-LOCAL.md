@@ -196,3 +196,7 @@ michael
 /data/work/GPT-SoVITS/output/slicer_opt
 
 
+
+
+微调训练后 放到  GPT_weights/ 里
+1Ba-SoVITS训练。用于分享的模型文件输出在SoVITS_weights下。
