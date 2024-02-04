@@ -150,6 +150,8 @@ netstat -an | grep 9872
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
 
 
+scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/out/ /Users/linzhiji/Documents/code/GPT-SoVITS/resource/out/
+
 scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/tools/uvr5/uvr5_weights/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/tools/uvr5/
 
 ```
