@@ -8,6 +8,7 @@ import sys,os,traceback
 
 
 dir=sys.argv[1]
+if(dir[-1]=="/"):dir=dir[:-1]
 # opt_name=dir.split("\\")[-1].split("/")[-1]
 opt_name=os.path.basename(dir)
 
@@ -28,7 +29,9 @@ model = AutoModel(model=path_asr, model_revision="v2.0.4",
 
 
 opt=[]
-for name in os.listdir(dir):
+file_names = os.listdir(dir)
+file_names.sort()
+for name in file_names:
     try:
         
         text = model.generate(input="%s/%s"%(dir,name),

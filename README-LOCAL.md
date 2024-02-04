@@ -13,8 +13,6 @@ source venv_sovits/bin/activate
 # pip3 install torch==2.1.0 torchvision==0.16.0 xformers --index-url https://download.pytorch.org/whl/cu118
 pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu118
 
-
-
 pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 pip install modelscope torchaudio sentencepiece funasr
 
@@ -29,26 +27,15 @@ sudo apt install libsox-dev
 ```
 
 cd tools/damo_asr/models
-# https://modelscope.cn/models/iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch/files
 git clone https://www.modelscope.cn/iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch.git
-# https://modelscope.cn/models/iic/speech_fsmn_vad_zh-cn-16k-common-pytorch/files
 git clone https://www.modelscope.cn/iic/speech_fsmn_vad_zh-cn-16k-common-pytorch.git
-# https://modelscope.cn/models/iic/punc_ct-transformer_zh-cn-common-vocab272727-pytorch/files
 git clone https://www.modelscope.cn/iic/punc_ct-transformer_zh-cn-common-vocab272727-pytorch.git
 
-
-# https://huggingface.co/lj1995/GPT-SoVITS/tree/main?clone=true
-# Make sure you have git-lfs installed (https://git-lfs.com)
-git lfs install
+cd GPT_SoVITS/pretrained_models
 git clone https://huggingface.co/lj1995/GPT-SoVITS
 
-# if you want to clone without large files – just their pointers
-# prepend your git clone with the following env var:
-GIT_LFS_SKIP_SMUDGE=1
 
 cd tools/uvr5/uvr5_weights
-# Make sure you have git-lfs installed (https://git-lfs.com)
-git lfs install
 git clone https://huggingface.co/lj1995/VoiceConversionWebUI
 
 
@@ -62,8 +49,14 @@ pip3 install --pre torch torchaudio --index-url https://download.pytorch.org/whl
 ```
 
 
+# 启动
+
+```
+source venv_sovits/bin/activate
+python webui.py
 
 
+```
 
 # 其他
 ## 77vpn
@@ -121,8 +114,6 @@ local_port = 9880
 remote_port = 9880
 use_encryption = false
 use_compression = false
-
-
 
 
 # 重启frp
