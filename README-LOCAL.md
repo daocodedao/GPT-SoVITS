@@ -58,6 +58,13 @@ python webui.py
 
 ```
 
+```
+# api
+source venv_sovits/bin/activate
+python api.py -dr "resource/何同学/source.MP3" -dt "在我身后的是10万个纸盒子" -dl "zh" 
+
+```
+
 # 其他
 ## 77vpn
 ```
@@ -140,7 +147,7 @@ netstat -an | grep 9872
 # 资源
 ## 拷贝
 ```
-scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
+scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
 
 
 scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/tools/uvr5/uvr5_weights/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/tools/uvr5/
@@ -187,3 +194,5 @@ michael
 
 *训练集音频文件目录
 /data/work/GPT-SoVITS/output/slicer_opt
+
+
