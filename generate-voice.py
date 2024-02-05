@@ -30,6 +30,25 @@
 """
 
 
+import time
+import config as global_config
+from my_utils import load_audio
+from module.mel_processing import spectrogram_torch
+from text.cleaner import clean_text
+from text import cleaned_text_to_sequence
+from AR.models.t2s_lightning_module import Text2SemanticLightningModule
+from module.models import SynthesizerTrn
+from io import BytesIO
+from feature_extractor import cnhubert
+import numpy as np
+from transformers import AutoModelForMaskedLM, AutoTokenizer
+from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi import FastAPI, Request, HTTPException
+import soundfile as sf
+import librosa
+import torch
+from time import time as ttime
+import signal
 import argparse
 import os
 import sys
@@ -38,26 +57,6 @@ now_dir = os.getcwd()
 sys.path.append(now_dir)
 sys.path.append("%s/GPT_SoVITS" % (now_dir))
 
-import signal
-from time import time as ttime
-import torch
-import librosa
-import soundfile as sf
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import StreamingResponse, JSONResponse
-from transformers import AutoModelForMaskedLM, AutoTokenizer
-import numpy as np
-from feature_extractor import cnhubert
-from io import BytesIO
-from module.models import SynthesizerTrn
-from AR.models.t2s_lightning_module import Text2SemanticLightningModule
-from text import cleaned_text_to_sequence
-from text.cleaner import clean_text
-from module.mel_processing import spectrogram_torch
-from my_utils import load_audio
-import config as global_config
-import time
-
 
 g_config = global_config.Config()
 
@@ -65,26 +64,39 @@ g_config = global_config.Config()
 
 parser = argparse.ArgumentParser(description="GPT-SoVITS api")
 
-parser.add_argument("-s", "--sovits_path", type=str, default=g_config.sovits_path, help="SoVITS模型路径")
-parser.add_argument("-g", "--gpt_path", type=str, default=g_config.gpt_path, help="GPT模型路径")
+parser.add_argument("-s", "--sovits_path", type=str,
+                    default=g_config.sovits_path, help="SoVITS模型路径")
+parser.add_argument("-g", "--gpt_path", type=str,
+                    default=g_config.gpt_path, help="GPT模型路径")
 
-parser.add_argument("-dr", "--default_refer_path", type=str, default="resource/何同学/source.MP3", help="默认参考音频路径")
-parser.add_argument("-dt", "--default_refer_text", type=str, default="在我身后的是10万个纸盒子", help="默认参考音频文本")
-parser.add_argument("-dl", "--default_refer_language", type=str, default="zh", help="默认参考音频语种")
+parser.add_argument("-dr", "--default_refer_path", type=str,
+                    default="resource/何同学/source.MP3", help="默认参考音频路径")
+parser.add_argument("-dt", "--default_refer_text", type=str,
+                    default="在我身后的是10万个纸盒子", help="默认参考音频文本")
+parser.add_argument("-dl", "--default_refer_language",
+                    type=str, default="zh", help="默认参考音频语种")
 
 parser.add_argument("-tp", "--text_prompt", type=str, default="", help="输入文本")
 parser.add_argument("-tl", "--text_language", type=str, default="", help="输入文本语言")
+parser.add_argument("-id", "--process_id", type=str, default="", help="process_id")
 
-parser.add_argument("-d", "--device", type=str, default=g_config.infer_device, help="cuda / cpu / mps")
-parser.add_argument("-a", "--bind_addr", type=str, default="127.0.0.1", help="default: 127.0.0.1")
-parser.add_argument("-p", "--port", type=int, default=g_config.api_port, help="default: 9880")
-parser.add_argument("-fp", "--full_precision", action="store_true", default=False, help="覆盖config.is_half为False, 使用全精度")
-parser.add_argument("-hp", "--half_precision", action="store_true", default=False, help="覆盖config.is_half为True, 使用半精度")
+parser.add_argument("-d", "--device", type=str,
+                    default=g_config.infer_device, help="cuda / cpu / mps")
+parser.add_argument("-a", "--bind_addr", type=str,
+                    default="127.0.0.1", help="default: 127.0.0.1")
+parser.add_argument("-p", "--port", type=int,
+                    default=g_config.api_port, help="default: 9880")
+parser.add_argument("-fp", "--full_precision", action="store_true",
+                    default=False, help="覆盖config.is_half为False, 使用全精度")
+parser.add_argument("-hp", "--half_precision", action="store_true",
+                    default=False, help="覆盖config.is_half为True, 使用半精度")
 # bool值的用法为 `python ./api.py -fp ...`
 # 此时 full_precision==True, half_precision==False
 
-parser.add_argument("-hb", "--hubert_path", type=str, default=g_config.cnhubert_path, help="覆盖config.cnhubert_path")
-parser.add_argument("-b", "--bert_path", type=str, default=g_config.bert_path, help="覆盖config.bert_path")
+parser.add_argument("-hb", "--hubert_path", type=str,
+                    default=g_config.cnhubert_path, help="覆盖config.cnhubert_path")
+parser.add_argument("-b", "--bert_path", type=str,
+                    default=g_config.bert_path, help="覆盖config.bert_path")
 
 args = parser.parse_args()
 
@@ -102,13 +114,19 @@ class DefaultRefer:
         return is_full(self.path, self.text, self.language)
 
 
-default_refer = DefaultRefer(args.default_refer_path, args.default_refer_text, args.default_refer_language)
+default_refer = DefaultRefer(
+    args.default_refer_path, args.default_refer_text, args.default_refer_language)
 
 text_prompt = args.text_prompt
 text_language = args.text_language
 if len(text_language) == 0 or len(text_prompt) == 0:
     print("错误，没有提示词或提示词语言有误!")
     exit(1)
+
+process_id = args.process_id
+if len(process_id) == 0:
+    timestamp = time.time()
+    process_id = time.strftime("%Y%m%d%H%M%S", time.localtime(timestamp))
 
 
 device = args.device
@@ -171,7 +189,7 @@ def get_bert_feature(text, word2ph):
     with torch.no_grad():
         inputs = tokenizer(text, return_tensors="pt")
         for i in inputs:
-            inputs[i] = inputs[i].to(device)  #####输入是long不用管精度问题，精度随bert_model
+            inputs[i] = inputs[i].to(device)  # 输入是long不用管精度问题，精度随bert_model
         res = bert_model(**inputs, output_hidden_states=True)
         res = torch.cat(res["hidden_states"][-3:-2], -1)[0].cpu()[1:-1]
     assert len(word2ph) == len(text)
@@ -259,7 +277,8 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
     t0 = ttime()
     prompt_text = prompt_text.strip("\n")
     prompt_language, text = prompt_language, text.strip("\n")
-    zero_wav = np.zeros(int(hps.data.sampling_rate * 0.3), dtype=np.float16 if is_half == True else np.float32)
+    zero_wav = np.zeros(int(hps.data.sampling_rate * 0.3),
+                        dtype=np.float16 if is_half == True else np.float32)
     with torch.no_grad():
         wav16k, sr = librosa.load(ref_wav_path, sr=16000)
         wav16k = torch.from_numpy(wav16k)
@@ -271,7 +290,8 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
             wav16k = wav16k.to(device)
             zero_wav_torch = zero_wav_torch.to(device)
         wav16k = torch.cat([wav16k, zero_wav_torch])
-        ssl_content = ssl_model.model(wav16k.unsqueeze(0))["last_hidden_state"].transpose(1, 2)  # .float()
+        ssl_content = ssl_model.model(wav16k.unsqueeze(0))[
+            "last_hidden_state"].transpose(1, 2)  # .float()
         codes = vq_model.extract_latent(ssl_content)
         prompt_semantic = codes[0, 0]
     t1 = ttime()
@@ -296,7 +316,8 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
             bert2 = torch.zeros((1024, len(phones2))).to(bert1)
         bert = torch.cat([bert1, bert2], 1)
 
-        all_phoneme_ids = torch.LongTensor(phones1 + phones2).to(device).unsqueeze(0)
+        all_phoneme_ids = torch.LongTensor(
+            phones1 + phones2).to(device).unsqueeze(0)
         bert = bert.to(device).unsqueeze(0)
         all_phoneme_len = torch.tensor([all_phoneme_ids.shape[-1]]).to(device)
         prompt = prompt_semantic.unsqueeze(0).to(device)
@@ -313,7 +334,8 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
                 early_stop_num=hz * max_sec)
         t3 = ttime()
         # print(pred_semantic.shape,idx)
-        pred_semantic = pred_semantic[:, -idx:].unsqueeze(0)  # .unsqueeze(0)#mq要多unsqueeze一次
+        # .unsqueeze(0)#mq要多unsqueeze一次
+        pred_semantic = pred_semantic[:, -idx:].unsqueeze(0)
         refer = get_spepc(hps, ref_wav_path)  # .to(device)
         if (is_half == True):
             refer = refer.half().to(device)
@@ -323,7 +345,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
         audio = \
             vq_model.decode(pred_semantic, torch.LongTensor(phones2).to(device).unsqueeze(0),
                             refer).detach().cpu().numpy()[
-                0, 0]  ###试试重建不带上prompt部分
+                0, 0]  # 试试重建不带上prompt部分
         audio_opt.append(audio)
         audio_opt.append(zero_wav)
         t4 = ttime()
@@ -358,12 +380,10 @@ def handle_change(path, text, language):
     return JSONResponse({"code": 0, "message": "Success"}, status_code=200)
 
 
-def handle(text, text_language, refer_wav_path="", prompt_text="", prompt_language=""):
-    if (
-            refer_wav_path == "" or refer_wav_path is None
+def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_language=""):
+    if (refer_wav_path == "" or refer_wav_path is None
             or prompt_text == "" or prompt_text is None
-            or prompt_language == "" or prompt_language is None
-    ):
+            or prompt_language == "" or prompt_language is None):
         refer_wav_path, prompt_text, prompt_language = (
             default_refer.path,
             default_refer.text,
@@ -373,21 +393,19 @@ def handle(text, text_language, refer_wav_path="", prompt_text="", prompt_langua
             return JSONResponse({"code": 400, "message": "未指定参考音频且接口无预设"}, status_code=400)
 
     with torch.no_grad():
-        gen = get_tts_wav(
-            refer_wav_path, prompt_text, prompt_language, text, text_language
-        )
+        gen = get_tts_wav(refer_wav_path, prompt_text,
+                          prompt_language, inText, text_language)
         sampling_rate, audio_data = next(gen)
 
     # wav = BytesIO()
     # sf.write(wav, audio_data, sampling_rate, format="wav")
     # wav.seek(0)
 
-    timestamp = time.time()
-    time_string = time.strftime("%Y%m%d%H%M%S", time.localtime(timestamp))
 
-    output_path = "./resource/out/"
-    os.makedirs(output_path,exist_ok=True)
-    output_wav_path = os.path.join(output_path, f"{time_string}.wav") 
+
+    output_path = f"/data/work/book/{process_id}/"
+    os.makedirs(output_path, exist_ok=True)
+    output_wav_path = os.path.join(output_path, f"{process_id}.wav")
     sf.write(output_wav_path, audio_data, sampling_rate)
 
     torch.cuda.empty_cache()
@@ -396,11 +414,8 @@ def handle(text, text_language, refer_wav_path="", prompt_text="", prompt_langua
         torch.mps.empty_cache()
 
     print("Audio saved to " + output_wav_path)
-    
 
     # return StreamingResponse(wav, media_type="audio/wav")
 
 
-
-
-handle(text=text_prompt, text_language=text_language)
+handle(inText=text_prompt, text_language=text_language)
