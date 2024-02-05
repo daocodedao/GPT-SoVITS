@@ -8,7 +8,7 @@ import platform
 from PIL import Image, ImageOps
 import random
 import subprocess
-from utils.logger_settings import api_logger
+from utility.logger_settings import api_logger
 import re
 from urllib.parse import urlparse
 

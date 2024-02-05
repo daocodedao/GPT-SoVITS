@@ -52,7 +52,7 @@ import signal
 import argparse
 import os
 import sys
-from utils.utility import Utility
+from utility.utility import Utility
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
