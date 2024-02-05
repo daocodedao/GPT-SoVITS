@@ -53,6 +53,7 @@ import argparse
 import os
 import sys
 from utility.utility import Utility
+from utility.logger_settings import api_logger
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -121,7 +122,7 @@ default_refer = DefaultRefer(
 text_prompt = args.text_prompt
 text_language = args.text_language
 if len(text_language) == 0 or len(text_prompt) == 0:
-    print("错误，没有提示词或提示词语言有误!")
+    api_logger("错误，没有提示词或提示词语言有误!")
     exit(1)
 else:
    text_prompt = Utility.sliceStringWithSentence(text_prompt)
@@ -138,19 +139,19 @@ host = args.bind_addr
 
 if sovits_path == "":
     sovits_path = g_config.pretrained_sovits_path
-    print(f"[WARN] 未指定SoVITS模型路径, fallback后当前值: {sovits_path}")
+    api_logger(f"[WARN] 未指定SoVITS模型路径, fallback后当前值: {sovits_path}")
 if gpt_path == "":
     gpt_path = g_config.pretrained_gpt_path
-    print(f"[WARN] 未指定GPT模型路径, fallback后当前值: {gpt_path}")
+    api_logger(f"[WARN] 未指定GPT模型路径, fallback后当前值: {gpt_path}")
 
 # 指定默认参考音频, 调用方 未提供/未给全 参考音频参数时使用
 if default_refer.path == "" or default_refer.text == "" or default_refer.language == "":
     default_refer.path, default_refer.text, default_refer.language = "", "", ""
-    print("[INFO] 未指定默认参考音频")
+    api_logger("[INFO] 未指定默认参考音频")
 else:
-    print(f"[INFO] 默认参考音频路径: {default_refer.path}")
-    print(f"[INFO] 默认参考音频文本: {default_refer.text}")
-    print(f"[INFO] 默认参考音频语种: {default_refer.language}")
+    api_logger(f"[INFO] 默认参考音频路径: {default_refer.path}")
+    api_logger(f"[INFO] 默认参考音频文本: {default_refer.text}")
+    api_logger(f"[INFO] 默认参考音频语种: {default_refer.language}")
 
 is_half = g_config.is_half
 if args.full_precision:
@@ -160,7 +161,7 @@ if args.half_precision:
 if args.full_precision and args.half_precision:
     is_half = g_config.is_half  # 炒饭fallback
 
-print(f"[INFO] 半精: {is_half}")
+api_logger(f"[INFO] 半精: {is_half}")
 
 cnhubert_base_path = args.hubert_path
 bert_path = args.bert_path
@@ -240,7 +241,7 @@ if is_half:
 else:
     vq_model = vq_model.to(device)
 vq_model.eval()
-print(vq_model.load_state_dict(dict_s2["weight"], strict=False))
+api_logger(vq_model.load_state_dict(dict_s2["weight"], strict=False))
 hz = 50
 max_sec = config['data']['max_sec']
 t2s_model = Text2SemanticLightningModule(config, "****", is_train=False)
@@ -250,7 +251,7 @@ if is_half:
 t2s_model = t2s_model.to(device)
 t2s_model.eval()
 total = sum([param.nelement() for param in t2s_model.parameters()])
-print("Number of parameter: %.2fM" % (total / 1e6))
+api_logger("Number of parameter: %.2fM" % (total / 1e6))
 
 
 def get_spepc(hps, filename):
@@ -336,7 +337,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
                 top_k=config['inference']['top_k'],
                 early_stop_num=hz * max_sec)
         t3 = ttime()
-        # print(pred_semantic.shape,idx)
+        # api_logger(pred_semantic.shape,idx)
         # .unsqueeze(0)#mq要多unsqueeze一次
         pred_semantic = pred_semantic[:, -idx:].unsqueeze(0)
         refer = get_spepc(hps, ref_wav_path)  # .to(device)
@@ -352,7 +353,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
         audio_opt.append(audio)
         audio_opt.append(zero_wav)
         t4 = ttime()
-    print("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
+    api_logger("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
     yield hps.data.sampling_rate, (np.concatenate(audio_opt, 0) * 32768).astype(np.int16)
 
 
@@ -375,10 +376,10 @@ def handle_change(path, text, language):
     if language != "" or language is not None:
         default_refer.language = language
 
-    print(f"[INFO] 当前默认参考音频路径: {default_refer.path}")
-    print(f"[INFO] 当前默认参考音频文本: {default_refer.text}")
-    print(f"[INFO] 当前默认参考音频语种: {default_refer.language}")
-    print(f"[INFO] is_ready: {default_refer.is_ready()}")
+    api_logger(f"[INFO] 当前默认参考音频路径: {default_refer.path}")
+    api_logger(f"[INFO] 当前默认参考音频文本: {default_refer.text}")
+    api_logger(f"[INFO] 当前默认参考音频语种: {default_refer.language}")
+    api_logger(f"[INFO] is_ready: {default_refer.is_ready()}")
 
     return JSONResponse({"code": 0, "message": "Success"}, status_code=200)
 
@@ -393,6 +394,7 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
             default_refer.language,
         )
         if not default_refer.is_ready():
+            api_logger.error("未指定参考音频且接口无预设")
             return JSONResponse({"code": 400, "message": "未指定参考音频且接口无预设"}, status_code=400)
 
     with torch.no_grad():
@@ -413,10 +415,10 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
 
     torch.cuda.empty_cache()
     if device == "mps":
-        print('executed torch.mps.empty_cache()')
+        api_logger('executed torch.mps.empty_cache()')
         torch.mps.empty_cache()
 
-    print("Audio saved to " + output_wav_path)
+    api_logger("Audio saved to " + output_wav_path)
 
     # return StreamingResponse(wav, media_type="audio/wav")
 
