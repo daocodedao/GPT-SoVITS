@@ -52,6 +52,7 @@ import signal
 import argparse
 import os
 import sys
+from utils.util import Util
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -122,6 +123,8 @@ text_language = args.text_language
 if len(text_language) == 0 or len(text_prompt) == 0:
     print("错误，没有提示词或提示词语言有误!")
     exit(1)
+else:
+   text_prompt = Util.sliceStringWithSentence(text_prompt)
 
 process_id = args.process_id
 if len(process_id) == 0:
