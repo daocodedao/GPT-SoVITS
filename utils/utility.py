@@ -36,7 +36,7 @@ def split(todo_text):
 # 常用工具
 
 
-class Util:
+class Utility:
 
     # 执行Linux命令
     def Exec(cmd: str):

@@ -1,5 +1,5 @@
 import requests
-from utils.util import Util
+from utils.utility import Util
 from urllib.parse import urlencode,unquote
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
