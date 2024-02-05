@@ -42,7 +42,7 @@ done
 
 [[ -z  $prompt ]] &&  echo -e "${RED}prompt is empty ${NOCOLOR}" &&  exit 1
 [[ -z  $processId ]] &&  processId=""
-[[ -z  $language ]] && language="cn"
+[[ -z  $language ]] && language="zh"
 
 echo -e "${YELLOW}python3 $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" ${NOCOLOR}"
 python3 $jobName  -p "$prompt" -id "$processId"

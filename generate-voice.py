@@ -77,7 +77,7 @@ parser.add_argument("-dl", "--default_refer_language",
                     type=str, default="zh", help="默认参考音频语种")
 
 parser.add_argument("-tp", "--text_prompt", type=str, default="", help="输入文本")
-parser.add_argument("-tl", "--text_language", type=str, default="", help="输入文本语言")
+parser.add_argument("-tl", "--text_language", type=str, default="zh", help="输入文本语言")
 parser.add_argument("-id", "--process_id", type=str, default="", help="process_id")
 
 parser.add_argument("-d", "--device", type=str,
