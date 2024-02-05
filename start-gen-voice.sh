@@ -45,5 +45,5 @@ done
 [[ -z  $language ]] && language="zh"
 
 echo -e "${YELLOW}python3 $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" ${NOCOLOR}"
-python3 $jobName  -p "$prompt" -id "$processId"
+python3 $jobName  -tp "$prompt" -tl "$language" -id "$processId"
 
