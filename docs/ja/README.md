@@ -47,7 +47,7 @@ _注記: numba==0.56.4 は py<3.11 が必要です_
 
 如果あなたが Mac ユーザーである場合、GPU を使用してトレーニングおよび推論を行うために以下の条件を満たしていることを確認してください：
 
-- Apple シリコンまたは AMD GPU を搭載した Mac コンピューター
+- Apple シリコンを搭載した Mac コンピューター
 - macOS 12.3 以降
 - `xcode-select --install`を実行してインストールされた Xcode コマンドラインツール
 
@@ -138,7 +138,7 @@ docker compose -f "docker-compose.yaml" up -d
 上記と同様に、実際の状況に基づいて対応するパラメータを変更し、次のコマンドを実行します：
 
 ```markdown
-docker run --rm -it --gpus=all --env=is_half=False --volume=G:\GPT-SoVITS-DockerTest\output:/workspace/output --volume=G:\GPT-SoVITS-DockerTest\logs:/workspace/logs --volume=G:\GPT-SoVITS-DockerTest\SoVITS_weights:/workspace/SoVITS_weights --workdir=/workspace -p 9870:9870 -p 9871:9871 -p 9872:9872 -p 9873:9873 -p 9874:9874 --shm-size="16G" -d breakstring/gpt-sovits:xxxxx
+docker run --rm -it --gpus=all --env=is_half=False --volume=G:\GPT-SoVITS-DockerTest\output:/workspace/output --volume=G:\GPT-SoVITS-DockerTest\logs:/workspace/logs --volume=G:\GPT-SoVITS-DockerTest\SoVITS_weights:/workspace/SoVITS_weights --workdir=/workspace -p 9880:9880 -p 9871:9871 -p 9872:9872 -p 9873:9873 -p 9874:9874 --shm-size="16G" -d breakstring/gpt-sovits:xxxxx
 ```
 
 ### 事前訓練済みモデル
@@ -189,6 +189,36 @@ D:\GPT-SoVITS\xxx/xxx.wav|xxx|en|I like playing Genshin.
   - [ ] より良い sovits ベースモデル（音質向上）
   - [ ] モデルミックス
 
+## (オプション) 必要に応じて、コマンドライン操作モードが提供されます。
+コマンド ラインを使用して UVR5 の WebUI を開きます
+```
+python tools/uvr5/webui.py "<infer_device>" <is_half> <webui_port_uvr5>
+```
+ブラウザを開けない場合は、以下の形式に従って UVR 処理を行ってください。これはオーディオ処理に mdxnet を使用しています。
+```
+python mdxnet.py --model --input_root --output_vocal --output_ins --agg_level --format --device --is_half_precision 
+```
+コマンド ラインを使用してデータセットのオーディオ セグメンテーションを行う方法は次のとおりです。
+```
+python audio_slicer.py \
+    --input_path "<path_to_original_audio_file_or_directory>" \
+    --output_root "<directory_where_subdivided_audio_clips_will_be_saved>" \
+    --threshold <volume_threshold> \
+    --min_length <minimum_duration_of_each_subclip> \
+    --min_interval <shortest_time_gap_between_adjacent_subclips> 
+    --hop_size <step_size_for_computing_volume_curve>
+```
+コマンドラインを使用してデータセット ASR 処理を行う方法です (中国語のみ)
+```
+python tools/damo_asr/cmd-asr.py "<Path to the directory containing input audio files>"
+```
+ASR処理はFaster_Whisperを通じて実行されます(中国語を除くASRマーキング)
+
+(進行状況バーは表示されません。GPU のパフォーマンスにより時間遅延が発生する可能性があります)
+```
+python ./tools/damo_asr/WhisperASR.py -i <input> -o <output> -f <file_name.list> -l <language>
+```
+カスタムリストの保存パスが有効になっています
 ## クレジット
 
 以下のプロジェクトとコントリビューターに感謝します:

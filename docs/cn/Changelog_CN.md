@@ -87,8 +87,47 @@
 
 2-引入paddlespeech的Normalizer https://github.com/RVC-Boss/GPT-SoVITS/pull/377 修复一些问题，例如：xx.xx%(带百分号类)，元/吨 会读成 元吨 而不是元每吨,下划线不再会报错
 
+### 20240207更新
+
+1-修正语种传参混乱导致中文推理效果下降 https://github.com/RVC-Boss/GPT-SoVITS/issues/391
+
+2-uvr5适配高版本librosa https://github.com/RVC-Boss/GPT-SoVITS/pull/403
+
+3-修复uvr5 inf everywhere报错的问题(is_half传参未转换bool导致恒定半精度推理，16系显卡会inf) https://github.com/RVC-Boss/GPT-SoVITS/commit/14a285109a521679f8846589c22da8f656a46ad8
+
+4-优化英文文本前端
+
+5-修复gradio依赖
+
+6-支持三连根目录留空自动读取.list全路径
+
+7-集成faster whisper ASR日文英文
+
+### 20240208更新
+
+1-GPT训练卡死（win10 1909）和https://github.com/RVC-Boss/GPT-SoVITS/issues/232 （系统语言繁体）GPT训练报错，[尝试修复](https://github.com/RVC-Boss/GPT-SoVITS/commit/59f35adad85815df27e9c6b33d420f5ebfd8376b)。
+
+### 20240212更新
+
+1-faster whisper和funasr逻辑优化。faster whisper转镜像站下载，规避huggingface连不上的问题。
+
+2-DPO Loss实验性训练选项开启，通过构造负样本训练缓解GPT重复漏字问题。推理界面公开几个推理参数。 https://github.com/RVC-Boss/GPT-SoVITS/pull/457
+
+### 20240214更新
+
+1-训练支持中文实验名（原来会报错）
+
+2-DPO训练改为可勾选选项而非必须。如勾选batch size自动减半。修复推理界面新参数不传参的问题。
+
+### 20240216更新
+
+1-支持无参考文本输入
+
+2-修复中文文本前端bug https://github.com/RVC-Boss/GPT-SoVITS/issues/475
+
 todolist：
 
 1-中文多音字推理优化
+
 
 

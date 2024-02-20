@@ -10,5 +10,7 @@ tools/uvr5/uvr5_weights/
 output
 logs
 reference
+GPT_weights
 SoVITS_weights
 resource/
+TEMP
