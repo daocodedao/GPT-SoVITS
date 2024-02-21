@@ -1,14 +1,6 @@
 """
 # handle.py usage
-
-` python handle.py -tp "特勒就任德国总理后，随即对共产主义者和社会民主人士展开迫害，活跃在德国政治、文化舞台的作家和艺术家首当其冲" -tl "zh"`
-
-` python api.py -dr "123.wav" -dt "一二三。" -dl "zh" `
-
 ## 执行参数:
-
-`-s` - `SoVITS模型路径, 可在 config.py 中指定`
-`-g` - `GPT模型路径, 可在 config.py 中指定`
 
 调用请求缺少参考音频时使用
 `-dr` - `默认参考音频路径`
@@ -19,18 +11,10 @@
 `-fp` - `覆盖 config.py 使用全精度`
 `-hp` - `覆盖 config.py 使用半精度`
 
-`-hb` - `cnhubert路径`
-`-b` - `bert路径`
-
-## 调用:
-
-
 """
-
-
 import time
-# import config as global_config
-from config import Config as global_config, dict_language, ParamConfig as global_param_config
+import config as global_config
+# from config import Config as global_config, dict_language, ParamConfig as global_param_config
 from my_utils import load_audio
 from module.mel_processing import spectrogram_torch
 from text.cleaner import clean_text
@@ -61,7 +45,7 @@ sys.path.append("%s/GPT_SoVITS" % (now_dir))
 
 
 g_config = global_config.Config()
-g_para = global_param_config.ParamConfig()
+g_para = global_config.ParamConfig()
 # global g_para
 
 def is_empty(*items):  # 任意一项不为空返回False
@@ -125,8 +109,8 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
         codes = g_para.vq_model.extract_latent(ssl_content)
         prompt_semantic = codes[0, 0]
     t1 = ttime()
-    prompt_language = dict_language[prompt_language]
-    text_language = dict_language[text_language]
+    prompt_language = global_config.dict_language[prompt_language]
+    text_language = global_config.dict_language[text_language]
     phones1, word2ph1, norm_text1 = clean_text(prompt_text, prompt_language)
     phones1 = cleaned_text_to_sequence(phones1)
     texts = text.split("\n")
