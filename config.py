@@ -45,6 +45,18 @@ if infer_device == "cuda":
 
 if(infer_device=="cpu"):is_half=False
 
+dict_language = {
+    "中文": "zh",
+    "英文": "en",
+    "日文": "ja",
+    "ZH": "zh",
+    "EN": "en",
+    "JA": "ja",
+    "zh": "zh",
+    "en": "en",
+    "ja": "ja"
+}
+
 class Config:
     def __init__(self):
         self.sovits_path = sovits_path
@@ -66,3 +78,20 @@ class Config:
         self.webui_port_subfix = webui_port_subfix
 
         self.api_port = api_port
+
+class ParamConfig:
+    def __init__(self):
+        self.text_prompt = None
+        self.text_language = "zh"
+        self.tokenizer = None
+        self.bert_model = None
+        self.device = "cuda"
+        self.hps = None
+        self.is_half = True
+        self.ssl_model = None
+        self.default_refer = None
+        self.process_id = None
+        self.vq_model = None
+        self.t2s_model = None
+        self.hz = 50
+        self.max_sec = None
