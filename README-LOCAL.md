@@ -202,3 +202,11 @@ michael
 
 微调训练后 放到  GPT_weights/ 里
 1Ba-SoVITS训练。用于分享的模型文件输出在SoVITS_weights下。
+
+
+
+# 使用
+
+
+/data/work/GPT-SoVITS/start-gen-voice-local.sh -l "zh" -i "122324" -p "总的来说，<橙黄橘绿半 甜时> 是一本让人回味无穷，满足感官享受的美文集 。这不仅是一本书，更是一场心灵的盛 宴，一段历史与现在、人文与自然相交的记忆。" 
+
