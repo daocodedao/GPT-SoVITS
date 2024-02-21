@@ -14,7 +14,6 @@
 """
 import time
 import config as global_config
-# from config import Config as global_config, dict_language, ParamConfig as global_param_config
 from my_utils import load_audio
 from module.mel_processing import spectrogram_torch
 from text.cleaner import clean_text
@@ -144,7 +143,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
                 prompt,
                 bert,
                 # prompt_phone_len=ph_offset,
-                top_k=config['inference']['top_k'],
+                top_k=g_para.config['inference']['top_k'],
                 early_stop_num=g_para.hz * g_para.max_sec)
         t3 = ttime()
         # api_logger.info(pred_semantic.shape,idx)
@@ -289,7 +288,7 @@ def initResource():
     g_para.hps = DictToAttrRecursive(g_para.hps)
     g_para.hps.model.semantic_frame_rate = "25hz"
     dict_s1 = torch.load(g_para.gpt_path, map_location="cpu")
-    config = dict_s1["config"]
+    g_para.config = dict_s1["config"]
     g_para.ssl_model = cnhubert.get_model()
     if g_para.is_half:
         g_para.ssl_model = g_para.ssl_model.half().to(g_para.device)
@@ -308,8 +307,8 @@ def initResource():
     g_para.vq_model.eval()
     api_logger.info(g_para.vq_model.load_state_dict(dict_s2["weight"], strict=False))
     # hz = 50
-    g_para.max_sec = config['data']['max_sec']
-    g_para.t2s_model = Text2SemanticLightningModule(config, "****", is_train=False)
+    g_para.max_sec = g_para.config['data']['max_sec']
+    g_para.t2s_model = Text2SemanticLightningModule(g_para.config, "****", is_train=False)
     g_para.t2s_model.load_state_dict(dict_s1["weight"])
     if g_para.is_half:
         g_para.t2s_model = g_para.t2s_model.half()

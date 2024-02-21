@@ -95,3 +95,4 @@ class ParamConfig:
         self.t2s_model = None
         self.hz = 50
         self.max_sec = None
+        self.config = None
