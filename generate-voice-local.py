@@ -369,6 +369,7 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
 
         folder_path = os.path.dirname(g_para.srt_path)
         output_dir = os.path.join(folder_path, f"tts/")
+        Utility.createFolder(output_dir)
         Utility.clearDir(output_dir)
 
         for sub in subs:
