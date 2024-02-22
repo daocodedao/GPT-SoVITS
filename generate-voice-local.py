@@ -37,6 +37,7 @@ import sys
 from utility.utility import Utility
 from utility.logger_settings import api_logger
 import platform
+import srt
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -190,8 +191,7 @@ def handle_change(path, text, language):
 
     return JSONResponse({"code": 0, "message": "Success"}, status_code=200)
 
-def parse_args() -> None:
-    
+def parse_args() -> None: 
     parser = argparse.ArgumentParser(description="GPT-SoVITS")
 
     parser.add_argument("-dr", "--default_refer_path", type=str,
@@ -200,6 +200,9 @@ def parse_args() -> None:
                         default="在我身后的是10万个纸盒子", help="默认参考音频文本")
     parser.add_argument("-dl", "--default_refer_language",
                         type=str, default="zh", help="默认参考音频语种")
+    
+    parser.add_argument("-srt", "--srt_file_path",
+                        type=str, default="", help="从srt里读取")
 
     parser.add_argument("-tp", "--text_prompt", type=str, default="", help="输入文本")
     parser.add_argument("-tl", "--text_language", type=str, default="zh", help="输入文本语言")
@@ -226,6 +229,7 @@ def initResource():
     g_para.bert_path = g_config.bert_path
     g_para.is_half = g_config.is_half
     g_para.device = "cuda"
+    g_para.srt_path = args.srt_file_path
     if isMac():
         g_para.device = "mps"
 
@@ -317,7 +321,7 @@ def initResource():
     total = sum([param.nelement() for param in g_para.t2s_model.parameters()])
     api_logger.info("Number of parameter: %.2fM" % (total / 1e6))
 
-def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_language=""):
+def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_language="", output_wav_path=""):
     if (refer_wav_path == "" or refer_wav_path is None
             or prompt_text == "" or prompt_text is None
             or prompt_language == "" or prompt_language is None):
@@ -338,12 +342,12 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
     # wav = BytesIO()
     # sf.write(wav, audio_data, sampling_rate, format="wav")
     # wav.seek(0)
-
-    output_path = f"/data/work/book/{g_para.process_id}/"
-    os.makedirs(output_path, exist_ok=True)
-    output_wav_path = os.path.join(output_path, f"{g_para.process_id}.wav")
+    if len(output_wav_path) == 0:
+        output_dir = f"/data/work/book/{g_para.process_id}/"
+        os.makedirs(output_dir, exist_ok=True)
+        output_wav_path = os.path.join(output_dir, f"{g_para.process_id}.wav")
+    
     sf.write(output_wav_path, audio_data, sampling_rate)
-
     torch.cuda.empty_cache()
     if g_para.device == "mps":
         api_logger.info('executed torch.mps.empty_cache()')
@@ -355,4 +359,22 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
 
 initResource()
 
-handle(inText=g_para.text_prompt, text_language=g_para.text_language)
+if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
+    with open(g_para.srt_path, 'r') as srcFile:
+        # 读取文件内容
+        api_logger.info("读取 srt")
+        content = srcFile.read()
+        subs = srt.parse(content)
+
+        folder_path = os.path.dirname(g_para.srt_path)
+        output_dir = os.path.join(folder_path, f"tts/")
+        Utility.clearDir(output_dir)
+
+        for sub in subs:
+            output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
+            handle(inText=sub.content, text_language=g_para.text_language, output_path=output_wav_path)
+
+        api_logger.log(f"处理完成, 输出到文件夹：{output_dir}")
+else:
+    api_logger.info("单字符串转wav")
+    handle(inText=g_para.text_prompt, text_language=g_para.text_language)

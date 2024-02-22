@@ -96,3 +96,9 @@ class ParamConfig:
         self.hz = 50
         self.max_sec = None
         self.config = None
+        self.sovits_path = None
+        self.cnhubert_base_path = None
+        self.sovits_path = None
+        self.gpt_path = None
+        self.bert_path = None
+        self.srt_path = None
