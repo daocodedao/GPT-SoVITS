@@ -214,4 +214,4 @@ scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/book/122324/122324.wav /Users/li
 
 
 ## srt生成语音
-/data/work/GPT-SoVITS/start-gen-voice-local.sh -l "zh"  -p "总的来说，<橙黄橘绿半 甜时> 是一本让人回味无穷，满足感官享受的美文集 。这不仅是一本书，更是一场心灵的盛 宴，一段历史与现在、人文与自然相交的记忆。" 
+/data/work/GPT-SoVITS/start-gen-voice-local.sh -l "zh"  -s "/data/work/aishowos/whisper_subtitle/sample/simple5-cn.srt" 
