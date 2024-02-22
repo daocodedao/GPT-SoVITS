@@ -219,6 +219,7 @@ def isMac():
     return False
 
 def initResource():
+    api_logger.info("加载模型，加载参数")
     # AVAILABLE_COMPUTE = "cuda" if torch.cuda.is_available() else "cpu"
     global g_para
     args = parse_args()
