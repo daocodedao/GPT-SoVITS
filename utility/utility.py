@@ -141,7 +141,7 @@ class Utility:
             return False
 
     def createFolder(path):
-        if not Util.is_folder(path):
+        if os.path.exists(path) and os.path.isdir(path):
             os.makedirs(path)
 
     def clearDir(path):
