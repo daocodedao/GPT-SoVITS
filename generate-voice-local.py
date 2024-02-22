@@ -354,7 +354,7 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
         api_logger.info('executed torch.mps.empty_cache()')
         torch.mps.empty_cache()
 
-    api_logger.info("Audio saved to " + output_wav_path)
+    api_logger.info("音频保存到 " + output_wav_path)
 
     # return StreamingResponse(wav, media_type="audio/wav")
 
@@ -374,9 +374,12 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
 
         for sub in subs:
             output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
+            api_logger.info("单字符串转wav")
+            api_logger.info(f"准备TTS： {sub.content}")
             handle(inText=sub.content, text_language=g_para.text_language, output_wav_path=output_wav_path)
 
-        api_logger.log(f"处理完成, 输出到文件夹：{output_dir}")
+        api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
+
 else:
-    api_logger.info("单字符串转wav")
+    api_logger.info(f"准备TTS： {g_para.text_prompt}")
     handle(inText=g_para.text_prompt, text_language=g_para.text_language)
