@@ -251,9 +251,9 @@ def initResource():
     refer_language = args.default_refer_language
     if role == "lida":
         refer_path = "resource/lida/source.MP3"
-        refer_text = "我觉得这本书里就藏着迟子建老师本人很多泪水涟涟的晚"
+        refer_text = "我觉得这本书里就藏着迟子建老师本人很多泪水涟涟的晚上"
         refer_language = "zh"
-        api_logger.info(f"role name = lida {refer_path} {refer_text}")
+        # api_logger.info(f"role name = lida {refer_path} {refer_text}")
 
     g_para.default_refer = DefaultRefer(refer_path, refer_text, refer_language)
 

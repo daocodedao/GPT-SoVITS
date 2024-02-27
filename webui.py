@@ -791,7 +791,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
             button1abc_open.click(open1abc, [inp_text,inp_wav_dir,exp_name,gpu_numbers1a,gpu_numbers1Ba,gpu_numbers1c,bert_pretrained_dir,cnhubert_base_dir,pretrained_s2G], [info1abc,button1abc_open,button1abc_close])
             button1abc_close.click(close1abc, [], [info1abc,button1abc_open,button1abc_close])
             with gr.TabItem(i18n("1B-微调训练")):
-                gr.Markdown(value=i18n("1Ba-SoVITS训练。用于分享的模型文件输出在SoVITS_weights下。"))
+                gr.Markdown(value=i18n("1Ba-SoVITS训练。用于分享的模型文件输出在 SoVITS_weights 下。"))
                 with gr.Row():
                     batch_size = gr.Slider(minimum=1,maximum=40,step=1,label=i18n("每张显卡的batch_size"),value=default_batch_size,interactive=True)
                     total_epoch = gr.Slider(minimum=1,maximum=25,step=1,label=i18n("总训练轮数total_epoch，不建议太高"),value=8,interactive=True)
@@ -822,7 +822,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
             button1Bb_open.click(open1Bb, [batch_size1Bb,total_epoch1Bb,exp_name,if_dpo,if_save_latest1Bb,if_save_every_weights1Bb,save_every_epoch1Bb,gpu_numbers1Bb,pretrained_s1],   [info1Bb,button1Bb_open,button1Bb_close])
             button1Bb_close.click(close1Bb, [], [info1Bb,button1Bb_open,button1Bb_close])
             with gr.TabItem(i18n("1C-推理")):
-                gr.Markdown(value=i18n("选择训练完存放在SoVITS_weights和GPT_weights下的模型。默认的一个是底模，体验5秒Zero Shot TTS用。"))
+                gr.Markdown(value=i18n("选择训练完存放在 SoVITS_weights 和 GPT_weights 下的模型。默认的一个是底模，体验5秒Zero Shot TTS用。"))
                 with gr.Row():
                     GPT_dropdown = gr.Dropdown(label=i18n("*GPT模型列表"), choices=sorted(GPT_names,key=custom_sort_key),value=pretrained_gpt_name,interactive=True)
                     SoVITS_dropdown = gr.Dropdown(label=i18n("*SoVITS模型列表"), choices=sorted(SoVITS_names,key=custom_sort_key),value=pretrained_sovits_name,interactive=True)
