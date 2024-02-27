@@ -2,7 +2,7 @@ import json
 import os
 
 def findRoleContent(jsonPath="role.json",  roleName="he"):
-    jsonPath="role.json"
+
     if os.path.exists(jsonPath):
         with open(jsonPath, "r") as inFile:
             dataList = json.load(inFile)

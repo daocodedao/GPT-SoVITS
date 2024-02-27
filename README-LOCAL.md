@@ -154,6 +154,9 @@ scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/out/ /Users/
 
 scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/tools/uvr5/uvr5_weights/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/tools/uvr5/
 
+
+scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/otto/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
+
 ```
 
 ## 权限
