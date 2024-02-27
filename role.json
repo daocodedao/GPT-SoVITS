@@ -6,15 +6,29 @@
         "refer_text":"在我身后的是10万个纸盒子",
         "refer_language":"zh",
         "sovits_path":"GPT_SoVITS/pretrained_models/s2G488k.pth",
-        "gpt_path":"GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
+        "gpt_path":"GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt",
+        "ref_source":"官方"
     },
     {
         "name":"otto",
         "gender":"男",
         "refer_path":"resource/otto/source.wav",
         "refer_text":"这个桥到现在一个人都没有啊，驾驶位直接走下来的啊？",
+        "refer_language":"zh",
         "sovits_path":"resource/otto/otto_e39_s1638.pth",
-        "gpt_path":"resource/otto/otto-e10.ckpt"
+        "gpt_path":"resource/otto/otto-e10.ckpt",
+        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS"
+    },
+    {
+        "name":"XingTong",
+        "gender":"女",
+        "refer_path":"resource/XingTong/XingTong_13.wav",
+        "refer_text":"多吃点哦晚上，多吃点晚餐。",
+        "refer_language":"zh",
+        "sovits_path":"resource/XingTong/XingTong_e40_s3440.pth",
+        "gpt_path":"resource/XingTong/XingTong-e10.ckpt",
+        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS"
+
     }
     
 
