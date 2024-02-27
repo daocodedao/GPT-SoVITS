@@ -308,6 +308,7 @@ def initResource():
 
     g_para.hps = DictToAttrRecursive(g_para.hps)
     g_para.hps.model.semantic_frame_rate = "25hz"
+    api_logger.info(f"准备加载模型: {g_para.gpt_path}")
     dict_s1 = torch.load(g_para.gpt_path, map_location="cpu")
     g_para.config = dict_s1["config"]
     g_para.ssl_model = cnhubert.get_model()
