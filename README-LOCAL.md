@@ -170,6 +170,7 @@ sudo chown -R fxbox:fxbox /run/fxbox/
 伴奏人声分离&去混响&去回声
 /data/work/GPT-SoVITS/resource/michael/input
 
+output/uvr5_opt/
 
 output
 
