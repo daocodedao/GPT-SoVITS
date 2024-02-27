@@ -39,6 +39,5 @@
         "sovits_path":"resource/XingTong/Ze_e60_s1500.pth",
         "gpt_path":"resource/XingTong/Ze-e21.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
-
     }
 ]
