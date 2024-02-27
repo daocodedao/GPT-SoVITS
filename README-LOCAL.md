@@ -172,7 +172,6 @@ sudo chown -R fxbox:fxbox /run/fxbox/
 
 output/uvr5_opt/
 
-output
 
 音频自动切分输入路径，可文件可文件夹
 /data/work/GPT-SoVITS/resource/michael/vocal
