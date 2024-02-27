@@ -38,6 +38,7 @@ from utility.utility import Utility
 from utility.logger_settings import api_logger
 import platform
 import srt
+from utility.rolejson import *
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -227,6 +228,7 @@ def initResource():
 
     g_para.sovits_path = g_config.pretrained_sovits_path
     g_para.gpt_path = g_config.pretrained_gpt_path
+    
     g_para.cnhubert_base_path = g_config.cnhubert_path
     g_para.bert_path = g_config.bert_path
     g_para.is_half = g_config.is_half
@@ -249,11 +251,14 @@ def initResource():
     refer_path = args.default_refer_path
     refer_text = args.default_refer_text
     refer_language = args.default_refer_language
-    if role == "lida":
-        refer_path = "resource/lida/source.MP3"
-        refer_text = "我觉得这本书里就藏着迟子建老师本人很多泪水涟涟的晚上"
-        refer_language = "zh"
-        # api_logger.info(f"role name = lida {refer_path} {refer_text}")
+    roleDic = findRoleContent(roleName=role)
+    api_logger.info(f"找到角色 role {roleDic}")
+    refer_path = roleDic["refer_path"]
+    refer_text = roleDic["refer_text"]
+    refer_language = roleDic["refer_language"]
+    g_para.sovits_path = roleDic["sovits_path"]
+    g_para.gpt_path = roleDic["gpt_path"]
+
 
     g_para.default_refer = DefaultRefer(refer_path, refer_text, refer_language)
 

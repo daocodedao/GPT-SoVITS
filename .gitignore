@@ -12,5 +12,6 @@ logs
 reference
 GPT_weights
 SoVITS_weights
-# resource/
+resource/
 TEMP
+# resource/otto/

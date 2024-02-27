@@ -1,0 +1,21 @@
+[
+    {
+        "name":"he",
+        "gender":"男",
+        "refer_path":"resource/he/source.MP3",
+        "refer_text":"在我身后的是10万个纸盒子",
+        "refer_language":"zh",
+        "sovits_path":"GPT_SoVITS/pretrained_models/s2G488k.pth",
+        "gpt_path":"GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
+    },
+    {
+        "name":"otto",
+        "gender":"男",
+        "refer_path":"resource/otto/source.wav",
+        "refer_text":"这个桥到现在一个人都没有啊，驾驶位直接走下来的啊？",
+        "sovits_path":"resource/otto/otto_e39_s1638.pth",
+        "gpt_path":"resource/otto/otto-e10.ckpt"
+    }
+    
+
+]
