@@ -237,9 +237,9 @@ def initResource():
 
     class DefaultRefer:
         def __init__(self, path, text, language):
-            self.path = args.default_refer_path
-            self.text = args.default_refer_text
-            self.language = args.default_refer_language
+            self.path = path
+            self.text = text
+            self.language = language
 
         def is_ready(self) -> bool:
             return is_full(self.path, self.text, self.language)
@@ -253,7 +253,7 @@ def initResource():
         refer_path = "resource/lida/source.MP3"
         refer_text = "我觉得这本书里就藏着迟子建老师本人很多泪水涟涟的晚"
         refer_language = "zh"
-
+        api_logger.info(f"role name = lida {refer_path} {refer_text}")
 
     g_para.default_refer = DefaultRefer(refer_path, refer_text, refer_language)
 

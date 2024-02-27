@@ -12,7 +12,7 @@ source venv_sovits/bin/activate
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -m mode -p prompt -id processId -m modelName"
+   echo "Usage: $0 -m mode -p prompt -id processId -m modelName -r role"
    echo -e "\t-p prompt"
    echo -e "\t-l language"
    echo -e "\t-i processId"
