@@ -17,6 +17,7 @@ helpFunction()
    echo -e "\t-l language"
    echo -e "\t-i processId"
    echo -e "\t-s srt file path"
+   echo -e "\t-r role"
    exit 1 # Exit script after printing help
 }
 
@@ -31,13 +32,14 @@ sudo kill -9 $TAILPID
 fi
 
 
-while getopts "p:l:i:s:" opt
+while getopts "p:l:i:s:r:" opt
 do
    case "$opt" in
       p ) prompt="$OPTARG" ;;
       l ) language="$OPTARG" ;;
       i ) processId="$OPTARG" ;;
       s ) srtPath="$OPTARG" ;;
+      r ) role="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
@@ -46,7 +48,8 @@ done
 [[ -z  $processId ]] &&  processId=""
 [[ -z  $language ]] && language="zh"
 [[ -z  $srtPath ]] && srtPath=""
+[[ -z  $role ]] && role=""
 
-echo -e "${YELLOW}python3 $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" ${NOCOLOR}"
-python3 $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath"
+echo -e "${YELLOW}python3 $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"${NOCOLOR}"
+python3 $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role"
 

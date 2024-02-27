@@ -195,7 +195,7 @@ def parse_args() -> None:
     parser = argparse.ArgumentParser(description="GPT-SoVITS")
 
     parser.add_argument("-dr", "--default_refer_path", type=str,
-                        default="resource/何同学/source.MP3", help="默认参考音频路径")
+                        default="resource/he/source.MP3", help="默认参考音频路径")
     parser.add_argument("-dt", "--default_refer_text", type=str,
                         default="在我身后的是10万个纸盒子", help="默认参考音频文本")
     parser.add_argument("-dl", "--default_refer_language",
@@ -207,6 +207,7 @@ def parse_args() -> None:
     parser.add_argument("-tp", "--text_prompt", type=str, default="", help="输入文本")
     parser.add_argument("-tl", "--text_language", type=str, default="zh", help="输入文本语言")
     parser.add_argument("-id", "--process_id", type=str, default="", help="process_id")
+    parser.add_argument("-r", "--role", type=str, default="he", help="role name")
 
     args = parser.parse_args()
     return args
@@ -244,7 +245,17 @@ def initResource():
             return is_full(self.path, self.text, self.language)
 
 
-    g_para.default_refer = DefaultRefer(args.default_refer_path, args.default_refer_text, args.default_refer_language)
+    role = args.role
+    refer_path = args.default_refer_path
+    refer_text = args.default_refer_text
+    refer_language = args.default_refer_language
+    if role == "lida":
+        refer_path = "resource/lida/source.MP3"
+        refer_text = "我觉得这本书里就藏着迟子建老师本人很多泪水涟涟的晚"
+        refer_language = "zh"
+
+
+    g_para.default_refer = DefaultRefer(refer_path, refer_text, refer_language)
 
     g_para.text_prompt = args.text_prompt
     g_para.text_language = args.text_language

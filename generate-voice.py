@@ -72,7 +72,7 @@ parser.add_argument("-g", "--gpt_path", type=str,
                     default=g_config.gpt_path, help="GPT模型路径")
 
 parser.add_argument("-dr", "--default_refer_path", type=str,
-                    default="resource/何同学/source.MP3", help="默认参考音频路径")
+                    default="resource/he/source.MP3", help="默认参考音频路径")
 parser.add_argument("-dt", "--default_refer_text", type=str,
                     default="在我身后的是10万个纸盒子", help="默认参考音频文本")
 parser.add_argument("-dl", "--default_refer_language",
