@@ -5,9 +5,12 @@ cd $workdir
 
 . colors.sh
 
+venvBinDir=venv_sovits/bin/
+pythonPath=${workdir}${venvBinDir}python
+echo "Python path:  $pythonPath"
 
-echo "${YELLOW}source venv_sovits/bin/activate${NOCOLOR}"
-source venv_sovits/bin/activate
+echo "${YELLOW}source ${venvBinDir}activate${NOCOLOR}"
+source ${venvBinDir}activate
 
 helpFunction()
 {
@@ -50,6 +53,6 @@ done
 [[ -z  $srtPath ]] && srtPath=""
 [[ -z  $role ]] && role=""
 
-echo -e "${YELLOW}python3 $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"${NOCOLOR}"
-python3 $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role"
+echo -e "${YELLOW}${pythonPath} $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"${NOCOLOR}"
+${pythonPath} $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role"
 
