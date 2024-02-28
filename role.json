@@ -39,5 +39,15 @@
         "sovits_path":"resource/chenzhe/Ze_e60_s1500.pth",
         "gpt_path":"resource/chenzhe/Ze-e21.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+    },
+    {
+        "name":"NaiLv",
+        "gender":"女",
+        "refer_path":"resource/NaiLv/source.wav",
+        "refer_text":"大家生活当中永远充满晴天，今天是国庆的第一天希望大家放假快乐。",
+        "refer_language":"zh",
+        "sovits_path":"resource/NaiLv/LAPLACE_e53_s2650.pth",
+        "gpt_path":"resource/NaiLv/LAPLACE-e20.ckpt",
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     }
 ]
