@@ -49,5 +49,15 @@
         "sovits_path":"resource/NaiLv/LAPLACE_e53_s2650.pth",
         "gpt_path":"resource/NaiLv/LAPLACE-e20.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+    },
+    {
+        "name":"XiangWan",
+        "gender":"女",
+        "refer_path":"resource/XiangWan/source.wav",
+        "refer_text":"综艺部和餐饮部联合推出的，非常的有趣。",
+        "refer_language":"zh",
+        "sovits_path":"resource/XiangWan/Ava_e53_s2915.pth",
+        "gpt_path":"resource/XiangWan/Ava-e21.ckpt",
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     }
 ]
