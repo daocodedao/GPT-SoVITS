@@ -36,8 +36,8 @@
         "refer_path":"resource/chenzhe/source.wav",
         "refer_text":"他看中国电影就是那个中文的，不不是那种英文的，不说字不字幕了他都得旁边配个翻译。",
         "refer_language":"zh",
-        "sovits_path":"resource/XingTong/Ze_e60_s1500.pth",
-        "gpt_path":"resource/XingTong/Ze-e21.ckpt",
+        "sovits_path":"resource/chenzhe/Ze_e60_s1500.pth",
+        "gpt_path":"resource/chenzhe/Ze-e21.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     }
 ]
