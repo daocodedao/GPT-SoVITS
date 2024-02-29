@@ -142,10 +142,10 @@ with gr.Blocks(title="UVR5 WebUI") as app:
                             visible=False,  # 先不开放调整
                         )
                         opt_vocal_root = gr.Textbox(
-                            label=i18n("指定输出主人声文件夹"), value="output/uvr5_opt"
+                            label=i18n("指定输出主人声文件夹"), value="output/uvr5_opt_vocal"
                         )
                         opt_ins_root = gr.Textbox(
-                            label=i18n("指定输出非主人声文件夹"), value="output/uvr5_opt"
+                            label=i18n("指定输出非主人声文件夹"), value="output/uvr5_opt_ins"
                         )
                         format0 = gr.Radio(
                             label=i18n("导出文件格式"),
