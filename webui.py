@@ -730,7 +730,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                 if_label = gr.Checkbox(label=i18n("是否开启打标WebUI"),show_label=True)
                 path_list = gr.Textbox(
                     label=i18n(".list标注文件的路径"),
-                    value="output/asr_opt/xxx.list",
+                    value="output/asr_opt/slicer_opt.list",
                     interactive=True,
                 )
                 label_info = gr.Textbox(label=i18n("打标工具进程输出信息"))
