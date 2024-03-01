@@ -176,44 +176,56 @@ http://39.105.194.16:9873/
 1.伴奏人声分离&去混响&去回声
 算法选 HP5_only
 转换成功后，在目录下生成
-乐器声音 output/uvr5_opt_vocal
 人声音 output/uvr5_opt_vocal
+乐器声音 output/uvr5_opt_ins
 
 
-2.音频自动切分输入路径，可文件可文件夹
-/data/work/GPT-SoVITS/resource/mich/output/slicer_opt
 
-vocal_source.MP3_10.mp3_0000000000_0002276160.wav
+2.音频自动切分， 把长音频切割成短音频，方便校对和训练
+输入路径 output/uvr5_opt_vocal
+输出路径 output/slicer_opt
 
-3.批量ASR(语音识别)输入文件夹路径
-/data/work/GPT-SoVITS/resource/mich/output/slicer_opt
+3.批量ASR(语音识别)
+输入文件夹
+output/slicer_opt
 输出文件夹
-/data/work/GPT-SoVITS/resource/mich/output/asr_opt
-
-/data/work/GPT-SoVITS/resource/mich/output/asr_opt/slicer_opt.list
+output/asr_opt
+输出文件
+output/asr_opt/slicer_opt.list
 
 4.打标数据标注文件路径
-/data/work/GPT-SoVITS/output/asr_opt/slicer_opt.list
+output/asr_opt/slicer_opt.list
 
 
 
 # 第二步
 
+1. 格式化数据
 *实验/模型名
 mich
 
 *文本标注文件
-/data/work/GPT-SoVITS/output/asr_opt/slicer_opt.list
+output/asr_opt/slicer_opt.list
 
 *训练集音频文件目录
-/data/work/GPT-SoVITS/output/slicer_opt
+output/slicer_opt
+
+配置好后，一键三连
+2. 微调训练
+   训练成功后
+   SoVITS_weights/
+   GPT_weights/
+
+SoVITS_weights/ 后缀 pth, e代表轮数，s代表步数
+GPT_weights/ 后缀 ckpt, e代表轮数
+下拉选择模型推理，e代表轮数，s代表步数。不是轮数越高越好。可以试试20, 15
+
+然后上传一段参考音频，建议是数据集中的音频。最好5秒。参考音频很重要！会学习语速和语气，请认真选择。参考音频的文本是参考音频说什么就填什么，必须要填。语种也要对应
+接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
 
-
-
-微调训练后 放到  GPT_weights/ 里
-1Ba-SoVITS训练。用于分享的模型文件输出在SoVITS_weights下。
-
+scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights /Users/linzhiji/Downloads
+scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights /Users/linzhiji/Downloads
 
 
 # 使用
