@@ -169,26 +169,30 @@ sudo chown -R fxbox:fxbox /run/fxbox/
 
 
 # 操作
-
+操作前先清空 output
 ## 第一步
 http://39.105.194.16:9873/
 
 1.伴奏人声分离&去混响&去回声
-/data/work/GPT-SoVITS/resource/mich/output/uvr5_opt
+算法选 HP5_only
 转换成功后，在目录下生成
-instrument_source.MP3_10.mp3  
-vocal_source.MP3_10.mp3
+乐器声音 output/uvr5_opt_vocal
+人声音 output/uvr5_opt_vocal
 
 
 2.音频自动切分输入路径，可文件可文件夹
-/data/work/GPT-SoVITS/resource/mich/vocal
+/data/work/GPT-SoVITS/resource/mich/output/slicer_opt
 
+vocal_source.MP3_10.mp3_0000000000_0002276160.wav
 
-批量ASR(中文only)输入文件夹路径
-/data/work/GPT-SoVITS/output/slicer_opt
+3.批量ASR(语音识别)输入文件夹路径
+/data/work/GPT-SoVITS/resource/mich/output/slicer_opt
+输出文件夹
+/data/work/GPT-SoVITS/resource/mich/output/asr_opt
 
+/data/work/GPT-SoVITS/resource/mich/output/asr_opt/slicer_opt.list
 
-打标数据标注文件路径
+4.打标数据标注文件路径
 /data/work/GPT-SoVITS/output/asr_opt/slicer_opt.list
 
 

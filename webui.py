@@ -755,7 +755,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                         label=i18n("*训练集音频文件目录"),
                         # value=r"D:\RVC1006\GPT-SoVITS\raw\xxx",
                         interactive=True,
-                        value="output/slicer_opt"
+                        value="output/slicer_opt",
                         placeholder=i18n("填切割后音频所在目录！读取的音频文件完整路径=该目录-拼接-list文件里波形对应的文件名（不是全路径）。如果留空则使用.list文件里的绝对全路径。")
                     )
                 gr.Markdown(value=i18n("1Aa-文本内容"))
