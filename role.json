@@ -76,9 +76,8 @@
         "refer_path":"resource/DiQiuJu/source.MP3",
         "refer_text":"老二是什么?是鼎盛时期的苏联?是镀金时代的日本?是第三世界的通辽？都不是！",
         "refer_language":"zh",
-        "sovits_path":"resource/DiQiuJu/fatiaozhang_e24_s264.pth",
-        "gpt_path":"resource/DiQiuJu/fatiaozhang-e10.ckpt",
+        "sovits_path":"resource/DiQiuJu/diqiuju_e24_s384.pth",
+        "gpt_path":"resource/DiQiuJu/diqiuju-e20.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     }
-]
 ]

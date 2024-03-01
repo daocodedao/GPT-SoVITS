@@ -226,8 +226,11 @@ GPT_weights/ 后缀 ckpt, e代表轮数
 接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
 
-scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights /Users/linzhiji/Downloads
-scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights /Users/linzhiji/Downloads
+scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/diqiuju_e24_s384.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/
+scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/diqiuju_e24_s384.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/
+
+
+scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
 
 
 # 使用
