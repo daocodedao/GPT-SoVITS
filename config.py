@@ -48,16 +48,18 @@ if infer_device == "cuda":
 if(infer_device=="cpu"):is_half=False
 
 dict_language = {
-    "中文": "zh",
+    "中文": "all_zh",
     "英文": "en",
     "日文": "ja",
     "ZH": "zh",
     "EN": "en",
     "JA": "ja",
-    "zh": "zh",
+    "zh": "all_zh",
     "en": "en",
-    "ja": "ja"
+    "ja": "ja",
+    "zh-en": "zh"
 }
+# "zh-en" 中英混合
 
 class Config:
     def __init__(self):
