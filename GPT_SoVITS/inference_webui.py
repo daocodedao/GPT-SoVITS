@@ -317,7 +317,7 @@ def nonen_get_bert_inf(text, language):
     bert_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
-        print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang}")
+        print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
         bert = get_bert_inf(phones, word2ph, norm_text, lang)
         bert_list.append(bert)
