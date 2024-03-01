@@ -109,7 +109,6 @@ def clean_text_inf(text, language):
     phones = cleaned_text_to_sequence(phones)
     return phones, word2ph, norm_text
 
-
 def get_first(text):
     pattern = "[" + "".join(re.escape(sep) for sep in splits) + "]"
     text = re.split(pattern, text)[0].strip()
@@ -149,11 +148,11 @@ def splite_en_inf(sentence, language):
 
     return textlist, langlist
 
-def get_bert_inf(phones, word2ph, norm_text, language):
+def get_bert_inf(phones, word2ph, norm_text, language, device):
     global g_para
     language=language.replace("all_","")
     if language == "zh":
-        bert = get_bert_feature(norm_text, word2ph).to(g_para.device)#.to(dtype)
+        bert = get_bert_feature(norm_text, word2ph).to(device)#.to(dtype)
     else:
         bert = torch.zeros(
             (1024, len(phones)),
@@ -188,7 +187,7 @@ def nonen_clean_text_inf(text, language):
 
     return phones, word2ph, norm_text
 
-def nonen_get_bert_inf(text, language):
+def nonen_get_bert_inf(text, language, device):
     if(language!="auto"):
         textlist, langlist = splite_en_inf(text, language)
     else:
@@ -197,13 +196,14 @@ def nonen_get_bert_inf(text, language):
         for tmp in LangSegment.getTexts(text):
             langlist.append(tmp["lang"])
             textlist.append(tmp["text"])
+    print("nonen_get_bert_inf")
     print(textlist)
     print(langlist)
     bert_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
-        bert = get_bert_inf(phones, word2ph, norm_text, lang)
+        bert = get_bert_inf(phones, word2ph, norm_text, lang, device)
         bert_list.append(bert)
     bert = torch.cat(bert_list, dim=1)
 
@@ -216,11 +216,11 @@ def get_cleaned_text_final(text,language):
         phones, word2ph, norm_text = nonen_clean_text_inf(text, language)
     return phones, word2ph, norm_text
 
-def get_bert_final(phones, word2ph, text,language,device):
+def get_bert_final(phones, word2ph, text, language, device):
     if language == "en":
-        bert = get_bert_inf(phones, word2ph, text, language)
+        bert = get_bert_inf(phones, word2ph, text, language, device)
     elif language in {"zh", "ja","auto"}:
-        bert = nonen_get_bert_inf(text, language)
+        bert = nonen_get_bert_inf(text, language, device)
     elif language == "all_zh":
         bert = get_bert_feature(text, word2ph).to(device)
     else:

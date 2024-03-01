@@ -310,6 +310,7 @@ def nonen_get_bert_inf(text, language):
         for tmp in LangSegment.getTexts(text):
             langlist.append(tmp["lang"])
             textlist.append(tmp["text"])
+    print("nonen_get_bert_inf")
     print(textlist)
     print(langlist)
     bert_list = []

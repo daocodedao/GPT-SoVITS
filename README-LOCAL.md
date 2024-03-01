@@ -232,6 +232,7 @@ scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/diqiuju_e
 
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
 
+scp -r /data/work/GPT-SoVITS/resource/DiQiuJu/ fxbox@192.168.0.69:/data/work/GPT-SoVITS/resource/
 
 # 使用
 
