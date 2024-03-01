@@ -266,7 +266,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
         if (text[-1] not in splits): text += "。" if text_language != "en" else "."
         print(i18n("实际输入的目标文本(每句):"), text)
         phones2, word2ph2, norm_text2 = get_cleaned_text_final(text, text_language)
-        bert2 = get_bert_final(phones2, word2ph2, norm_text2, text_language, g_para.device).to(g_para.dtype)
+        bert2 = get_bert_final(phones2, word2ph2, norm_text2, text_language, g_para.device).to(torch.float16)
 
         bert = torch.cat([bert1, bert2], 1)
         all_phoneme_ids = torch.LongTensor(phones1+phones2).to(g_para.device).unsqueeze(0)
