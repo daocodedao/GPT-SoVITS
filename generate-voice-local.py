@@ -13,6 +13,7 @@
 
 """
 import time
+import LangSegment
 import config as global_config
 from my_utils import load_audio
 from module.mel_processing import spectrogram_torch
