@@ -157,7 +157,7 @@ def get_bert_inf(phones, word2ph, norm_text, language, device):
         bert = torch.zeros(
             (1024, len(phones)),
             dtype=torch.float16 if g_para.is_half == True else torch.float32,
-        ).to(g_para.is_half)
+        ).to(device)
 
     return bert
 
