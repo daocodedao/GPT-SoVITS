@@ -288,7 +288,7 @@ def nonen_clean_text_inf(text, language):
     norm_text_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
-        print(f"nonen_clean_text_inf clean_text_inf text={textlist[i]} lang={lang}")
+        # print(f"nonen_clean_text_inf clean_text_inf text={textlist[i]} lang={lang}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
         phones_list.append(phones)
         if lang == "zh":
@@ -311,17 +311,17 @@ def nonen_get_bert_inf(text, language):
         for tmp in LangSegment.getTexts(text):
             langlist.append(tmp["lang"])
             textlist.append(tmp["text"])
-    print("nonen_get_bert_inf")
+    # print("nonen_get_bert_inf")
     print(textlist)
     print(langlist)
     bert_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
-        print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
+        # print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
-        print(f"phones={phones}")
-        print(f"word2ph={word2ph}")
-        print(f"norm_text={norm_text}")
+        # print(f"phones={phones}")
+        # print(f"word2ph={word2ph}")
+        # print(f"norm_text={norm_text}")
         bert = get_bert_inf(phones, word2ph, norm_text, lang)
         print(f"bert={bert}")
         bert_list.append(bert)
