@@ -155,9 +155,9 @@ scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/out/ /Users/
 scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/tools/uvr5/uvr5_weights/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/tools/uvr5/
 
 
-scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/XiangWan/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
+scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang / fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
 
-scp -r  /data/work/GPT-SoVITS/resource/XiangWan/ fxbox@192.168.0.69:/data/work/GPT-SoVITS/resource/
+scp -r  /data/work/GPT-SoVITS/resource/FaTiaoZhang / fxbox@192.168.0.69:/data/work/GPT-SoVITS/resource/
 
 ```
 
