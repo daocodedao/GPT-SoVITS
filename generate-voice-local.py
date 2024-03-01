@@ -206,6 +206,7 @@ def nonen_get_bert_inf(text, language, device):
         print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
         bert = get_bert_inf(phones, word2ph, norm_text, lang, device)
+        print(f"bert={bert}")
         bert_list.append(bert)
     bert = torch.cat(bert_list, dim=1)
 
