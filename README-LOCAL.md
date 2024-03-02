@@ -230,7 +230,8 @@ scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/diqiuj
 scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/diqiuju_e24_s384.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/
 
 
-scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/
+scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
+scp -r -P 10069 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
 
 scp -r /data/work/GPT-SoVITS/resource/DiQiuJu/ fxbox@192.168.0.69:/data/work/GPT-SoVITS/resource/
 
