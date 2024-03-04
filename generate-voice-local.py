@@ -41,6 +41,7 @@ import platform
 import srt
 from utility.rolejson import *
 from tools.i18n.i18n import I18nAuto
+from utility.utility import Utility
 
 i18n = I18nAuto()
 
@@ -267,7 +268,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
 
     for text in texts:
         # 解决输入目标文本的空行导致报错的问题
-        if len(text.strip()) == 0 or text.isdigit():
+        if len(text.strip()) == 0 or Utility.is_number(text.strip()):
             continue
         if (text[-1] not in splits): text += "。" if text_language != "en" else "."
         print(i18n("实际输入的目标文本(每句):"), text)

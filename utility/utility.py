@@ -216,3 +216,10 @@ class Utility:
             opts = [inStr]
         # return "\n".join(opts)
         return "\n".join(opts)
+
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
