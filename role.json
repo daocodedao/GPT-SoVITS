@@ -66,8 +66,8 @@
         "refer_path":"resource/FaTiaoZhang/source.MP3",
         "refer_text":"再就是这个东西我对我个人来说是一种好的体验,就是去了一个地方然后把它",
         "refer_language":"zh",
-        "sovits_path":"resource/FaTiaoZhang/fatiaozhang_e24_s264.pth",
-        "gpt_path":"resource/FaTiaoZhang/fatiaozhang-e10.ckpt",
+        "sovits_path":"resource/FaTiaoZhang/fatiaozhang_e20_s220.pth",
+        "gpt_path":"resource/FaTiaoZhang/fatiaozhang-e20.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     },
     {
