@@ -79,5 +79,15 @@
         "sovits_path":"resource/DiQiuJu/diqiuju_e24_s384.pth",
         "gpt_path":"resource/DiQiuJu/diqiuju-e20.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+    },
+    {
+        "name":"DuLiang",
+        "gender":"女",
+        "refer_path":"resource/DuLiang/source.MP3",
+        "refer_text":"你会如何评价辛弃疾，南宋的铁骨和灯火。我们都知道辛弃疾是词中之龙，与苏轼并称苏辛。",
+        "refer_language":"zh",
+        "sovits_path":"resource/DuLiang/duliang_e24_s504.pth",
+        "gpt_path":"resource/DuLiang/duliang-e50.ckpt",
+        "ref_source":"https://space.bilibili.com/272344192/video?tid=0&special_type=&pn=3&keyword=&order=pubdate"
     }
 ]
