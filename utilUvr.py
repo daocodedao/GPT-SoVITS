@@ -39,6 +39,10 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             )
 
         outDir = os.path.dirname(srcFilePath)
+        outVocalDIr = os.path.join(outDir, "vocal/")
+        outInsDIr = os.path.join(outDir, "ins/")
+        outTempDIr = os.path.join(outDir, "temp/")
+        api_logger.info(f"outInsDIr={outInsDIr}  outInsDIr={outInsDIr} outTempDIr={outTempDIr}")
         if(os.path.isfile(srcFilePath)==False):
             api_logger.error("srcFilePath 不是文件!")
             return
@@ -50,14 +54,14 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             api_logger.info(info)
             if (info["streams"][0]["channels"] == 2 and info["streams"][0]["sample_rate"] == "44100"):
                 need_reformat = 0
-                pre_fun._path_audio_(srcFilePath, outDir, outDir, outFormat, is_hp3)
+                pre_fun._path_audio_(srcFilePath, outInsDIr, outVocalDIr, outFormat, is_hp3)
                 done = 1
         except:
             need_reformat = 1
             traceback.print_exc()
         if need_reformat == 1:
             tmp_path = "%s/%s.reformatted.wav" % (
-                outDir,
+                outTempDIr,
                 os.path.basename(srcFilePath),
             )
             os.system(
@@ -68,7 +72,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
         try:
             if done == 0:
                 pre_fun._path_audio_(
-                    srcFilePath, outDir, outDir, outFormat,is_hp3
+                    srcFilePath, outInsDIr, outVocalDIr, outFormat,is_hp3
                 )
             # api_logger.info()
             # infos.append("%s->Success" % (os.path.basename(srcFilePath)))
