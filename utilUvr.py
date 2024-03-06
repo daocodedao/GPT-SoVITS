@@ -51,6 +51,8 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             return
         need_reformat = 1
         done = 0
+        api_logger.info( f"pre_fun类型是： {type(pre_fun)}" )
+
         try:
             info = ffmpeg.probe(srcFilePath, cmd="ffprobe")
             api_logger.info("ffprobe 探测")
@@ -60,9 +62,12 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
                 pre_fun._path_audio_(srcFilePath, outInsDIr, outVocalDIr, outFormat, is_hp3)
                 done = 1
         except:
+            api_logger.error("pre_fun._path_audio_ 异常")
             need_reformat = 1
-            traceback.print_exc()
+            api_logger.error(traceback.format_exc())
+
         if need_reformat == 1:
+            api_logger.info("需要重新 reformatted")
             tmp_path = "%s/%s.reformatted.wav" % (
                 outTempDIr,
                 os.path.basename(srcFilePath),
@@ -72,22 +77,26 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
                 % (srcFilePath, tmp_path)
             )
             srcFilePath = tmp_path
+
         try:
             if done == 0:
+                api_logger.info("需要重新 _path_audio_")
                 pre_fun._path_audio_(
-                    srcFilePath, outInsDIr, outVocalDIr, outFormat,is_hp3
+                    srcFilePath, outInsDIr, outVocalDIr, outFormat, is_hp3
                 )
             # api_logger.info()
             # infos.append("%s->Success" % (os.path.basename(srcFilePath)))
             # yield "\n".join(infos)
         except:
-            api_logger.info(traceback.format_exc())
+            api_logger.error("需要重新 _path_audio_ 异常")
+            api_logger.error(traceback.format_exc())
             # infos.append(
             #     "%s->%s" % (os.path.basename(srcFilePath), traceback.format_exc())
             # )
             # yield "\n".join(infos)
     except:
-        api_logger.info(traceback.format_exc())
+        api_logger.error("整体异常")
+        api_logger.error(traceback.format_exc())
         # infos.append(traceback.format_exc())
         # yield "\n".join(infos)
     finally:
@@ -99,7 +108,9 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
                 del pre_fun.model
                 del pre_fun
         except:
-            traceback.print_exc()
+            api_logger.error("删除模型异常")
+            api_logger.error(traceback.format_exc())
+
         print("clean_empty_cache")
         if torch.cuda.is_available():
             torch.cuda.empty_cache()

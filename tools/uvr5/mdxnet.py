@@ -196,11 +196,11 @@ class Predictor:
         progress_bar.close()
         return _sources
 
-    def prediction(self, m, vocal_root, others_root, format):
+    def prediction(self, srcPath, vocal_root, others_root, format):
         os.makedirs(vocal_root, exist_ok=True)
         os.makedirs(others_root, exist_ok=True)
-        basename = os.path.basename(m)
-        mix, rate = librosa.load(m, mono=False, sr=44100)
+        basename = os.path.basename(srcPath)
+        mix, rate = librosa.load(srcPath, mono=False, sr=44100)
         if mix.ndim == 1:
             mix = np.asfortranarray([mix, mix])
         mix = mix.T
