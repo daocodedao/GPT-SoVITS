@@ -42,7 +42,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
         outVocalDIr = os.path.join(outDir, "vocal/")
         outInsDIr = os.path.join(outDir, "ins/")
         outTempDIr = os.path.join(outDir, "temp/")
-        api_logger.info(f"outInsDIr={outInsDIr}  outInsDIr={outInsDIr} outTempDIr={outTempDIr}")
+        api_logger.info(f"outInsDIr={outInsDIr}  outVocalDIr={outVocalDIr} outTempDIr={outTempDIr}")
         if(os.path.isfile(srcFilePath)==False):
             api_logger.error("srcFilePath 不是文件!")
             return
@@ -127,8 +127,12 @@ videoPath = f"/data/work/translate/eR4G4khR6r8/{processId}.mp4"
 srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
 videoDir = os.path.dirname(videoPath)
 
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
+
 api_logger.info("从视频剥离音频文件")
-command = f"ffmpeg -y -i {videoPath} -vn -acodec copy {srcAudioPath}"
+# ffmpeg -i eR4G4khR6r8.mp4 -vn -acodec pcm_s16le -ac 2 -ar 44100 eR4G4khR6r8.wav
+command = f"ffmpeg -y -i {videoPath} -vn -acodec pcm_s16le -ac 2 -ar 44100 {srcAudioPath}"
 result = subprocess.check_output(command, shell=True)
 
 api_logger.info("准备剥离背景音乐")
