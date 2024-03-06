@@ -46,6 +46,8 @@ class AudioPre:
         if ins_root is None and vocal_root is None:
             return "No save root."
         name = os.path.basename(music_file)
+        filename_without_ext = os.path.splitext(os.path.basename(path))[0]
+        
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
         if vocal_root is not None:
@@ -132,14 +134,14 @@ class AudioPre:
                 sf.write(
                     os.path.join(
                         ins_root,
-                        head + "{}_{}.{}".format(name, self.data["agg"], format),
+                        head + "{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
                     ),
                     (np.array(wav_instrument) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )  #
             else:
                 path = os.path.join(
-                    ins_root, head + "{}_{}.wav".format(name, self.data["agg"])
+                    ins_root, head + "{}_{}.wav".format(filename_without_ext, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -173,14 +175,14 @@ class AudioPre:
                 sf.write(
                     os.path.join(
                         vocal_root,
-                        head + "{}_{}.{}".format(name, self.data["agg"], format),
+                        head + "{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
                     ),
                     (np.array(wav_vocals) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )
             else:
                 path = os.path.join(
-                    vocal_root, head + "{}_{}.wav".format(name, self.data["agg"])
+                    vocal_root, head + "{}_{}.wav".format(filename_without_ext, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -230,6 +232,7 @@ class AudioPreDeEcho:
         if ins_root is None and vocal_root is None:
             return "No save root."
         name = os.path.basename(music_file)
+        filename_without_ext = os.path.splitext(os.path.basename(path))[0]
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
         if vocal_root is not None:
@@ -309,14 +312,14 @@ class AudioPreDeEcho:
                 sf.write(
                     os.path.join(
                         ins_root,
-                        "vocal_{}_{}.{}".format(name, self.data["agg"], format),
+                        "vocal_{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
                     ),
                     (np.array(wav_instrument) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )  #
             else:
                 path = os.path.join(
-                    ins_root, "vocal_{}_{}.wav".format(name, self.data["agg"])
+                    ins_root, "vocal_{}_{}.wav".format(filename_without_ext, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -346,14 +349,14 @@ class AudioPreDeEcho:
                 sf.write(
                     os.path.join(
                         vocal_root,
-                        "instrument_{}_{}.{}".format(name, self.data["agg"], format),
+                        "instrument_{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
                     ),
                     (np.array(wav_vocals) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )
             else:
                 path = os.path.join(
-                    vocal_root, "instrument_{}_{}.wav".format(name, self.data["agg"])
+                    vocal_root, "instrument_{}_{}.wav".format(filename_without_ext, self.data["agg"])
                 )
                 sf.write(
                     path,
