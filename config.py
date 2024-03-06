@@ -91,7 +91,7 @@ class ParamConfig:
         self.bert_model = None
         self.device = "cuda"
         self.hps = None
-        self.is_half = True
+        self.is_half = False
         self.ssl_model = None
         self.default_refer = None
         self.process_id = None
