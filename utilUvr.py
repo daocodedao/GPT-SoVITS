@@ -131,8 +131,9 @@ videoDir = os.path.dirname(videoPath)
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
 
 api_logger.info("从视频剥离音频文件")
-# ffmpeg -i eR4G4khR6r8.mp4 -vn -acodec pcm_s16le -ac 2 -ar 44100 eR4G4khR6r8.wav
-command = f"ffmpeg -y -i {videoPath} -vn -acodec pcm_s16le -ac 2 -ar 44100 {srcAudioPath}"
+
+# ffmpeg -y -i eR4G4khR6r8.mp4 -vn -acodec pcm_f32le -ac 2 -ar 44100 eR4G4khR6r8.wav
+command = f"ffmpeg -y -i {videoPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
 result = subprocess.check_output(command, shell=True)
 
 api_logger.info("准备剥离背景音乐")
