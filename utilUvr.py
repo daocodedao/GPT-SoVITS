@@ -24,7 +24,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
         device = "mps"
 
     model_name = os.path.splitext(os.path.basename(modelPath))[0]
-
+    api_logger.info(f"模型名： {model_name}")
     try:
         is_hp3 = "HP3" in model_name
         if model_name == "onnx_dereverb_By_FoxJoy":
