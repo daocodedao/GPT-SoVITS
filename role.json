@@ -2,7 +2,7 @@
     {
         "name":"he",
         "gender":"男",
-        "refer_path":"resource/he/source.MP3",
+        "refer_path":"refersample/he/source.MP3",
         "refer_text":"在我身后的是10万个纸盒子",
         "refer_language":"zh",
         "sovits_path":"GPT_SoVITS/pretrained_models/s2G488k.pth",
@@ -12,7 +12,7 @@
     {
         "name":"otto",
         "gender":"男",
-        "refer_path":"resource/otto/source.wav",
+        "refer_path":"refersample/otto/source.wav",
         "refer_text":"这个桥到现在一个人都没有啊，驾驶位直接走下来的啊？",
         "refer_language":"zh",
         "sovits_path":"resource/otto/otto_e39_s1638.pth",
@@ -22,7 +22,7 @@
     {
         "name":"XingTong",
         "gender":"女",
-        "refer_path":"resource/XingTong/XingTong_13.wav",
+        "refer_path":"refersample/XingTong/XingTong_13.wav",
         "refer_text":"多吃点哦晚上，多吃点晚餐。",
         "refer_language":"zh",
         "sovits_path":"resource/XingTong/XingTong_e40_s3440.pth",
@@ -33,7 +33,7 @@
     {
         "name":"ChenZhe",
         "gender":"男",
-        "refer_path":"resource/chenzhe/source.wav",
+        "refer_path":"refersample/chenzhe/source.wav",
         "refer_text":"他看中国电影就是那个中文的，不不是那种英文的，不说字不字幕了他都得旁边配个翻译。",
         "refer_language":"zh",
         "sovits_path":"resource/chenzhe/Ze_e60_s1500.pth",
@@ -43,7 +43,7 @@
     {
         "name":"NaiLv",
         "gender":"女",
-        "refer_path":"resource/NaiLv/source.wav",
+        "refer_path":"refersample/NaiLv/source.wav",
         "refer_text":"大家生活当中永远充满晴天，今天是国庆的第一天希望大家放假快乐。",
         "refer_language":"zh",
         "sovits_path":"resource/NaiLv/LAPLACE_e53_s2650.pth",
@@ -53,7 +53,7 @@
     {
         "name":"XiangWan",
         "gender":"女",
-        "refer_path":"resource/XiangWan/source.wav",
+        "refer_path":"refersample/XiangWan/source.wav",
         "refer_text":"综艺部和餐饮部联合推出的，非常的有趣。",
         "refer_language":"zh",
         "sovits_path":"resource/XiangWan/Ava_e53_s2915.pth",
@@ -63,8 +63,8 @@
     {
         "name":"FaTiaoZhang",
         "gender":"男",
-        "refer_path":"resource/FaTiaoZhang/source.MP3",
-        "refer_text":"再就是这个东西我对我个人来说是一种好的体验,就是去了一个地方然后把它",
+        "refer_path":"refersample/FaTiaoZhang/fatiaozhang-sample.WAV",
+        "refer_text":"这个影展呢是戏影厂跟春光映画联合主办的",
         "refer_language":"zh",
         "sovits_path":"resource/FaTiaoZhang/fatiaozhang_e24_s336.pth",
         "gpt_path":"resource/FaTiaoZhang/fatiaozhang-e50.ckpt",
@@ -73,7 +73,7 @@
     {
         "name":"DiQiuJu",
         "gender":"男",
-        "refer_path":"resource/DiQiuJu/source.MP3",
+        "refer_path":"refersample/DiQiuJu/source.MP3",
         "refer_text":"老二是什么?是鼎盛时期的苏联?是镀金时代的日本?是第三世界的通辽？都不是！",
         "refer_language":"zh",
         "sovits_path":"resource/DiQiuJu/diqiuju_e24_s384.pth",
@@ -83,7 +83,7 @@
     {
         "name":"DuLiang",
         "gender":"女",
-        "refer_path":"resource/DuLiang/source.MP3",
+        "refer_path":"refersample/DuLiang/source.MP3",
         "refer_text":"你会如何评价辛弃疾，南宋的铁骨和灯火。我们都知道辛弃疾是词中之龙，与苏轼并称苏辛。",
         "refer_language":"zh",
         "sovits_path":"resource/DuLiang/duliang_e24_s504.pth",
