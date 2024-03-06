@@ -72,7 +72,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
                 pre_fun._path_audio_(
                     srcFilePath, outDir, outDir, outFormat,is_hp3
                 )
-            api_logger.info()
+            # api_logger.info()
             # infos.append("%s->Success" % (os.path.basename(srcFilePath)))
             # yield "\n".join(infos)
         except:
@@ -130,4 +130,4 @@ command = f"ffmpeg -y -i {videoPath} -vn -acodec copy {srcAudioPath}"
 result = subprocess.check_output(command, shell=True)
 
 uvr(modelPath=modelPath, srcFilePath=srcAudioPath)
-api_logger("done")
+api_logger.info("done")
