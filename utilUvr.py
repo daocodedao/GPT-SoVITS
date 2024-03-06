@@ -129,5 +129,5 @@ api_logger.info("从视频剥离音频文件")
 command = f"ffmpeg -i {videoPath} -vn -acodec copy {srcAudioPath}"
 result = subprocess.check_output(command, shell=True)
 
-uvr(model_name=modelPath, srcFilePath=srcAudioPath)
+uvr(modelPath=modelPath, srcFilePath=srcAudioPath)
 api_logger("done")
