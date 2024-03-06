@@ -39,9 +39,12 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             )
 
         outDir = os.path.dirname(srcFilePath)
-        outVocalDIr = os.path.join(outDir, "vocal/")
-        outInsDIr = os.path.join(outDir, "ins/")
-        outTempDIr = os.path.join(outDir, "temp/")
+        # outVocalDIr = os.path.join(outDir, "vocal/")
+        # outInsDIr = os.path.join(outDir, "ins/")
+        # outTempDIr = os.path.join(outDir, "temp/")
+        outVocalDIr = outDir
+        outInsDIr = outDir
+        outTempDIr = outDir
         api_logger.info(f"outInsDIr={outInsDIr}  outVocalDIr={outVocalDIr} outTempDIr={outTempDIr}")
         if(os.path.isfile(srcFilePath)==False):
             api_logger.error("srcFilePath 不是文件!")
@@ -129,6 +132,8 @@ videoDir = os.path.dirname(videoPath)
 
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/ins/ /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/vocal/ /Users/linzhiji/Downloads/eR4G4khR6r8/
 
 api_logger.info("从视频剥离音频文件")
 
