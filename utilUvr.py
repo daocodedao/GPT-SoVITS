@@ -16,7 +16,7 @@ import subprocess
 
 
 def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
-    api_logger(f"使用模型 {modelPath}, 从 {srcFilePath} 剥离音频")
+    api_logger.info(f"使用模型 {modelPath}, 从 {srcFilePath} 剥离音频")
     # infos = []
     is_half = False
     device="cuda"
