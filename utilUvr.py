@@ -126,7 +126,7 @@ srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
 videoDir = os.path.dirname(videoPath)
 
 api_logger.info("从视频剥离音频文件")
-command = f"ffmpeg -i {videoPath} -vn -acodec copy {srcAudioPath}"
+command = f"ffmpeg -y -i {videoPath} -vn -acodec copy {srcAudioPath}"
 result = subprocess.check_output(command, shell=True)
 
 uvr(modelPath=modelPath, srcFilePath=srcAudioPath)
