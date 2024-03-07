@@ -200,7 +200,9 @@ if Utility.isVideo(srcPath):
 
 if Utility.isAudio(srcAudioPath):
     api_logger.info("原始文件是音频")
-    srcAudioPath = srcPath
+    command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
+    result = subprocess.check_output(command, shell=True)
+
 
 api_logger.info("准备剥离背景音乐")
 uvr(modelPath=modelPath, srcFilePath=srcAudioPath, outVocalDir=outVocalDir, outInsDir=outInsDir)
