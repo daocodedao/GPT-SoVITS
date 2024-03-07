@@ -41,12 +41,12 @@ class AudioPre:
         self.model = model
 
     def _path_audio_(
-        self, music_file, ins_root=None, vocal_root=None, format="flac", is_hp3=False
+        self, music_file_path, ins_root=None, vocal_root=None, format="flac", is_hp3=False
     ):
         if ins_root is None and vocal_root is None:
             return "No save root."
-        name = os.path.basename(music_file)
-        filename_without_ext = os.path.splitext(os.path.basename(path))[0]
+        name = os.path.basename(music_file_path)
+        filename_without_ext = os.path.splitext(os.path.basename(music_file_path))[0]
         
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
@@ -62,7 +62,7 @@ class AudioPre:
                     X_wave[d],
                     _,
                 ) = librosa.core.load(  # 理论上librosa读取可能对某些音频有bug，应该上ffmpeg读取，但是太麻烦了弃坑
-                    music_file,
+                    music_file_path,
                     sr       = bp["sr"],
                     mono     = False,
                     dtype    = np.float32,
@@ -227,12 +227,12 @@ class AudioPreDeEcho:
         self.model = model
 
     def _path_audio_(
-        self, music_file, vocal_root=None, ins_root=None, format="flac", is_hp3=False
+        self, music_file_path, vocal_root=None, ins_root=None, format="flac", is_hp3=False
     ):  # 3个VR模型vocal和ins是反的
         if ins_root is None and vocal_root is None:
             return "No save root."
-        name = os.path.basename(music_file)
-        filename_without_ext = os.path.splitext(os.path.basename(path))[0]
+        name = os.path.basename(music_file_path)
+        filename_without_ext = os.path.splitext(os.path.basename(music_file_path))[0]
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
         if vocal_root is not None:
@@ -247,7 +247,7 @@ class AudioPreDeEcho:
                     X_wave[d],
                     _,
                 ) = librosa.core.load(  # 理论上librosa读取可能对某些音频有bug，应该上ffmpeg读取，但是太麻烦了弃坑
-                    music_file,
+                    music_file_path,
                     sr       = bp["sr"],
                     mono     = False,
                     dtype    = np.float32,
