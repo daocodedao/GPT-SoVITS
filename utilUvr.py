@@ -26,6 +26,8 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
     outTempDir = os.path.join(outDir, "temp/")
     if outTempDir is not None:
         os.makedirs(outTempDir, exist_ok=True)
+        shutil.rmtree(outTempDir)
+        
     srcFileName = os.path.basename(srcFilePath)
     srcFilenameWithoutExt = os.path.splitext(os.path.basename(srcFilePath))[0]
         
