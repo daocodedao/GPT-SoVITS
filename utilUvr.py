@@ -6,6 +6,8 @@ import librosa,ffmpeg
 import torch
 from utility.logger_settings import api_logger
 import subprocess
+import shutil
+
 # model_name 模型名
 # srcDir 输入待处理音频文件夹路径
 # srcPaths 也可批量输入音频文件, 二选一, 优先读文件夹 
@@ -145,6 +147,10 @@ srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
 videoDir = os.path.dirname(videoPath)
 outVocalDir = os.path.join(videoDir, "vocal/")
 outInsDir = os.path.join(videoDir, "ins/")
+
+shutil.rmtree(outInsDir)
+shutil.rmtree(outVocalDir)
+
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/ins/ /Users/linzhiji/Downloads/eR4G4khR6r8/
