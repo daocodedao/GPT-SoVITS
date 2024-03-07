@@ -223,3 +223,23 @@ class Utility:
             return True
         except ValueError:
             return False
+        
+    def isPathAndFileExist(filePath):
+        if filePath and os.path.exists(filePath):
+            return True
+        else:
+            return False
+        
+    def isVideo(filePath):
+        video_extensions = [".mp4"]
+        for ext in video_extensions:
+            if filePath.endswith(ext):
+                return True
+        return False
+    
+    def isAudio(filePath):
+        audio_extensions = [".mp3",".wav"]
+        for ext in audio_extensions:
+            if filePath.endswith(ext):
+                return True
+        return False

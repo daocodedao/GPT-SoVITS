@@ -7,7 +7,9 @@ import torch
 from utility.logger_settings import api_logger
 import subprocess
 import shutil
-
+import argparse
+from utility.utility import Utility
+import time
 # model_name 模型名
 # srcDir 输入待处理音频文件夹路径
 # srcPaths 也可批量输入音频文件, 二选一, 优先读文件夹 
@@ -15,6 +17,11 @@ import shutil
 # save_root_ins 指定输出非主人声文件夹
 # agg 人声提取激进程度，0-20，默认10
 # format0 导出文件格式
+
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/ins/ /Users/linzhiji/Downloads/eR4G4khR6r8/
+# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/vocal/ /Users/linzhiji/Downloads/eR4G4khR6r8/
 
 
 def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav", ):
@@ -27,7 +34,7 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
     if outTempDir is not None:
         os.makedirs(outTempDir, exist_ok=True)
         shutil.rmtree(outTempDir)
-        
+
     srcFileName = os.path.basename(srcFilePath)
     srcFilenameWithoutExt = os.path.splitext(os.path.basename(srcFilePath))[0]
         
@@ -121,9 +128,6 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        
-    # yield "\n".join(infos)
-
 
 # model
 # HP2_all_vocals.pth  
@@ -135,20 +139,48 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
 # VR-DeEchoDeReverb.pth  
 # VR-DeEchoNormal.pth
 
-# weight_uvr5_root = "tools/uvr5/uvr5_weights"
-# uvr5_names = []
-# for name in os.listdir(weight_uvr5_root):
-#     if name.endswith(".pth") or "onnx" in name:
-#         uvr5_names.append(name.replace(".pth", ""))
+
+def parse_args() -> None: 
+    parser = argparse.ArgumentParser(description="GPT-SoVITS")
+
+    parser.add_argument("-s", "--sourcePath", type=str, help="原视频或者音频地址, 音频格式wav")
+    parser.add_argument("-i", "--processId", type=str, help="processId")
+    parser.add_argument("-ov", "--outVocalPath", type=str, help="输出人声路径")
+    parser.add_argument("-oi", "--outInsPath", type=str, help="输出背景音乐路径")
+
+    args = parser.parse_args()
+    return args
+
+
+args = parse_args()
 
 modelPath = "tools/uvr5/uvr5_weights/HP2_all_vocals.pth"
-processId = "eR4G4khR6r8"
-videoPath = f"/data/work/translate/eR4G4khR6r8/{processId}.mp4"
-srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
-videoDir = os.path.dirname(videoPath)
+srcPath = args.sourcePath
+if srcPath is None or not os.path.exists(srcPath):
+    api_logger.error(f"srcPath 为空, 或者{srcPath}不存在")
+    exit(1)
+
+processId = args.processId
+if len(processId) == 0:
+    timestamp = time.time()
+    processId = time.strftime("%Y%m%d%H%M%S", time.localtime(timestamp))
+
+if srcPath is None:
+    api_logger.error(f"processId 为空")
+    exit(1)
+
+outVocalPath = args.outVocalPath
+outInsPath = args.outInsPath
+
+if not Utility.isPathAndFileExist(outVocalPath) and not Utility.isPathAndFileExist(outInsPath):
+    api_logger.error(f"outInsPath 且 outVocalPath为空")
+    exit(1)
+
+videoDir = os.path.dirname(srcPath)
+srcAudioPath = f"{videoDir}/{processId}.wav"
+
 outVocalDir = os.path.join(videoDir, "vocal/")
 outInsDir = os.path.join(videoDir, "ins/")
-
 if outVocalDir is not None:
     os.makedirs(outVocalDir, exist_ok=True)
 if outInsDir is not None:
@@ -159,24 +191,36 @@ shutil.rmtree(outInsDir)
 api_logger.info(f"清空{outVocalDir}")
 shutil.rmtree(outVocalDir)
 
-# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
-# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
-# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/ins/ /Users/linzhiji/Downloads/eR4G4khR6r8/
-# scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/vocal/ /Users/linzhiji/Downloads/eR4G4khR6r8/
+if Utility.isVideo(srcPath):
+    api_logger.info("从视频剥离音频文件")
+    # ffmpeg -y -i eR4G4khR6r8.mp4 -vn -acodec pcm_f32le -ac 2 -ar 44100 eR4G4khR6r8.wav
+    command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
+    result = subprocess.check_output(command, shell=True)
 
-api_logger.info("从视频剥离音频文件")
-
-# ffmpeg -y -i eR4G4khR6r8.mp4 -vn -acodec pcm_f32le -ac 2 -ar 44100 eR4G4khR6r8.wav
-command = f"ffmpeg -y -i {videoPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
-result = subprocess.check_output(command, shell=True)
+if Utility.isAudio(srcAudioPath):
+    api_logger.info("原始文件是音频")
+    srcAudioPath = srcPath
 
 api_logger.info("准备剥离背景音乐")
 uvr(modelPath=modelPath, srcFilePath=srcAudioPath, outVocalDir=outVocalDir, outInsDir=outInsDir)
 api_logger.info("done")
 
 
+if not Utility.isPathAndFileExist(outVocalPath):
+    api_logger.info(f"{outVocalPath} 存在，准备提取")
+    paths = [os.path.join(outVocalDir, name) for name in os.listdir(outVocalDir)]
+    if paths and len(paths) > 0:
+        path = paths[0]
+        shutil.copy(path, outVocalPath)
 
-paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
-api_logger.info(f"paths={paths}")
+if not Utility.isPathAndFileExist(outInsPath):
+    api_logger.info(f"{outInsPath} 存在，准备提取")
+    paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
+    if paths and len(paths) > 0:
+        path = paths[0]
+        shutil.copy(path, outVocalPath)
+
+api_logger.info("完成音频剥离")
+exit(0)
 # for insPath in outInsDir:
 #     api_logger.info(insPath)
