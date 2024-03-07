@@ -207,14 +207,14 @@ uvr(modelPath=modelPath, srcFilePath=srcAudioPath, outVocalDir=outVocalDir, outI
 api_logger.info("done")
 
 
-if not Utility.isPathAndFileExist(outVocalPath):
+if Utility.isPathAndFileExist(outVocalPath):
     api_logger.info(f"{outVocalPath} 存在，准备提取")
     paths = [os.path.join(outVocalDir, name) for name in os.listdir(outVocalDir)]
     if paths and len(paths) > 0:
         path = paths[0]
         shutil.copy(path, outVocalPath)
 
-if not Utility.isPathAndFileExist(outInsPath):
+if Utility.isPathAndFileExist(outInsPath):
     api_logger.info(f"{outInsPath} 存在，准备提取")
     paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
     if paths and len(paths) > 0:
