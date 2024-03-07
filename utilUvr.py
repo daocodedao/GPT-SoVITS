@@ -172,7 +172,7 @@ if srcPath is None:
 outVocalPath = args.outVocalPath
 outInsPath = args.outInsPath
 
-if not Utility.isPathAndFileExist(outVocalPath) and not Utility.isPathAndFileExist(outInsPath):
+if not outVocalPath and not outInsPath:
     api_logger.error(f"outInsPath 且 outVocalPath为空")
     exit(1)
 

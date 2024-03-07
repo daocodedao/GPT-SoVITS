@@ -52,6 +52,6 @@ done
 
 
 echo -e "${YELLOW}${pythonPath} $jobName  -s \"$sourcePath\"  -i \"$processId\" -ov \"$outVocalPath\" -oi \"$outInsPath\" ${NOCOLOR}"
-# python -s  /data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 -i eR4G4khR6r8 -oi /data/work/translate/eR4G4khR6r8/eR4G4khR6r8-ins.wav
+# python utilUvr.py -s "/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4" -i eR4G4khR6r8 -oi "/data/work/translate/eR4G4khR6r8/eR4G4khR6r8-ins.wav"
 ${pythonPath} $jobName  -s "$sourcePath" -i "$processId" -oi "$processId" -ov "$outVocalPath"
 
