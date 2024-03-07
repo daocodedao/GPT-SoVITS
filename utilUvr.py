@@ -160,6 +160,6 @@ api_logger.info("done")
 
 
 paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
-
-for insPath in outInsDir:
-    api_logger.info(insPath)
+api_logger.info(f"paths={paths}")
+# for insPath in outInsDir:
+#     api_logger.info(insPath)
