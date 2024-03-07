@@ -219,7 +219,7 @@ if Utility.isPathAndFileExist(outInsPath):
     paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
     if paths and len(paths) > 0:
         path = paths[0]
-        shutil.copy(path, outVocalPath)
+        shutil.copy(path, outInsPath)
 
 api_logger.info("完成音频剥离")
 exit(0)
