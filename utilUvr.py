@@ -58,6 +58,8 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
             info = ffmpeg.probe(srcFilePath, cmd="ffprobe")
             api_logger.info("ffprobe 探测")
             api_logger.info(info)
+            api_logger.info(info["streams"][0]["channels"])
+            api_logger.info(info["streams"][0]["sample_rate"])
             if (info["streams"][0]["channels"] == 2 and info["streams"][0]["sample_rate"] == "44100"):
                 need_reformat = 0
                 pre_fun._path_audio_(srcFilePath, outInsDir, outVocalDir, outFormat, is_hp3)
