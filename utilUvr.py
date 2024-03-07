@@ -148,7 +148,9 @@ videoDir = os.path.dirname(videoPath)
 outVocalDir = os.path.join(videoDir, "vocal/")
 outInsDir = os.path.join(videoDir, "ins/")
 
+api_logger.info(f"清空{outInsDir}")
 shutil.rmtree(outInsDir)
+api_logger.info(f"清空{outVocalDir}")
 shutil.rmtree(outVocalDir)
 
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
