@@ -178,7 +178,7 @@ if not outVocalPath and not outInsPath:
     exit(1)
 
 videoDir = os.path.dirname(srcPath)
-srcAudioPath = f"{videoDir}/{processId}.wav"
+srcAudioPath = f"{videoDir}/{processId}-convert.wav"
 
 outVocalDir = os.path.join(videoDir, "vocal/")
 outInsDir = os.path.join(videoDir, "ins/")
@@ -199,7 +199,7 @@ if Utility.isVideo(srcPath):
     api_logger.info(command)
     result = subprocess.check_output(command, shell=True)
 
-if Utility.isAudio(srcAudioPath):
+if Utility.isAudio(srcPath):
     api_logger.info("原始文件是音频")
     # command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_s16le -ac 2 -ar 44100 {tmp_path} "
     command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
