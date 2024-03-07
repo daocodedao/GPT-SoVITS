@@ -15,7 +15,7 @@ import subprocess
 # format0 导出文件格式
 
 
-def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
+def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav", ):
     api_logger.info(f"使用模型 {modelPath}, 从 {srcFilePath} 剥离音频")
     # infos = []
     is_half = False
@@ -39,13 +39,13 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             )
 
         outDir = os.path.dirname(srcFilePath)
-        # outVocalDIr = os.path.join(outDir, "vocal/")
-        # outInsDIr = os.path.join(outDir, "ins/")
-        # outTempDIr = os.path.join(outDir, "temp/")
-        outVocalDIr = outDir
-        outInsDIr = outDir
-        outTempDIr = outDir
-        api_logger.info(f"outInsDIr={outInsDIr}  outVocalDIr={outVocalDIr} outTempDIr={outTempDIr}")
+        # outVocalDir = os.path.join(outDir, "vocal/")
+        # outInsDir = os.path.join(outDir, "ins/")
+        outTempDIr = os.path.join(outDir, "temp/")
+        # outVocalDir = outDir
+        # outInsDir = outDir
+        # outTempDIr = outDir
+        api_logger.info(f"outInsDir={outInsDir}  outVocalDir={outVocalDir} outTempDIr={outTempDIr}")
         if(os.path.isfile(srcFilePath)==False):
             api_logger.error("srcFilePath 不是文件!")
             return
@@ -59,7 +59,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             api_logger.info(info)
             if (info["streams"][0]["channels"] == 2 and info["streams"][0]["sample_rate"] == "44100"):
                 need_reformat = 0
-                pre_fun._path_audio_(srcFilePath, outInsDIr, outVocalDIr, outFormat, is_hp3)
+                pre_fun._path_audio_(srcFilePath, outInsDir, outVocalDir, outFormat, is_hp3)
                 done = 1
         except:
             api_logger.error("pre_fun._path_audio_ 异常")
@@ -82,7 +82,7 @@ def uvr(modelPath, srcFilePath, agg=10, outFormat="wav"):
             if done == 0:
                 api_logger.info("需要重新 _path_audio_")
                 pre_fun._path_audio_(
-                    srcFilePath, outInsDIr, outVocalDIr, outFormat, is_hp3
+                    srcFilePath, outInsDir, outVocalDir, outFormat, is_hp3
                 )
             # api_logger.info()
             # infos.append("%s->Success" % (os.path.basename(srcFilePath)))
@@ -140,7 +140,8 @@ processId = "eR4G4khR6r8"
 videoPath = f"/data/work/translate/eR4G4khR6r8/{processId}.mp4"
 srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
 videoDir = os.path.dirname(videoPath)
-
+outVocalDir = os.path.join(videoDir, "vocal/")
+outInsDir = os.path.join(videoDir, "ins/")
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.wav /Users/linzhiji/Downloads/eR4G4khR6r8/
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/eR4G4khR6r8.mp4 /Users/linzhiji/Downloads/eR4G4khR6r8/
 # scp -r -P 10069 fxbox@bfrp.fxait.com:/data/work/translate/eR4G4khR6r8/ins/ /Users/linzhiji/Downloads/eR4G4khR6r8/
@@ -153,5 +154,12 @@ command = f"ffmpeg -y -i {videoPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcA
 result = subprocess.check_output(command, shell=True)
 
 api_logger.info("准备剥离背景音乐")
-uvr(modelPath=modelPath, srcFilePath=srcAudioPath)
+uvr(modelPath=modelPath, srcFilePath=srcAudioPath, outVocalDir=outVocalDir, outInsDir=outInsDir)
 api_logger.info("done")
+
+
+
+paths = [os.path.join(outInsDir, name) for name in os.listdir(outInsDir)]
+
+for insPath in outInsDir:
+    api_logger.info(insPath)
