@@ -15,11 +15,11 @@ echo "Python path:  $pythonPath"
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -m mode -s sourcePath -i processId -ov outVocalPath -oi outInsPath"
+   echo "Usage: $0 -m mode -s sourcePath -i processId -v outVocalPath -n outInsPath"
    echo -e "\t-s sourcePath"
    echo -e "\t-i processId"
-   echo -e "\t-ov outVocalPath"
-   echo -e "\t-oi outInsPath"
+   echo -e "\t-v outVocalPath"
+   echo -e "\t-n outInsPath"
    exit 1 # Exit script after printing help
 }
 
@@ -34,14 +34,14 @@ sudo kill -9 $TAILPID
 fi
 
 
-while getopts "s:i:ov:oi:" opt
+while getopts "s:i:v:n:" opt
 do
    echo $opt
    case "$opt" in
       s ) sourcePath="$OPTARG" ;;
       i ) processId="$OPTARG" ;;
-      ov ) outVocalPath="$OPTARG" ;;
-      oi ) outInsPath="$OPTARG" ;;
+      v ) outVocalPath="$OPTARG" ;;
+      n ) outInsPath="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
