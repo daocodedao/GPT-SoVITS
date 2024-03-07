@@ -36,7 +36,7 @@ fi
 
 while getopts "s:i:v:n:" opt
 do
-   echo $opt
+   # echo $opt
    case "$opt" in
       s ) sourcePath="$OPTARG" ;;
       i ) processId="$OPTARG" ;;
