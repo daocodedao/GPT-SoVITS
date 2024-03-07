@@ -173,6 +173,9 @@ if srcPath is None:
 outVocalPath = args.outVocalPath
 outInsPath = args.outInsPath
 
+api_logger.info(f"outVocalPath={outVocalPath}")
+api_logger.info(f"outVocalPath={outVocalPath}")
+
 if not outVocalPath and not outInsPath:
     api_logger.error(f"outInsPath 且 outVocalPath为空")
     exit(1)
