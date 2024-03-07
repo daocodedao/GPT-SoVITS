@@ -20,6 +20,14 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
     # infos = []
     is_half = False
     device="cuda"
+    outDir = os.path.dirname(srcFilePath)
+    outTempDir = os.path.join(outDir, "temp/")
+    srcFileName = os.path.basename(srcFilePath)
+    srcFilenameWithoutExt = os.path.splitext(os.path.basename(srcFilePath))[0]
+        
+
+
+
     if torch.backends.mps.is_available():
         device = "mps"
 
@@ -38,14 +46,7 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
                 is_half=is_half,
             )
 
-        outDir = os.path.dirname(srcFilePath)
-        # outVocalDir = os.path.join(outDir, "vocal/")
-        # outInsDir = os.path.join(outDir, "ins/")
-        outTempDIr = os.path.join(outDir, "temp/")
-        # outVocalDir = outDir
-        # outInsDir = outDir
-        # outTempDIr = outDir
-        api_logger.info(f"outInsDir={outInsDir}  outVocalDir={outVocalDir} outTempDIr={outTempDIr}")
+        api_logger.info(f"outInsDir={outInsDir}  outVocalDir={outVocalDir} outTempDir={outTempDir}")
         if(os.path.isfile(srcFilePath)==False):
             api_logger.error("srcFilePath 不是文件!")
             return
@@ -68,10 +69,11 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
 
         if need_reformat == 1:
             api_logger.info("需要重新 reformatted")
-            tmp_path = "%s/%s.reformatted.wav" % (
-                outTempDIr,
-                os.path.basename(srcFilePath),
-            )
+            # tmp_path = "%s/%s.reformatted.wav" % (
+            #     outTempDir,
+            #     os.path.basename(srcFilePath),
+            # )
+            tmp_path = f"{outTempDir}{srcFilenameWithoutExt}-reformatted.wav"
             os.system(
                 "ffmpeg -i %s -vn -acodec pcm_s16le -ac 2 -ar 44100 %s -y"
                 % (srcFilePath, tmp_path)
