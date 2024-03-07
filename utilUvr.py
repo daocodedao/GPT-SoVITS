@@ -24,12 +24,11 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
     device="cuda"
     outDir = os.path.dirname(srcFilePath)
     outTempDir = os.path.join(outDir, "temp/")
+    if outTempDir is not None:
+        os.makedirs(outTempDir, exist_ok=True)
     srcFileName = os.path.basename(srcFilePath)
     srcFilenameWithoutExt = os.path.splitext(os.path.basename(srcFilePath))[0]
         
-
-
-
     if torch.backends.mps.is_available():
         device = "mps"
 
@@ -147,6 +146,11 @@ srcAudioPath = f"/data/work/translate/eR4G4khR6r8/{processId}.wav"
 videoDir = os.path.dirname(videoPath)
 outVocalDir = os.path.join(videoDir, "vocal/")
 outInsDir = os.path.join(videoDir, "ins/")
+
+if outVocalDir is not None:
+    os.makedirs(outVocalDir, exist_ok=True)
+if outInsDir is not None:
+    os.makedirs(outInsDir, exist_ok=True)
 
 api_logger.info(f"清空{outInsDir}")
 shutil.rmtree(outInsDir)
