@@ -74,10 +74,9 @@ def uvr(modelPath, srcFilePath, outVocalDir, outInsDir,  agg=10, outFormat="wav"
             #     os.path.basename(srcFilePath),
             # )
             tmp_path = f"{outTempDir}{srcFilenameWithoutExt}-reformatted.wav"
-            os.system(
-                "ffmpeg -i %s -vn -acodec pcm_s16le -ac 2 -ar 44100 %s -y"
-                % (srcFilePath, tmp_path)
-            )
+            command = f"ffmpeg -y -i {srcFilePath} -vn -acodec pcm_s16le -ac 2 -ar 44100 {tmp_path} "
+            api_logger.info(command)
+            os.system(command)
             srcFilePath = tmp_path
 
         try:
