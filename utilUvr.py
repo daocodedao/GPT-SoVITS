@@ -201,6 +201,7 @@ if Utility.isVideo(srcPath):
 
 if Utility.isAudio(srcAudioPath):
     api_logger.info("原始文件是音频")
+    # command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_s16le -ac 2 -ar 44100 {tmp_path} "
     command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
     api_logger.info(command)
     result = subprocess.check_output(command, shell=True)
