@@ -196,11 +196,13 @@ if Utility.isVideo(srcPath):
     api_logger.info("从视频剥离音频文件")
     # ffmpeg -y -i eR4G4khR6r8.mp4 -vn -acodec pcm_f32le -ac 2 -ar 44100 eR4G4khR6r8.wav
     command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
+    api_logger.info(command)
     result = subprocess.check_output(command, shell=True)
 
 if Utility.isAudio(srcAudioPath):
     api_logger.info("原始文件是音频")
     command = f"ffmpeg -y -i {srcPath} -vn -acodec pcm_f32le -ac 2 -ar 44100 {srcAudioPath}"
+    api_logger.info(command)
     result = subprocess.check_output(command, shell=True)
 
 
