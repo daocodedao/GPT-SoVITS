@@ -536,6 +536,14 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
 
     # return StreamingResponse(wav, media_type="audio/wav")
 
+
+def isIgnore(inStr):
+    passWordList = ["此处省略了", "（省略）"]
+    for passWord in passWordList:
+        if passWord in inStr:
+            return True
+    return False
+
 initResource()
 
 if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
@@ -554,7 +562,8 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
             output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
             # api_logger.info("单字符串转wav")
             api_logger.info(f"准备TTS： {sub.content}")
-            if sub.content == "（省略）":
+            if isIgnore(sub.content):
+                api_logger.info("跳过，不做TTS")
                 continue
             handle(inText=sub.content, text_language=g_para.text_language, output_wav_path=output_wav_path)
 
