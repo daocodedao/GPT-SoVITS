@@ -174,7 +174,7 @@ outVocalPath = args.outVocalPath
 outInsPath = args.outInsPath
 
 api_logger.info(f"outVocalPath={outVocalPath}")
-api_logger.info(f"outVocalPath={outVocalPath}")
+api_logger.info(f"outInsPath={outInsPath}")
 
 if not outVocalPath and not outInsPath:
     api_logger.error(f"outInsPath 且 outVocalPath为空")

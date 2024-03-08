@@ -554,6 +554,8 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
             output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
             # api_logger.info("单字符串转wav")
             api_logger.info(f"准备TTS： {sub.content}")
+            if sub.content == "（省略）":
+                continue
             handle(inText=sub.content, text_language=g_para.text_language, output_wav_path=output_wav_path)
 
         api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
