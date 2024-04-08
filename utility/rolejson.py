@@ -1,7 +1,9 @@
 import json
 import os
 
-def findRoleContent(jsonPath="role.json",  roleName="he"):
+
+def findRoleContent(roleName="he"):
+    jsonPath = "/data/work/GPT-SoVITS/role.json"
     if os.path.exists(jsonPath):
         with open(jsonPath, "r") as inFile:
             dataList = json.load(inFile)
@@ -11,7 +13,8 @@ def findRoleContent(jsonPath="role.json",  roleName="he"):
     return None
 
 
-def getAllRole(jsonPath="role.json"):
+def getAllRole():
+    jsonPath = "/data/work/GPT-SoVITS/role.json"
     roleList = []
     if os.path.exists(jsonPath):
         with open(jsonPath, "r") as inFile:
