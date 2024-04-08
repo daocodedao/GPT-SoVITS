@@ -2,12 +2,12 @@ import json
 import locale
 import os
 
+i18Path = "/data/work/GPT-SoVITS"
 
 def load_language_list(language):
-    with open(f"./i18n/locale/{language}.json", "r", encoding="utf-8") as f:
+    with open(f"{i18Path}/i18n/locale/{language}.json", "r", encoding="utf-8") as f:
         language_list = json.load(f)
     return language_list
-
 
 class I18nAuto:
     def __init__(self, language=None):
@@ -15,7 +15,7 @@ class I18nAuto:
             language = locale.getdefaultlocale()[
                 0
             ]  # getlocale can't identify the system's language ((None, None))
-        if not os.path.exists(f"./i18n/locale/{language}.json"):
+        if not os.path.exists(f"{i18Path}/i18n/locale/{language}.json"):
             language = "en_US"
         language = "zh_CN"
         self.language = language

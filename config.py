@@ -106,3 +106,4 @@ class ParamConfig:
         self.gpt_path = None
         self.bert_path = None
         self.srt_path = None
+        self.out_path = None

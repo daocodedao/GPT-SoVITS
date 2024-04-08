@@ -93,7 +93,6 @@ def get_spepc(hps, filename):
                              hps.data.win_length, center=False)
     return spec
 
-
 def clean_text_inf(text, language):
     formattext = ""
     language = language.replace("all_","")
@@ -353,20 +352,20 @@ def handle_change(path, text, language):
 def parse_args() -> None: 
     parser = argparse.ArgumentParser(description="GPT-SoVITS")
 
-    parser.add_argument("-dr", "--default_refer_path", type=str,
+    parser.add_argument("-dr", "--default-refer-path", type=str,
                         default="resource/he/source.MP3", help="默认参考音频路径")
-    parser.add_argument("-dt", "--default_refer_text", type=str,
+    parser.add_argument("-dt", "--default-refer-text", type=str,
                         default="在我身后的是10万个纸盒子", help="默认参考音频文本")
-    parser.add_argument("-dl", "--default_refer_language",
+    parser.add_argument("-dl", "--default-refer-language",
                         type=str, default="zh", help="默认参考音频语种")
-    
-    parser.add_argument("-srt", "--srt_file_path",
+    parser.add_argument("-srt", "--srt-file-path",
                         type=str, default="", help="从srt里读取")
+    parser.add_argument("-tp", "--text-prompt", type=str, default="", help="输入文本")
+    parser.add_argument("-tl", "--text-language", type=str, default="zh", help="输入文本语言")
+    parser.add_argument("-id", "--process-id", type=str, default="", help="process_id")
+    parser.add_argument("-r", "--role", type=str, default="FaTiaoZhang", help="role name")
 
-    parser.add_argument("-tp", "--text_prompt", type=str, default="", help="输入文本")
-    parser.add_argument("-tl", "--text_language", type=str, default="zh", help="输入文本语言")
-    parser.add_argument("-id", "--process_id", type=str, default="", help="process_id")
-    parser.add_argument("-r", "--role", type=str, default="he", help="role name")
+    parser.add_argument("--out-path", type=str)
 
     args = parser.parse_args()
     return args
@@ -392,6 +391,7 @@ def initResource():
     g_para.is_half = g_config.is_half
     g_para.device = "cuda"
     g_para.srt_path = args.srt_file_path
+    g_para.out_path = args.out_path
     if isMac():
         g_para.device = "mps"
 
@@ -497,7 +497,13 @@ def initResource():
     total = sum([param.nelement() for param in g_para.t2s_model.parameters()])
     api_logger.info("Number of parameter: %.2fM" % (total / 1e6))
 
-def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_language="", output_wav_path=""):
+def handle(inText, 
+           text_language, 
+           refer_wav_path="", 
+           prompt_text="", 
+           prompt_language="", 
+           output_wav_path=""):
+    
     if (refer_wav_path == "" or refer_wav_path is None
             or prompt_text == "" or prompt_text is None
             or prompt_language == "" or prompt_language is None):
@@ -536,7 +542,6 @@ def handle(inText, text_language, refer_wav_path="", prompt_text="", prompt_lang
 
     # return StreamingResponse(wav, media_type="audio/wav")
 
-
 def isIgnore(inStr):
     passWordList = ["此处省略了", "（省略）"]
     for passWord in passWordList:
@@ -565,10 +570,14 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
             if isIgnore(sub.content):
                 api_logger.info("跳过，不做TTS")
                 continue
-            handle(inText=sub.content, text_language=g_para.text_language, output_wav_path=output_wav_path)
+            handle(inText=sub.content, 
+                   text_language=g_para.text_language, 
+                   output_wav_path=output_wav_path)
 
         api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
 
 else:
     api_logger.info(f"准备TTS： {g_para.text_prompt}")
-    handle(inText=g_para.text_prompt, text_language=g_para.text_language)
+    handle(inText=g_para.text_prompt, 
+           text_language=g_para.text_language, 
+           output_wav_path=g_para.out_path)
