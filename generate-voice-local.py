@@ -532,6 +532,7 @@ def handle(inText,
         os.makedirs(output_dir, exist_ok=True)
         output_wav_path = os.path.join(output_dir, f"{g_para.process_id}.wav")
     
+    api_logger.info("保存音频到 " + output_wav_path)
     sf.write(output_wav_path, audio_data, sampling_rate)
     torch.cuda.empty_cache()
     if g_para.device == "mps":
