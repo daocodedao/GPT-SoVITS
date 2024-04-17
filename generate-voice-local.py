@@ -260,6 +260,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
     # text_language = global_config.dict_language[text_language]
     prompt_language = prompt_language
     text_language = text_language
+    
     phones1, word2ph1, norm_text1 = get_cleaned_text_final(prompt_text, prompt_language)
     bert1=get_bert_final(phones1, word2ph1, norm_text1,prompt_language,g_para.device).to(torch.float16)
     texts = text.split("\n")
@@ -485,7 +486,7 @@ def initResource():
     else:
         g_para.vq_model = g_para.vq_model.to(g_para.device)
     g_para.vq_model.eval()
-    api_logger.info(g_para.vq_model.load_state_dict(dict_s2["weight"], strict=False))
+    # api_logger.info(g_para.vq_model.load_state_dict(dict_s2["weight"], strict=False))
     # hz = 50
     g_para.max_sec = g_para.config['data']['max_sec']
     g_para.t2s_model = Text2SemanticLightningModule(g_para.config, "****", is_train=False)
@@ -495,7 +496,7 @@ def initResource():
     g_para.t2s_model = g_para.t2s_model.to(g_para.device)
     g_para.t2s_model.eval()
     total = sum([param.nelement() for param in g_para.t2s_model.parameters()])
-    api_logger.info("Number of parameter: %.2fM" % (total / 1e6))
+    # api_logger.info("Number of parameter: %.2fM" % (total / 1e6))
 
 def handle(inText, 
            text_language, 
@@ -532,11 +533,11 @@ def handle(inText,
         os.makedirs(output_dir, exist_ok=True)
         output_wav_path = os.path.join(output_dir, f"{g_para.process_id}.wav")
     
-    api_logger.info("保存音频到 " + output_wav_path)
+    # api_logger.info("保存音频到 " + output_wav_path)
     sf.write(output_wav_path, audio_data, sampling_rate)
     torch.cuda.empty_cache()
     if g_para.device == "mps":
-        api_logger.info('executed torch.mps.empty_cache()')
+        # api_logger.info('executed torch.mps.empty_cache()')
         torch.mps.empty_cache()
 
     api_logger.info("音频保存到 " + output_wav_path)

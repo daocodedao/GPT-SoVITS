@@ -27,3 +27,4 @@ modelscope==1.10.0
 sentencepiece
 transformers
 mutagen
+funasr==1.0.14
