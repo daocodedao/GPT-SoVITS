@@ -486,7 +486,7 @@ def initResource():
     else:
         g_para.vq_model = g_para.vq_model.to(g_para.device)
     g_para.vq_model.eval()
-    # api_logger.info(g_para.vq_model.load_state_dict(dict_s2["weight"], strict=False))
+    g_para.vq_model.load_state_dict(dict_s2["weight"], strict=False)
     # hz = 50
     g_para.max_sec = g_para.config['data']['max_sec']
     g_para.t2s_model = Text2SemanticLightningModule(g_para.config, "****", is_train=False)
