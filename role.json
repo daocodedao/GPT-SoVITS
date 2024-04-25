@@ -1,5 +1,15 @@
 [
     {
+        "name":"FaTiaoZhang",
+        "gender":"男",
+        "refer_path":"/data/work/GPT-SoVITS/refersample/FaTiaoZhang/fatiaozhang-sample.WAV",
+        "refer_text":"这个影展呢是戏影厂跟春光映画联合主办的",
+        "refer_language":"zh",
+        "sovits_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang_e24_s336.pth",
+        "gpt_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang-e50.ckpt",
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+    },
+    {
         "name":"he",
         "gender":"男",
         "refer_path":"/data/work/GPT-SoVITS/refersample/he/source.MP3",
@@ -60,16 +70,7 @@
         "gpt_path":"/data/work/GPT-SoVITS/resource/XiangWan/Ava-e21.ckpt",
         "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
     },
-    {
-        "name":"FaTiaoZhang",
-        "gender":"男",
-        "refer_path":"/data/work/GPT-SoVITS/refersample/FaTiaoZhang/fatiaozhang-sample.WAV",
-        "refer_text":"这个影展呢是戏影厂跟春光映画联合主办的",
-        "refer_language":"zh",
-        "sovits_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang_e24_s336.pth",
-        "gpt_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang-e50.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
-    },
+
     {
         "name":"DiQiuJu",
         "gender":"男",
