@@ -4,15 +4,15 @@ __pycache__
 env
 runtime
 .idea
-venv*/
-tools/damo_asr/models/
-tools/uvr5/uvr5_weights/
 output
 logs
 reference
 GPT_weights
 SoVITS_weights
-resource/
 TEMP
+resource/
 dataset/
+venv*/
+tools/damo_asr/models/
+tools/uvr5/uvr5_weights/
 # resource/otto/

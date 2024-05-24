@@ -9,6 +9,7 @@ def load_language_list(language):
         language_list = json.load(f)
     return language_list
 
+
 class I18nAuto:
     def __init__(self, language=None):
         if language in ["Auto", None]:

@@ -1,6 +1,6 @@
 import os,shutil,sys,pdb,re
 now_dir = os.getcwd()
-sys.path.append(now_dir)
+sys.path.insert(0, now_dir)
 import json,yaml,warnings,torch
 import platform
 import psutil
@@ -55,7 +55,7 @@ from scipy.io import wavfile
 from tools.my_utils import load_audio
 from multiprocessing import cpu_count
 
-os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1' # 当遇到mps不支持的步骤时使用cpu
+# os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1' # 当遇到mps不支持的步骤时使用cpu
 
 n_cpu=cpu_count()
            
@@ -73,18 +73,19 @@ if torch.cuda.is_available() or ngpu != 0:
             if_gpu_ok = True  # 至少有一张能用的N卡
             gpu_infos.append("%s\t%s" % (i, gpu_name))
             mem.append(int(torch.cuda.get_device_properties(i).total_memory/ 1024/ 1024/ 1024+ 0.4))
-# 判断是否支持mps加速
-if torch.backends.mps.is_available():
-    if_gpu_ok = True
-    gpu_infos.append("%s\t%s" % ("0", "Apple GPU"))
-    mem.append(psutil.virtual_memory().total/ 1024 / 1024 / 1024) # 实测使用系统内存作为显存不会爆显存
+# # 判断是否支持mps加速
+# if torch.backends.mps.is_available():
+#     if_gpu_ok = True
+#     gpu_infos.append("%s\t%s" % ("0", "Apple GPU"))
+#     mem.append(psutil.virtual_memory().total/ 1024 / 1024 / 1024) # 实测使用系统内存作为显存不会爆显存
 
 if if_gpu_ok and len(gpu_infos) > 0:
     gpu_info = "\n".join(gpu_infos)
     default_batch_size = min(mem) // 2
 else:
-    gpu_info = i18n("很遗憾您这没有能用的显卡来支持您训练")
-    default_batch_size = 1
+    gpu_info = ("%s\t%s" % ("0", "CPU"))
+    gpu_infos.append("%s\t%s" % ("0", "CPU"))
+    default_batch_size = psutil.virtual_memory().total/ 1024 / 1024 / 1024 / 2
 gpus = "-".join([i[0] for i in gpu_infos])
 
 pretrained_sovits_name="GPT_SoVITS/pretrained_models/s2G488k.pth"
@@ -117,6 +118,7 @@ def change_choices():
 p_label=None
 p_uvr5=None
 p_asr=None
+p_denoise=None
 p_tts_inference=None
 
 def kill_proc_tree(pid, including_parent=True):  
@@ -220,6 +222,29 @@ def close_asr():
         kill_process(p_asr.pid)
         p_asr=None
     return "已终止ASR进程",{"__type__":"update","visible":True},{"__type__":"update","visible":False}
+def open_denoise(denoise_inp_dir, denoise_opt_dir):
+    global p_denoise
+    if(p_denoise==None):
+        denoise_inp_dir=my_utils.clean_path(denoise_inp_dir)
+        denoise_opt_dir=my_utils.clean_path(denoise_opt_dir)
+        cmd = '"%s" tools/cmd-denoise.py -i "%s" -o "%s" -p %s'%(python_exec,denoise_inp_dir,denoise_opt_dir,"float16"if is_half==True else "float32")
+
+        yield "语音降噪任务开启：%s"%cmd,{"__type__":"update","visible":False},{"__type__":"update","visible":True}
+        print(cmd)
+        p_denoise = Popen(cmd, shell=True)
+        p_denoise.wait()
+        p_denoise=None
+        yield f"语音降噪任务完成, 查看终端进行下一步",{"__type__":"update","visible":True},{"__type__":"update","visible":False}
+    else:
+        yield "已有正在进行的语音降噪任务，需先终止才能开启下一次任务",{"__type__":"update","visible":False},{"__type__":"update","visible":True}
+        # return None
+
+def close_denoise():
+    global p_denoise
+    if(p_denoise!=None):
+        kill_process(p_denoise.pid)
+        p_denoise=None
+    return "已终止语音降噪进程",{"__type__":"update","visible":True},{"__type__":"update","visible":False}
 
 p_train_SoVITS=None
 def open1Ba(batch_size,total_epoch,exp_name,text_low_lr_rate,if_save_latest,if_save_every_weights,save_every_epoch,gpu_numbers1Ba,pretrained_s2G,pretrained_s2D):
@@ -393,7 +418,10 @@ def open1a(inp_text,inp_wav_dir,exp_name,gpu_numbers,bert_pretrained_dir):
         with open(path_text, "w", encoding="utf8") as f:
             f.write("\n".join(opt) + "\n")
         ps1a=[]
-        yield "文本进程结束",{"__type__":"update","visible":True},{"__type__":"update","visible":False}
+        if len("".join(opt)) > 0:
+            yield "文本进程成功", {"__type__": "update", "visible": True}, {"__type__": "update", "visible": False}
+        else:
+            yield "文本进程失败", {"__type__": "update", "visible": True}, {"__type__": "update", "visible": False}
     else:
         yield "已有正在进行的文本任务，需先终止才能开启下一次任务", {"__type__": "update", "visible": False}, {"__type__": "update", "visible": True}
 
@@ -558,7 +586,7 @@ def open1abc(inp_text,inp_wav_dir,exp_name,gpu_numbers1a,gpu_numbers1Ba,gpu_numb
                     os.remove(txt_path)
                 with open(path_text, "w",encoding="utf8") as f:
                     f.write("\n".join(opt) + "\n")
-
+                assert len("".join(opt)) > 0, "1Aa-文本获取进程失败"
             yield "进度：1a-done", {"__type__": "update", "visible": False}, {"__type__": "update", "visible": True}
             ps1abc=[]
             #############################1b
@@ -678,6 +706,13 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                     alpha=gr.Slider(minimum=0,maximum=1,step=0.05,label=i18n("alpha_mix:混多少比例归一化后音频进来"),value=0.25,interactive=True)
                     n_process=gr.Slider(minimum=1,maximum=n_cpu,step=1,label=i18n("切割使用的进程数"),value=4,interactive=True)
                     slicer_info = gr.Textbox(label=i18n("语音切割进程输出信息"))
+            gr.Markdown(value=i18n("0bb-语音降噪工具"))
+            with gr.Row():
+                open_denoise_button = gr.Button(i18n("开启语音降噪"), variant="primary",visible=True)
+                close_denoise_button = gr.Button(i18n("终止语音降噪进程"), variant="primary",visible=False)
+                denoise_input_dir=gr.Textbox(label=i18n("降噪音频文件输入文件夹"),value="")
+                denoise_output_dir=gr.Textbox(label=i18n("降噪结果输出文件夹"),value="output/denoise_opt")
+                denoise_info = gr.Textbox(label=i18n("语音降噪进程输出信息"))
             gr.Markdown(value=i18n("0c-中文批量离线ASR工具"))
             with gr.Row():
                 open_asr_button = gr.Button(i18n("开启离线批量ASR"), variant="primary",visible=True)
@@ -740,6 +775,9 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
             close_asr_button.click(close_asr, [], [asr_info,open_asr_button,close_asr_button])
             open_slicer_button.click(open_slice, [slice_inp_path,slice_opt_root,threshold,min_length,min_interval,hop_size,max_sil_kept,_max,alpha,n_process], [slicer_info,open_slicer_button,close_slicer_button])
             close_slicer_button.click(close_slice, [], [slicer_info,open_slicer_button,close_slicer_button])
+            open_denoise_button.click(open_denoise, [denoise_input_dir,denoise_output_dir], [denoise_info,open_denoise_button,close_denoise_button])
+            close_denoise_button.click(close_denoise, [], [denoise_info,open_denoise_button,close_denoise_button])
+
         with gr.TabItem(i18n("1-GPT-SoVITS-TTS")):
             with gr.Row():
                 exp_name = gr.Textbox(label=i18n("*实验/模型名"), value="xxx", interactive=True)
@@ -792,7 +830,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
             button1abc_open.click(open1abc, [inp_text,inp_wav_dir,exp_name,gpu_numbers1a,gpu_numbers1Ba,gpu_numbers1c,bert_pretrained_dir,cnhubert_base_dir,pretrained_s2G], [info1abc,button1abc_open,button1abc_close])
             button1abc_close.click(close1abc, [], [info1abc,button1abc_open,button1abc_close])
             with gr.TabItem(i18n("1B-微调训练")):
-                gr.Markdown(value=i18n("1Ba-SoVITS训练。用于分享的模型文件输出在 SoVITS_weights 下。"))
+                gr.Markdown(value=i18n("1Ba-SoVITS训练。用于分享的模型文件输出在SoVITS_weights下。"))
                 with gr.Row():
                     batch_size = gr.Slider(minimum=1,maximum=40,step=1,label=i18n("每张显卡的batch_size"),value=default_batch_size,interactive=True)
                     total_epoch = gr.Slider(minimum=1,maximum=25,step=1,label=i18n("总训练轮数total_epoch，不建议太高"),value=8,interactive=True)
@@ -823,7 +861,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
             button1Bb_open.click(open1Bb, [batch_size1Bb,total_epoch1Bb,exp_name,if_dpo,if_save_latest1Bb,if_save_every_weights1Bb,save_every_epoch1Bb,gpu_numbers1Bb,pretrained_s1],   [info1Bb,button1Bb_open,button1Bb_close])
             button1Bb_close.click(close1Bb, [], [info1Bb,button1Bb_open,button1Bb_close])
             with gr.TabItem(i18n("1C-推理")):
-                gr.Markdown(value=i18n("选择训练完存放在 SoVITS_weights 和 GPT_weights 下的模型。默认的一个是底模，体验5秒Zero Shot TTS用。"))
+                gr.Markdown(value=i18n("选择训练完存放在SoVITS_weights和GPT_weights下的模型。默认的一个是底模，体验5秒Zero Shot TTS用。"))
                 with gr.Row():
                     GPT_dropdown = gr.Dropdown(label=i18n("*GPT模型列表"), choices=sorted(GPT_names,key=custom_sort_key),value=pretrained_gpt_name,interactive=True)
                     SoVITS_dropdown = gr.Dropdown(label=i18n("*SoVITS模型列表"), choices=sorted(SoVITS_names,key=custom_sort_key),value=pretrained_sovits_name,interactive=True)

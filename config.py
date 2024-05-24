@@ -22,8 +22,6 @@ exp_root = "logs"
 python_exec = sys.executable or "python"
 if torch.cuda.is_available():
     infer_device = "cuda"
-elif torch.backends.mps.is_available():
-    infer_device = "mps"
 else:
     infer_device = "cpu"
 

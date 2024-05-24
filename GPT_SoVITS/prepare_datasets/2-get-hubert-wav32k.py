@@ -50,8 +50,8 @@ maxx=0.95
 alpha=0.5
 if torch.cuda.is_available():
     device = "cuda:0"
-elif torch.backends.mps.is_available():
-    device = "mps"
+# elif torch.backends.mps.is_available():
+#     device = "mps"
 else:
     device = "cpu"
 model=cnhubert.get_model()
@@ -99,7 +99,7 @@ for line in lines[int(i_part)::int(all_parts)]:
     try:
         # wav_name,text=line.split("\t")
         wav_name, spk_name, language, text = line.split("|")
-        if (inp_wav_dir !=None):
+        if (inp_wav_dir != "" and inp_wav_dir != None):
             wav_name = os.path.basename(wav_name)
             wav_path = "%s/%s"%(inp_wav_dir, wav_name)
 

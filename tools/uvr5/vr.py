@@ -41,13 +41,11 @@ class AudioPre:
         self.model = model
 
     def _path_audio_(
-        self, music_file_path, ins_root=None, vocal_root=None, format="flac", is_hp3=False
+        self, music_file, ins_root=None, vocal_root=None, format="flac", is_hp3=False
     ):
         if ins_root is None and vocal_root is None:
             return "No save root."
-        name = os.path.basename(music_file_path)
-        filename_without_ext = os.path.splitext(os.path.basename(music_file_path))[0]
-        
+        name = os.path.basename(music_file)
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
         if vocal_root is not None:
@@ -62,7 +60,7 @@ class AudioPre:
                     X_wave[d],
                     _,
                 ) = librosa.core.load(  # 理论上librosa读取可能对某些音频有bug，应该上ffmpeg读取，但是太麻烦了弃坑
-                    music_file_path,
+                    music_file,
                     sr       = bp["sr"],
                     mono     = False,
                     dtype    = np.float32,
@@ -134,14 +132,14 @@ class AudioPre:
                 sf.write(
                     os.path.join(
                         ins_root,
-                        head + "{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
+                        head + "{}_{}.{}".format(name, self.data["agg"], format),
                     ),
                     (np.array(wav_instrument) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )  #
             else:
                 path = os.path.join(
-                    ins_root, head + "{}_{}.wav".format(filename_without_ext, self.data["agg"])
+                    ins_root, head + "{}_{}.wav".format(name, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -175,14 +173,14 @@ class AudioPre:
                 sf.write(
                     os.path.join(
                         vocal_root,
-                        head + "{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
+                        head + "{}_{}.{}".format(name, self.data["agg"], format),
                     ),
                     (np.array(wav_vocals) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )
             else:
                 path = os.path.join(
-                    vocal_root, head + "{}_{}.wav".format(filename_without_ext, self.data["agg"])
+                    vocal_root, head + "{}_{}.wav".format(name, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -227,12 +225,11 @@ class AudioPreDeEcho:
         self.model = model
 
     def _path_audio_(
-        self, music_file_path, vocal_root=None, ins_root=None, format="flac", is_hp3=False
+        self, music_file, vocal_root=None, ins_root=None, format="flac", is_hp3=False
     ):  # 3个VR模型vocal和ins是反的
         if ins_root is None and vocal_root is None:
             return "No save root."
-        name = os.path.basename(music_file_path)
-        filename_without_ext = os.path.splitext(os.path.basename(music_file_path))[0]
+        name = os.path.basename(music_file)
         if ins_root is not None:
             os.makedirs(ins_root, exist_ok=True)
         if vocal_root is not None:
@@ -247,7 +244,7 @@ class AudioPreDeEcho:
                     X_wave[d],
                     _,
                 ) = librosa.core.load(  # 理论上librosa读取可能对某些音频有bug，应该上ffmpeg读取，但是太麻烦了弃坑
-                    music_file_path,
+                    music_file,
                     sr       = bp["sr"],
                     mono     = False,
                     dtype    = np.float32,
@@ -312,14 +309,14 @@ class AudioPreDeEcho:
                 sf.write(
                     os.path.join(
                         ins_root,
-                        "vocal_{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
+                        "vocal_{}_{}.{}".format(name, self.data["agg"], format),
                     ),
                     (np.array(wav_instrument) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )  #
             else:
                 path = os.path.join(
-                    ins_root, "vocal_{}_{}.wav".format(filename_without_ext, self.data["agg"])
+                    ins_root, "vocal_{}_{}.wav".format(name, self.data["agg"])
                 )
                 sf.write(
                     path,
@@ -349,14 +346,14 @@ class AudioPreDeEcho:
                 sf.write(
                     os.path.join(
                         vocal_root,
-                        "instrument_{}_{}.{}".format(filename_without_ext, self.data["agg"], format),
+                        "instrument_{}_{}.{}".format(name, self.data["agg"], format),
                     ),
                     (np.array(wav_vocals) * 32768).astype("int16"),
                     self.mp.param["sr"],
                 )
             else:
                 path = os.path.join(
-                    vocal_root, "instrument_{}_{}.wav".format(filename_without_ext, self.data["agg"])
+                    vocal_root, "instrument_{}_{}.wav".format(name, self.data["agg"])
                 )
                 sf.write(
                     path,
