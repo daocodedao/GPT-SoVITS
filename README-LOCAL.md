@@ -1,6 +1,6 @@
 # 说明
 
-原项目 
+原项目   
 git clone https://github.com/RVC-Boss/GPT-SoVITS.git
 
 # 安装
@@ -19,8 +19,6 @@ pip install modelscope torchaudio sentencepiece funasr
 
 sudo apt install ffmpeg
 sudo apt install libsox-dev
-
-
 ```
 
 ## 下载模型
@@ -37,9 +35,6 @@ git clone https://huggingface.co/lj1995/GPT-SoVITS
 
 cd tools/uvr5/uvr5_weights
 git clone https://huggingface.co/lj1995/VoiceConversionWebUI
-
-
-
 ```
 #### Install Requirements
 ```bash
@@ -54,15 +49,12 @@ pip3 install --pre torch torchaudio --index-url https://download.pytorch.org/whl
 ```
 source venv_sovits/bin/activate
 python webui.py
-
-
 ```
 
 ```
 # api
 source venv_sovits/bin/activate
 python api.py -dr "resource/何同学/source.MP3" -dt "在我身后的是10万个纸盒子" -dl "zh" 
-
 ```
 
 # 其他
@@ -71,10 +63,8 @@ python api.py -dr "resource/何同学/source.MP3" -dt "在我身后的是10万�
 git config --global http.proxy "http://192.168.0.77:18808"
 git config --global https.proxy "http://192.168.0.77:18808"
 
-
 git config --global --unset https.proxy
 git config --global --unset http.proxy
-
 ```
 
 ## 对外端口
@@ -124,25 +114,17 @@ use_compression = false
 
 
 # 重启frp
-sudo systemctl restart  supervisor
+sudo systemctl restart supervisor
 sudo supervisorctl reload
-
-
-sudo supervisord -c /etc/supervisor/supervisord.conf
-
+sudo supervisord
 ```
 
 ## 查看网速  
 ```
 nethogs
 ```
-
-
 ## 查看端口
 netstat -an | grep 9872
-
-
-
 
 # 资源
 ## 拷贝
