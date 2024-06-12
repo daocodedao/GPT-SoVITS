@@ -205,6 +205,12 @@ GPT_weights/ 后缀 ckpt, e代表轮数
 然后上传一段参考音频，建议是数据集中的音频。最好5秒。参考音频很重要！会学习语速和语气，请认真选择。参考音频的文本是参考音频说什么就填什么，必须要填。语种也要对应
 接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
+mkdir -p resource/michael
+cp SoVITS_weights/michael_e8_s104.pth resource/michael/
+cp GPT_weights/michael-e15.ckpt resource/michael/
+scp -r resource/michael/ fxbox@192.168.0.62:/data/work/GPT-SoVITS/resource/
+
+
 
 scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/michael_e8_s104.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
 scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e15.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
