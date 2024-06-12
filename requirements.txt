@@ -28,4 +28,5 @@ Faster_Whisper
 wordsegment
 srt
 mutagen
+
 funasr==1.0.14
