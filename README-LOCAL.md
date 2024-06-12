@@ -163,8 +163,6 @@ http://39.105.194.16:9873/
 人声音 output/uvr5_opt_vocal
 乐器声音 output/uvr5_opt_ins
 
-
-
 2.音频自动切分， 把长音频切割成短音频，方便校对和训练
 输入路径 output/uvr5_opt_vocal
 输出路径 output/slicer_opt
@@ -208,8 +206,8 @@ GPT_weights/ 后缀 ckpt, e代表轮数
 接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
 
-scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/diqiuju_e24_s384.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/
-scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/diqiuju_e24_s384.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/DiQiuJu/
+scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/michael_e8_s104.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
+scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e15.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
 
 
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
