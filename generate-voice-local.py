@@ -572,6 +572,11 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
             if isIgnore(sub.content):
                 api_logger.info("跳过，不做TTS")
                 continue
+            
+            if Utility.is_all_chinese_or_english_punctuation(sub.content):
+                api_logger.info("跳过，不做TTS")
+                continue
+
             handle(inText=sub.content, 
                    text_language=g_para.text_language, 
                    output_wav_path=output_wav_path)

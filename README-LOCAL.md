@@ -214,6 +214,11 @@ scp -r resource/michael/ fxbox@192.168.0.65:/data/work/GPT-SoVITS/resource/
 scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/michael_e24_s168.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
 scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e20.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
 
+scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e20.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
+
+
+scp -r -P 19777 fxbox@bfrp.fxait.com:/data3/work/translate/XviSeTiE1ls/   /Users/linzhiji/Downloads
+
 
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
 scp -r -P 10069 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
