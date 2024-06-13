@@ -97,8 +97,8 @@
         "refer_path":"/data/work/GPT-SoVITS/refersample/michael/source.MP3",
         "refer_text":"简单的说，就是提供专家资源。",
         "refer_language":"zh",
-        "sovits_path":"/data/work/GPT-SoVITS/resource/michael/michael_e24_s168.pth",
-        "gpt_path":"/data/work/GPT-SoVITS/resource/michael/michael-e20.ckpt",
+        "sovits_path":"/data/work/GPT-SoVITS/resource/michael/michael_e24_s312.pth",
+        "gpt_path":"/data/work/GPT-SoVITS/resource/michael/michael-e30.ckpt",
         "ref_source":""
     }
 ]
