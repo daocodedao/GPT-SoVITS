@@ -207,7 +207,6 @@ cp SoVITS_weights/michael_e24_s312.pth resource/michael/
 cp GPT_weights/michael-e30.ckpt resource/michael/
 
 scp -r resource/michael/ fxbox@192.168.0.62:/data/work/GPT-SoVITS/resource/
-
 scp -r resource/michael/ fxbox@192.168.0.65:/data/work/GPT-SoVITS/resource/
 
 
