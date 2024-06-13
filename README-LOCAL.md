@@ -131,9 +131,6 @@ netstat -an | grep 9872
 ```
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
 
-
-scp -r -P 10068 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/out/ /Users/linzhiji/Documents/code/GPT-SoVITS/resource/out/
-
 scp -r -P 10080 /Users/linzhiji/Documents/code/GPT-SoVITS/tools/uvr5/uvr5_weights/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/tools/uvr5/
 
 
@@ -206,14 +203,17 @@ GPT_weights/ 后缀 ckpt, e代表轮数
 接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
 mkdir -p resource/michael
-cp SoVITS_weights/michael_e8_s104.pth resource/michael/
-cp GPT_weights/michael-e15.ckpt resource/michael/
+cp SoVITS_weights/michael_e24_s168.pth resource/michael/
+cp GPT_weights/michael-e20.ckpt resource/michael/
+
 scp -r resource/michael/ fxbox@192.168.0.62:/data/work/GPT-SoVITS/resource/
 
+scp -r resource/michael/ fxbox@192.168.0.65:/data/work/GPT-SoVITS/resource/
 
 
-scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/michael_e8_s104.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
-scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e15.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
+
+scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/SoVITS_weights/michael_e24_s168.pth /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
+scp -r -P 10066 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/GPT_weights/michael-e20.ckpt /Users/linzhiji/Documents/code/GPT-SoVITS/resource/michael/
 
 
 scp -r -P 10068 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/FaTiaoZhang/source.MP3 fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS/resource/FaTiaoZhang/
