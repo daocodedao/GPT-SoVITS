@@ -574,7 +574,7 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
                 continue
             
             if Utility.is_all_chinese_or_english_punctuation(sub.content):
-                api_logger.info("跳过，不做TTS")
+                api_logger.info("全部由标点符号组成，跳过，不做TTS")
                 continue
 
             handle(inText=sub.content, 
