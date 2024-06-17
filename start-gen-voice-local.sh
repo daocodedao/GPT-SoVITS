@@ -48,7 +48,7 @@ do
    esac
 done
 
-cmd="${pythonPath} $jobName "
+cmd="${pythonPath} $workdir$jobName "
 
 [[ -n  $processId ]] && cmd="${cmd} -id $processId"
 [[ -n  $language ]] && cmd="${cmd} -tl $language "
