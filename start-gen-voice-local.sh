@@ -56,5 +56,5 @@ done
 [[ -z  $outPath ]] && outPath=""
 
 echo -e "${YELLOW}${pythonPath} $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"${NOCOLOR}"
-${pythonPath} $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role" --out-path "$outPath"
+${pythonPath} $jobName  -tl "$language" -id "$processId" -srt "$srtPath" -r "$role" -op "$outPath" -tp "$prompt"
 

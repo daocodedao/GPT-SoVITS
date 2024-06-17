@@ -366,7 +366,7 @@ def parse_args() -> None:
     parser.add_argument("-id", "--process-id", type=str, default="", help="process_id")
     parser.add_argument("-r", "--role", type=str, default="FaTiaoZhang", help="role name")
 
-    parser.add_argument("--out-path", type=str)
+    parser.add_argument("-op", "--out-path", type=str)
 
     args = parser.parse_args()
     return args
