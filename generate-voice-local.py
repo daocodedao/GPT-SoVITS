@@ -553,34 +553,45 @@ def isIgnore(inStr):
 initResource()
 
 if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
-    with open(g_para.srt_path, 'r') as srcFile:
-        # 读取文件内容
-        api_logger.info("读取 srt")
-        content = srcFile.read()
-        subs = srt.parse(content)
 
-        folder_path = os.path.dirname(g_para.srt_path)
-        output_dir = os.path.join(folder_path, f"tts/")
-        os.makedirs(output_dir, exist_ok=True)
-        Utility.clearDir(output_dir)
+    _, ext = os.path.splitext(g_para.srt_path)
+    
+    if ext == ".srt":
+        api_logger.info("是字幕文件")
+        with open(g_para.srt_path, 'r') as srcFile:
+            # 读取文件内容
+            api_logger.info("读取 srt")
+            content = srcFile.read()
+            subs = srt.parse(content)
 
-        for sub in subs:
-            output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
-            # api_logger.info("单字符串转wav")
-            api_logger.info(f"准备TTS： {sub.content}")
-            if isIgnore(sub.content):
-                api_logger.info("跳过，不做TTS")
-                continue
-            
-            if Utility.is_all_chinese_or_english_punctuation(sub.content):
-                api_logger.info("全部由标点符号组成，跳过，不做TTS")
-                continue
+            folder_path = os.path.dirname(g_para.srt_path)
+            output_dir = os.path.join(folder_path, f"tts/")
+            os.makedirs(output_dir, exist_ok=True)
+            Utility.clearDir(output_dir)
 
-            handle(inText=sub.content, 
-                   text_language=g_para.text_language, 
-                   output_wav_path=output_wav_path)
+            for sub in subs:
+                output_wav_path = os.path.join(output_dir, f"{sub.index}.wav")
+                # api_logger.info("单字符串转wav")
+                api_logger.info(f"准备TTS： {sub.content}")
+                if isIgnore(sub.content):
+                    api_logger.info("跳过，不做TTS")
+                    continue
+                
+                if Utility.is_all_chinese_or_english_punctuation(sub.content):
+                    api_logger.info("全部由标点符号组成，跳过，不做TTS")
+                    continue
 
-        api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
+                handle(inText=sub.content, 
+                    text_language=g_para.text_language, 
+                    output_wav_path=output_wav_path)
+
+            api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
+    elif ext == ".txt":
+        api_logger.info("是文本文件")
+        with open(g_para.srt_path, 'r') as srcFile:
+            api_logger.info("读取 文件")
+            content = srcFile.read()
+            g_para.text_prompt = content
 
 else:
     api_logger.info(f"准备TTS： {g_para.text_prompt}")
