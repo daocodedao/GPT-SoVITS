@@ -50,11 +50,11 @@ done
 
 cmd="${pythonPath} $jobName "
 
-[[ -n  $processId ]] && cmd="${cmd} -id \"$processId\" "
-[[ -n  $language ]] && cmd="${cmd} -tl \"$language\" "
-[[ -n  $srtPath ]] && cmd="${cmd} -srt \"$srtPath\" "
-[[ -n  $role ]] && cmd="${cmd} -r \"$role\" "
-[[ -n  $outPath ]] && cmd="${cmd} -op \"$outPath\" "
+[[ -n  $processId ]] && cmd="${cmd} -id $processId"
+[[ -n  $language ]] && cmd="${cmd} -tl $language "
+[[ -n  $srtPath ]] && cmd="${cmd} -srt $srtPath "
+[[ -n  $role ]] && cmd="${cmd} -r $role "
+[[ -n  $outPath ]] && cmd="${cmd} -op $outPath "
 [[ -n  $prompt ]] && cmd="${cmd} -tp '$prompt'"
 
 
