@@ -35,7 +35,7 @@ sudo kill -9 $TAILPID
 fi
 
 
-while getopts "p:l:i:s:r:o" opt
+while getopts "p:l:i:s:r:o:" opt
 do
    case "$opt" in
       p ) prompt="$OPTARG" ;;
@@ -48,13 +48,19 @@ do
    esac
 done
 
-# [[ -z  $prompt && -z  $srtPath ]] &&  echo -e "${RED}prompt and srtPath is empty ${NOCOLOR}" &&  exit 1
-[[ -z  $processId ]] &&  processId=""
-[[ -z  $language ]] && language="zh"
-[[ -z  $srtPath ]] && srtPath=""
-[[ -z  $role ]] && role=""
-[[ -z  $outPath ]] && outPath=""
+cmd="${pythonPath} $jobName "
 
-echo -e "${YELLOW}${pythonPath} $jobName  -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"  -tp \"$prompt\"  ${NOCOLOR}"
-${pythonPath} $jobName  -tl "$language" -id "$processId" -srt "$srtPath" -r "$role" -op "$outPath" -tp "$prompt"
+
+&& -z  $srtPath 
+
+[[ -n  $processId ]] && cmd="${cmd} -id \"$processId\" "
+[[ -n  $language ]] && cmd="${cmd} -tl \"$language\" "
+[[ -n  $srtPath ]] && cmd="${cmd} -srt \"$srtPath\" "
+[[ -n  $role ]] && cmd="${cmd} -r \"$role\" "
+[[ -n  $outPath ]] && cmd="${cmd} -op \"$outPath\" "
+[[ -n  $prompt ]] && cmd="${cmd} -tp \"$prompt\""
+
+
+echo -e "${YELLOW}${cmd}${NOCOLOR}"
+${cmd}
 
