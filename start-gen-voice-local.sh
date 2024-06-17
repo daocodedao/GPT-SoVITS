@@ -35,7 +35,7 @@ sudo kill -9 $TAILPID
 fi
 
 
-while getopts "p:l:i:s:r:" opt
+while getopts "p:l:i:s:r:o" opt
 do
    case "$opt" in
       p ) prompt="$OPTARG" ;;
@@ -43,6 +43,7 @@ do
       i ) processId="$OPTARG" ;;
       s ) srtPath="$OPTARG" ;;
       r ) role="$OPTARG" ;;
+      o ) outPath="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
@@ -52,7 +53,8 @@ done
 [[ -z  $language ]] && language="zh"
 [[ -z  $srtPath ]] && srtPath=""
 [[ -z  $role ]] && role=""
+[[ -z  $outPath ]] && outPath=""
 
 echo -e "${YELLOW}${pythonPath} $jobName  -tp \"$prompt\"   -tl \"$language\" -id \"$processId\" -srt \"$srtPath\" -r \"$role\"${NOCOLOR}"
-${pythonPath} $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role"
+${pythonPath} $jobName  -tp "$prompt" -tl "$language" -id "$processId" -srt "$srtPath" -r "$role" --out-path "$outPath"
 
