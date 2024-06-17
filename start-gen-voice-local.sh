@@ -55,9 +55,9 @@ cmd="${pythonPath} $jobName "
 [[ -n  $srtPath ]] && cmd="${cmd} -srt \"$srtPath\" "
 [[ -n  $role ]] && cmd="${cmd} -r \"$role\" "
 [[ -n  $outPath ]] && cmd="${cmd} -op \"$outPath\" "
-[[ -n  $prompt ]] && cmd="${cmd} -tp '$prompt'
+[[ -n  $prompt ]] && cmd="${cmd} -tp '$prompt'"
 
 
-echo -e "${YELLOW}${cmd}${NOCOLOR}"
+echo "${YELLOW}${cmd}${NOCOLOR}"
 ${cmd}
 
