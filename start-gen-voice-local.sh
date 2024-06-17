@@ -50,9 +50,6 @@ done
 
 cmd="${pythonPath} $jobName "
 
-
-&& -z  $srtPath 
-
 [[ -n  $processId ]] && cmd="${cmd} -id \"$processId\" "
 [[ -n  $language ]] && cmd="${cmd} -tl \"$language\" "
 [[ -n  $srtPath ]] && cmd="${cmd} -srt \"$srtPath\" "
