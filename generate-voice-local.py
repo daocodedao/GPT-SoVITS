@@ -593,6 +593,12 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
             content = srcFile.read()
             g_para.text_prompt = content
 
+            api_logger.info(f"准备TTS： {g_para.text_prompt}")
+            handle(inText=g_para.text_prompt, 
+                text_language=g_para.text_language, 
+                output_wav_path=g_para.out_path)
+
+
 else:
     api_logger.info(f"准备TTS： {g_para.text_prompt}")
     handle(inText=g_para.text_prompt, 
