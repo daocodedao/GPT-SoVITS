@@ -411,7 +411,7 @@ def initResource():
     refer_text = args.default_refer_text
     refer_language = args.default_refer_language
     roleDic = findRoleContent(roleName=role)
-    api_logger.info(f"找到角色 role {roleDic}")
+    api_logger.info(f"{role} 找到角色 role {roleDic}")
     refer_path = roleDic["refer_path"]
     refer_text = roleDic["refer_text"]
     refer_language = roleDic["refer_language"]
