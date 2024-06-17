@@ -48,7 +48,7 @@ do
    esac
 done
 
-[[ -z  $prompt && -z  $srtPath ]] &&  echo -e "${RED}prompt or is empty ${NOCOLOR}" &&  exit 1
+# [[ -z  $prompt && -z  $srtPath ]] &&  echo -e "${RED}prompt and srtPath is empty ${NOCOLOR}" &&  exit 1
 [[ -z  $processId ]] &&  processId=""
 [[ -z  $language ]] && language="zh"
 [[ -z  $srtPath ]] && srtPath=""
