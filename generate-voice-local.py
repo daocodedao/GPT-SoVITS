@@ -264,7 +264,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
     text_language = text_language
     
     phones1, word2ph1, norm_text1 = get_cleaned_text_final(prompt_text, prompt_language)
-    bert1=get_bert_final(phones1, word2ph1, norm_text1,prompt_language,g_para.device).to(torch.float16)
+    bert1=get_bert_final(phones1, word2ph1, norm_text1, prompt_language, g_para.device).to(torch.float16)
     texts = text.split("\n")
     audio_opt = []
 
@@ -364,7 +364,7 @@ def parse_args() -> None:
     parser.add_argument("-srt", "--srt-file-path",
                         type=str, default="", help="从srt里读取")
     parser.add_argument("-tp", "--text-prompt", type=str, default="", help="输入文本")
-    parser.add_argument("-tl", "--text-language", type=str, default="zh", help="输入文本语言")
+    parser.add_argument("-tl", "--text-language", type=str, default="auto", help="输入文本语言")
     parser.add_argument("-id", "--process-id", type=str, default="", help="process_id")
     parser.add_argument("-r", "--role", type=str, default="FaTiaoZhang", help="role name")
     parser.add_argument("-op", "--out-path", type=str)
