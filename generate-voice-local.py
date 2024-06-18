@@ -592,6 +592,9 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
                 handle(inText=transTxt, 
                     text_language=g_para.text_language, 
                     output_wav_path=output_wav_path)
+                
+                api_logger.info("休息 0.3 秒")
+                time.sleep(0.3)
 
             api_logger.info(f"处理完成, 输出到文件夹：{output_dir}")
     elif ext == ".txt":
