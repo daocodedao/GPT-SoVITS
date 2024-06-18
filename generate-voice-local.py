@@ -175,13 +175,13 @@ def nonen_clean_text_inf(text, language):
     norm_text_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
-        # print(f"nonen_clean_text_inf clean_text_inf text={textlist[i]} lang={lang}")
+        # api_logger.info(f"nonen_clean_text_inf clean_text_inf text={textlist[i]} lang={lang}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
         phones_list.append(phones)
         if lang == "zh":
             word2ph_list.append(word2ph)
         norm_text_list.append(norm_text)
-    print(word2ph_list)
+    api_logger.info(word2ph_list)
     phones = sum(phones_list, [])
     word2ph = sum(word2ph_list, [])
     norm_text = ' '.join(norm_text_list)
@@ -197,19 +197,19 @@ def nonen_get_bert_inf(text, language, device):
         for tmp in LangSegment.getTexts(text):
             langlist.append(tmp["lang"])
             textlist.append(tmp["text"])
-    # print("nonen_get_bert_inf")
-    print(textlist)
-    print(langlist)
+    # api_logger.info("nonen_get_bert_inf")
+    api_logger.info(textlist)
+    api_logger.info(langlist)
     bert_list = []
     for i in range(len(textlist)):
         lang = langlist[i]
-        # print(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
+        # api_logger.info(f"nonen_get_bert_inf clean_text_inf text={textlist[i]} lang={lang} device={device}")
         phones, word2ph, norm_text = clean_text_inf(textlist[i], lang)
-        # print(f"phones={phones}")
-        # print(f"word2ph={word2ph}")
-        # print(f"norm_text={norm_text}")
+        # api_logger.info(f"phones={phones}")
+        # api_logger.info(f"word2ph={word2ph}")
+        # api_logger.info(f"norm_text={norm_text}")
         bert = get_bert_inf(phones, word2ph, norm_text, lang, device)
-        # print(f"bert={bert}")
+        # api_logger.info(f"bert={bert}")
         bert_list.append(bert)
     bert = torch.cat(bert_list, dim=1)
 
@@ -271,7 +271,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
         if len(text.strip()) == 0 or Utility.is_number(text.strip()):
             continue
         if (text[-1] not in splits): text += "。" if text_language != "en" else "."
-        print(i18n("实际输入的目标文本(每句):"), text)
+        api_logger.info(i18n("实际输入的目标文本(每句):"), text)
         phones2, word2ph2, norm_text2 = get_cleaned_text_final(text, text_language)
         bert2 = get_bert_final(phones2, word2ph2, norm_text2, text_language, g_para.device).to(torch.float16)
 
@@ -297,7 +297,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
                 early_stop_num=g_para.hz * g_para.max_sec,
             )
         t3 = ttime()
-        # print(pred_semantic.shape,idx)
+        # api_logger.info(pred_semantic.shape,idx)
         pred_semantic = pred_semantic[:, -idx:].unsqueeze(
             0
         )  # .unsqueeze(0)#mq要多unsqueeze一次
@@ -320,7 +320,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
         audio_opt.append(audio)
         audio_opt.append(zero_wav)
         t4 = ttime()
-    print("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
+    api_logger.info("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
     yield g_para.hps.data.sampling_rate, (np.concatenate(audio_opt, 0) * 32768).astype(
         np.int16
     )
