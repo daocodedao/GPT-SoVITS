@@ -582,8 +582,14 @@ if g_para.srt_path is not None and os.path.exists(g_para.srt_path) :
                 if Utility.is_all_chinese_or_english_punctuation(sub.content):
                     api_logger.info("全部由标点符号组成，跳过，不做TTS")
                     continue
+                
+                transTxt = sub.content
+                api_logger.info(f"预语音字符串： {transTxt}")
+                transTxt = transTxt.strip()
+                transTxt = transTxt.lower()
+                api_logger.info(f"转换后字符串： {transTxt}")
 
-                handle(inText=sub.content, 
+                handle(inText=transTxt, 
                     text_language=g_para.text_language, 
                     output_wav_path=output_wav_path)
 
