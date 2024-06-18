@@ -190,8 +190,10 @@ def nonen_clean_text_inf(text, language):
 
 def nonen_get_bert_inf(text, language, device):
     if(language!="auto"):
+        api_logger.info(f"splite_en_inf {language}")
         textlist, langlist = splite_en_inf(text, language)
     else:
+        api_logger.info(f"splite_en_inf auto")
         textlist=[]
         langlist=[]
         for tmp in LangSegment.getTexts(text):
