@@ -506,8 +506,8 @@ def handle_change(path, text, language):
     if language != "" or language is not None:
         default_refer.language = language
 
-    logger.info(f"当前默认参考音频路径: {default_refer.path}")
-    logger.info(f"当前默认参考音频文本: {default_refer.text}")
+    # logger.info(f"当前默认参考音频路径: {default_refer.path}")
+    # logger.info(f"当前默认参考音频文本: {default_refer.text}")
     logger.info(f"当前默认参考音频语种: {default_refer.language}")
     logger.info(f"is_ready: {default_refer.is_ready()}")
 

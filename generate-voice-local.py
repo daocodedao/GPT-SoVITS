@@ -181,7 +181,7 @@ def nonen_clean_text_inf(text, language):
         if lang == "zh":
             word2ph_list.append(word2ph)
         norm_text_list.append(norm_text)
-    api_logger.info(word2ph_list)
+    # api_logger.info(word2ph_list)
     phones = sum(phones_list, [])
     word2ph = sum(word2ph_list, [])
     norm_text = ' '.join(norm_text_list)
@@ -200,7 +200,7 @@ def nonen_get_bert_inf(text, language, device):
             langlist.append(tmp["lang"])
             textlist.append(tmp["text"])
     # api_logger.info("nonen_get_bert_inf")
-    api_logger.info(textlist)
+    # api_logger.info(textlist)
     api_logger.info(langlist)
     bert_list = []
     for i in range(len(textlist)):
@@ -273,7 +273,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
         if len(text.strip()) == 0 or Utility.is_number(text.strip()):
             continue
         if (text[-1] not in splits): text += "。" if text_language != "en" else "."
-        api_logger.info(i18n("实际输入的目标文本(每句):"), text)
+        api_logger.info(f"实际输入的目标文本(每句):{text}" )
         phones2, word2ph2, norm_text2 = get_cleaned_text_final(text, text_language)
         bert2 = get_bert_final(phones2, word2ph2, norm_text2, text_language, g_para.device).to(torch.float16)
 
