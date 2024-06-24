@@ -104,7 +104,7 @@
     {
         "name":"jasper",
         "gender":"男",
-        "refer_path":"/data/work/GPT-SoVITS/refersample/jasper/jasper.MP3",
+        "refer_path":"/data/work/GPT-SoVITS/refersample/jasper/jasper.WAV",
         "refer_text":"this might seem like a weird ball made from toilet plungers",
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/jasper/jasper_e20_s260.pth",
