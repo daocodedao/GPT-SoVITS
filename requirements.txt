@@ -26,7 +26,8 @@ psutil
 jieba_fast
 jieba
 LangSegment==0.3.3
-Faster_Whisper
+# Faster_Whisper
+Faster_Whisper==0.9.0
 wordsegment
 srt
 mutagen

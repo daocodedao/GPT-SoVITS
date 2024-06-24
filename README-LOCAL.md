@@ -203,8 +203,8 @@ GPT_weights/ 后缀 ckpt, e代表轮数
 接着就是输入要合成的文本了，注意语种要对应。目前可以中英混合，语种选择中文，日英混合，语种选择日文。
 
 mkdir -p resource/michael
-cp SoVITS_weights/michael_e24_s312.pth resource/michael/
-cp GPT_weights/michael-e30.ckpt resource/michael/
+cp SoVITS_weights/jasper_e20_s260.pth resource/michael/
+cp GPT_weights/jasper-e30.ckpt resource/michael/
 
 scp -r resource/michael/ fxbox@192.168.0.62:/data/work/GPT-SoVITS/resource/
 scp -r resource/michael/ fxbox@192.168.0.65:/data/work/GPT-SoVITS/resource/
