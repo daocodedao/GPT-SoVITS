@@ -322,7 +322,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language,
         audio_opt.append(audio)
         audio_opt.append(zero_wav)
         t4 = ttime()
-    api_logger.info("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
+    # api_logger.info("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
     yield g_para.hps.data.sampling_rate, (np.concatenate(audio_opt, 0) * 32768).astype(
         np.int16
     )
