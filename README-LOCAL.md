@@ -113,6 +113,15 @@ use_encryption = false
 use_compression = false
 
 
+[ssh-gptsovits-9871-api]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 9180
+remote_port = 6280
+use_encryption = false
+use_compression = false
+
+
 # 重启frp
 sudo systemctl restart supervisor
 sudo supervisorctl reload

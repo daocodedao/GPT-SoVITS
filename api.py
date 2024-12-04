@@ -15,7 +15,7 @@
 
 `-d` - `推理设备, "cuda","cpu"`
 `-a` - `绑定地址, 默认"127.0.0.1"`
-`-p` - `绑定端口, 默认9880, 可在 config.py 中指定`
+`-p` - `绑定端口, 默认9180, 可在 config.py 中指定`
 `-fp` - `覆盖 config.py 使用全精度`
 `-hp` - `覆盖 config.py 使用半精度`
 `-sm` - `流式返回模式, 默认不启用, "close","c", "normal","n", "keepalive","k"`
@@ -33,7 +33,7 @@ endpoint: `/`
 
 使用执行参数指定的参考音频:
 GET:
-    `http://127.0.0.1:9880?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
+    `http://127.0.0.1:9180?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
 POST:
 ```json
 {
@@ -44,7 +44,7 @@ POST:
 
 使用执行参数指定的参考音频并设定分割符号:
 GET:
-    `http://127.0.0.1:9880?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh&cut_punc=，。`
+    `http://127.0.0.1:9180?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh&cut_punc=，。`
 POST:
 ```json
 {
@@ -56,7 +56,7 @@ POST:
 
 手动指定当次推理所使用的参考音频:
 GET:
-    `http://127.0.0.1:9880?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh&text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
+    `http://127.0.0.1:9180?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh&text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
 POST:
 ```json
 {
@@ -80,7 +80,7 @@ endpoint: `/change_refer`
 key与推理端一样
 
 GET:
-    `http://127.0.0.1:9880/change_refer?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh`
+    `http://127.0.0.1:9180/change_refer?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh`
 POST:
 ```json
 {
@@ -104,7 +104,7 @@ command:
 "exit": 结束运行
 
 GET:
-    `http://127.0.0.1:9880/control?command=restart`
+    `http://127.0.0.1:9180/control?command=restart`
 POST:
 ```json
 {
@@ -574,7 +574,7 @@ parser.add_argument("-dt", "--default_refer_text", type=str, default="", help="�
 parser.add_argument("-dl", "--default_refer_language", type=str, default="", help="默认参考音频语种")
 parser.add_argument("-d", "--device", type=str, default=g_config.infer_device, help="cuda / cpu")
 parser.add_argument("-a", "--bind_addr", type=str, default="0.0.0.0", help="default: 0.0.0.0")
-parser.add_argument("-p", "--port", type=int, default=g_config.api_port, help="default: 9880")
+parser.add_argument("-p", "--port", type=int, default=g_config.api_port, help="default: 9180")
 parser.add_argument("-fp", "--full_precision", action="store_true", default=False, help="覆盖config.is_half为False, 使用全精度")
 parser.add_argument("-hp", "--half_precision", action="store_true", default=False, help="覆盖config.is_half为True, 使用半精度")
 # bool值的用法为 `python ./api.py -fp ...`
