@@ -576,7 +576,7 @@ parser.add_argument("-dt", "--default_refer_text", type=str, default="", help="�
 parser.add_argument("-dl", "--default_refer_language", type=str, default="", help="默认参考音频语种")
 parser.add_argument("-d", "--device", type=str, default=g_config.infer_device, help="cuda / cpu")
 parser.add_argument("-a", "--bind_addr", type=str, default="0.0.0.0", help="default: 0.0.0.0")
-parser.add_argument("-p", "--port", type=int, default=g_config.api_port, help="default: 9180")
+parser.add_argument("-p", "--port", type=int, default=9180, help="default: 9180")
 parser.add_argument("-fp", "--full_precision", action="store_true", default=False, help="覆盖config.is_half为False, 使用全精度")
 parser.add_argument("-hp", "--half_precision", action="store_true", default=False, help="覆盖config.is_half为True, 使用半精度")
 # bool值的用法为 `python ./api.py -fp ...`
