@@ -567,6 +567,8 @@ g_config = global_config.Config()
 # 获取参数
 parser = argparse.ArgumentParser(description="GPT-SoVITS api")
 
+
+
 parser.add_argument("-s", "--sovits_path", type=str, default=g_config.sovits_path, help="SoVITS模型路径")
 parser.add_argument("-g", "--gpt_path", type=str, default=g_config.gpt_path, help="GPT模型路径")
 parser.add_argument("-dr", "--default_refer_path", type=str, default="", help="默认参考音频路径")
