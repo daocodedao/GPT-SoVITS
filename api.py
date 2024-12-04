@@ -581,7 +581,7 @@ parser.add_argument("-fp", "--full_precision", action="store_true", default=Fals
 parser.add_argument("-hp", "--half_precision", action="store_true", default=False, help="覆盖config.is_half为True, 使用半精度")
 # bool值的用法为 `python ./api.py -fp ...`
 # 此时 full_precision==True, half_precision==False
-parser.add_argument("-sm", "--stream_mode", type=str, default="close", help="流式返回模式, close / normal / keepalive")
+parser.add_argument("-sm", "--stream_mode", type=str, default="normal", help="流式返回模式, close / normal / keepalive")
 parser.add_argument("-mt", "--media_type", type=str, default="wav", help="音频编码格式, wav / ogg / aac")
 parser.add_argument("-cp", "--cut_punc", type=str, default="", help="文本切分符号设定, 符号范围,.;?!、，。？！；：…")
 # 切割常用分句符为 `python ./api.py -cp ".?!。？！"`
