@@ -147,7 +147,8 @@ from my_utils import load_audio
 import config as global_config
 import logging
 import subprocess
-
+from utility.logger_settings import api_logger
+from utility.rolejson import findRoleContent
 
 class DefaultRefer:
     def __init__(self, path, text, language):
@@ -570,6 +571,7 @@ g_config = global_config.Config()
 parser = argparse.ArgumentParser(description="GPT-SoVITS api")
 
 
+parser.add_argument("-r", "--role", type=str, default="FaTiaoZhang", help="role name")
 
 parser.add_argument("-s", "--sovits_path", type=str, default=g_config.sovits_path, help="SoVITS模型路径")
 parser.add_argument("-g", "--gpt_path", type=str, default=g_config.gpt_path, help="GPT模型路径")
@@ -591,8 +593,9 @@ parser.add_argument("-hb", "--hubert_path", type=str, default=g_config.cnhubert_
 parser.add_argument("-b", "--bert_path", type=str, default=g_config.bert_path, help="覆盖config.bert_path")
 
 args = parser.parse_args()
-sovits_path = args.sovits_path
-gpt_path = args.gpt_path
+
+# sovits_path = args.sovits_path
+# gpt_path = args.gpt_path
 device = args.device
 port = args.port
 host = args.bind_addr
@@ -600,8 +603,17 @@ cnhubert_base_path = args.hubert_path
 bert_path = args.bert_path
 default_cut_punc = args.cut_punc
 
+role = args.role
+roleDic = findRoleContent(roleName=role)
+api_logger.info(f"{role} 找到角色 role {roleDic}")
+refer_path = roleDic["refer_path"]
+refer_text = roleDic["refer_text"]
+refer_language = roleDic["refer_language"]
+sovits_path = roleDic["sovits_path"]
+gpt_path = roleDic["gpt_path"]
+
 # 应用参数配置
-default_refer = DefaultRefer(args.default_refer_path, args.default_refer_text, args.default_refer_language)
+default_refer = DefaultRefer(refer_path, refer_text, refer_language)
 
 # 模型路径检查
 if sovits_path == "":
