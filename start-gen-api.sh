@@ -26,7 +26,7 @@ fi
 
 cmd="${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" "
 
-echo -e "${YELLOW}${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" "
+echo -e "${YELLOW}${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" ${NOCOLOR}"
 nohup ${pythonPath} $jobName  -dr "resource/FaTiaoZhang/source.MP3" -dt "这个影展呢是戏影厂跟春光映画联合主办的" -dl "zh"  > /dev/null 2>&1 &
 
 
