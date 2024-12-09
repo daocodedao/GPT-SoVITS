@@ -195,6 +195,8 @@ def change_sovits_weights(sovits_path):
     vq_model.eval()
     vq_model.load_state_dict(dict_s2["weight"], strict=False)
 
+    print(f"hps.data.sampling_rate={hps.data.sampling_rate}")
+
 
 def change_gpt_weights(gpt_path):
     global hz, max_sec, t2s_model, config

@@ -54,7 +54,11 @@ python webui.py
 ```
 # api
 source venv_sovits/bin/activate
-python api.py -dr "resource/何同学/source.MP3" -dt "在我身后的是10万个纸盒子" -dl "zh" 
+# `-dr` - `默认参考音频路径`
+# `-dt` - `默认参考音频文本`
+# `-dl` - `默认参考音频语种, "中文","英文","日文","zh","en","ja"`
+
+python api.py -dr "resource/he/source.MP3" -dt "在我身后的是10万个纸盒子" -dl "zh" 
 
 
 http://39.105.194.16:6280?refer_wav_path=resource/he/source.MP3&prompt_text=在我身后的是10万个纸盒子&prompt_language=zh&text=在我身后的是10万个纸盒子&text_language=zh
