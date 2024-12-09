@@ -23,12 +23,12 @@ sudo kill -9 $TAILPID
 fi
 
 
+# echo -e "${YELLOW}${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" ${NOCOLOR}"
+# nohup ${pythonPath} $jobName  -dr "resource/FaTiaoZhang/source.MP3" -dt "这个影展呢是戏影厂跟春光映画联合主办的" -dl "zh"  > /dev/null 2>&1 &
 
-cmd="${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" "
 
-echo -e "${YELLOW}${pythonPath} $jobName -dr \"resource/FaTiaoZhang/source.MP3\" -dt \"这个影展呢是戏影厂跟春光映画联合主办的\" -dl \"zh\" ${NOCOLOR}"
-nohup ${pythonPath} $jobName  -dr "resource/FaTiaoZhang/source.MP3" -dt "这个影展呢是戏影厂跟春光映画联合主办的" -dl "zh"  > /dev/null 2>&1 &
-
+echo -e "${YELLOW}${pythonPath} $jobName  ${NOCOLOR}"
+nohup ${pythonPath} $jobName  -dr "resource/FaTiaoZhang/source.MP3"  > /dev/null 2>&1 &
 
 
 
