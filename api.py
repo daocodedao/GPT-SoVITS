@@ -153,7 +153,7 @@ import logging
 import subprocess
 from utility.logger_settings import api_logger
 from utility.rolejson import findRoleContent
-
+from utility.utilQwen import run_gpt
 
 
 class DefaultRefer:
@@ -791,7 +791,19 @@ async def create_upload_file(file: UploadFile = File(...)):
     with open(save_path, "wb") as buffer:
         buffer.write(await file.read())
 
-    return {"filename": file_name, "status": "文件接收成功"}
+    # 语音识别  
+    from tools.asr.funasr_asr import only_asr  #如果用英文就不需要导入下载模型
+    srcText = only_asr(save_path, language="zh")
+    api_logger.info(f"语音转文字: {srcText}")
+    
+    # 请求gpt
+    answer = run_gpt(srcText)
+    api_logger.info(f"返回答案: {answer}")
+
+    # 文字转语音
+    retHandle = handle(text=answer, text_language="zh")
+
+    return retHandle
 
 
 if __name__ == "__main__":
