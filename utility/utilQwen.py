@@ -48,7 +48,7 @@ def normalQwen(messages):
 
 def run_gpt(text):
     systemPrompt = f"""
-你是一个乐于解答各种问题的助手，你的任务是为用户提供专业、准确、有见地的建议
+你是一个乐于解答各种问题的助手，你的任务是为用户提供专业、准确、有见地的建议。回答不要太长。
     """.strip()
 
     jsonData = composeV1Dic(systemContent=systemPrompt, userContent=text)
