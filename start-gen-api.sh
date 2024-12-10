@@ -23,8 +23,8 @@ sudo kill -9 $TAILPID
 fi
 
 
-echo -e "${YELLOW}${pythonPath} $jobName  ${NOCOLOR}"
-nohup ${pythonPath} $jobName  > /dev/null 2>&1 &
+echo -e "${YELLOW}${pythonPath} $jobName -p 9180 ${NOCOLOR}"
+nohup ${pythonPath} $jobName -p 9180 > /dev/null 2>&1 &
 
 
 
