@@ -530,7 +530,12 @@ def handle_change(path, text, language):
     return JSONResponse({"code": 0, "message": "Success"}, status_code=200)
 
 
-def handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc):
+def handle(refer_wav_path = None, 
+           prompt_text = None, 
+           prompt_language = None, 
+           text = None, 
+           text_language = None, 
+           cut_punc = None):
     if (
             refer_wav_path == "" or refer_wav_path is None
             or prompt_text == "" or prompt_text is None
