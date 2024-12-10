@@ -8,20 +8,15 @@
 <img src="https://counter.seku.su/cmoe?name=gptsovits&theme=r34" /><br>
 
 [![Open In Colab](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/RVC-Boss/GPT-SoVITS/blob/main/colab_webui.ipynb)
-[![Licence](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](https://github.com/RVC-Boss/GPT-SoVITS/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](https://github.com/RVC-Boss/GPT-SoVITS/blob/main/LICENSE)
 [![Huggingface](https://img.shields.io/badge/🤗%20-Models%20Repo-yellow.svg?style=for-the-badge)](https://huggingface.co/lj1995/GPT-SoVITS/tree/main)
+[![Discord](https://img.shields.io/discord/1198701940511617164?color=%23738ADB&label=Discord&style=for-the-badge)](https://discord.gg/dnrgs5GHfG)
 
-[**English**](../../README.md) | [**中文简体**](./README.md) | [**日本語**](../ja/README.md) | [**한국어**](../ko/README.md)
+[**English**](../../README.md) | **中文简体** | [**日本語**](../ja/README.md) | [**한국어**](../ko/README.md) | [**Türkçe**](../tr/README.md)
 
 </div>
 
 ---
-
-> 查看我们的介绍视频 [demo video](https://www.bilibili.com/video/BV12g4y1m7Uw)
-
-https://github.com/RVC-Boss/GPT-SoVITS/assets/129054828/05bee1fa-bdd8-4d85-9350-80c060ab47fb
-
-中国地区用户可使用 AutoDL 云端镜像进行体验：https://www.codewithgpu.com/i/RVC-Boss/GPT-SoVITS/GPT-SoVITS-Official
 
 ## 功能：
 
@@ -29,50 +24,38 @@ https://github.com/RVC-Boss/GPT-SoVITS/assets/129054828/05bee1fa-bdd8-4d85-9350-
 
 2. **少样本 TTS：** 仅需 1 分钟的训练数据即可微调模型，提升声音相似度和真实感。
 
-3. **跨语言支持：** 支持与训练数据集不同语言的推理，目前支持英语、日语和中文。
+3. **跨语言支持：** 支持与训练数据集不同语言的推理，目前支持英语、日语、韩语、粤语和中文。
 
 4. **WebUI 工具：** 集成工具包括声音伴奏分离、自动训练集分割、中文自动语音识别(ASR)和文本标注，协助初学者创建训练数据集和 GPT/SoVITS 模型。
 
-## 环境准备
+**查看我们的介绍视频 [demo video](https://www.bilibili.com/video/BV12g4y1m7Uw)**
 
-如果你是 Windows 用户（已在 win>=10 上测试），可以直接通过预打包文件安装。只需下载[预打包文件](https://huggingface.co/lj1995/GPT-SoVITS-windows-package/resolve/main/GPT-SoVITS-beta.7z?download=true)，解压后双击 go-webui.bat 即可启动 GPT-SoVITS-WebUI。
+未见过的说话者 few-shot 微调演示：
 
-### 测试通过的 Python 和 PyTorch 版本
+https://github.com/RVC-Boss/GPT-SoVITS/assets/129054828/05bee1fa-bdd8-4d85-9350-80c060ab47fb
 
-- Python 3.9、PyTorch 2.0.1 和 CUDA 11
-- Python 3.10.13, PyTorch 2.1.2 和 CUDA 12.3
-- Python 3.9、Pytorch 2.3.0.dev20240122 和 macOS 14.3（Apple 芯片，GPU）
+**用户手册: [简体中文](https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e) | [English](https://rentry.co/GPT-SoVITS-guide#/)**
 
-_注意: numba==0.56.4 需要 python<3.11_
+## 安装
 
-### Mac 用户
+中国地区的用户可[点击此处](https://www.codewithgpu.com/i/RVC-Boss/GPT-SoVITS/GPT-SoVITS-Official)使用 AutoDL 云端镜像进行体验。
 
-如果你是 Mac 用户，请先确保满足以下条件以使用 GPU 进行训练和推理：
+### 测试通过的环境
 
-- 搭载 Apple 芯片的 Mac
-- macOS 12.3 或更高版本
-- 已通过运行`xcode-select --install`安装 Xcode command-line tools
+- Python 3.9，PyTorch 2.0.1，CUDA 11
+- Python 3.10.13，PyTorch 2.1.2，CUDA 12.3
+- Python 3.9，Pytorch 2.2.2，macOS 14.4.1（Apple 芯片）
+- Python 3.9，PyTorch 2.2.2，CPU 设备
 
-_其他 Mac 仅支持使用 CPU 进行推理_
+_注: numba==0.56.4 需要 python<3.11_
 
-然后使用以下命令安装：
+### Windows
 
-#### 创建环境
+如果你是 Windows 用户（已在 win>=10 上测试），可以下载[下载整合包](https://huggingface.co/lj1995/GPT-SoVITS-windows-package/resolve/main/GPT-SoVITS-beta.7z?download=true)，解压后双击 go-webui.bat 即可启动 GPT-SoVITS-WebUI。
 
-```bash
-conda create -n GPTSoVits python=3.9
-conda activate GPTSoVits
-```
+**中国地区的用户可以[在此处下载整合包](https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e/dkxgpiy9zb96hob4#KTvnO)。**
 
-#### 安装依赖
-
-```bash
-pip install -r requirements.txt
-pip uninstall torch torchaudio
-pip3 install --pre torch torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
-```
-
-### 使用 Conda 快速安装
+### Linux
 
 ```bash
 conda create -n GPTSoVits python=3.9
@@ -80,23 +63,31 @@ conda activate GPTSoVits
 bash install.sh
 ```
 
-### 手动安装包
+### macOS
 
-#### Pip 包
+**注：在 Mac 上使用 GPU 训练的模型效果显著低于其他设备训练的模型，所以我们暂时使用 CPU 进行训练。**
+
+1. 运行 `xcode-select --install` 安装 Xcode command-line tools。
+2. 运行 `brew install ffmpeg` 安装 FFmpeg。
+3. 完成上述步骤后，运行以下的命令来安装本项目：
 
 ```bash
+conda create -n GPTSoVits python=3.9
+conda activate GPTSoVits
 pip install -r requirements.txt
 ```
 
-#### FFmpeg
+### 手动安装
 
-##### Conda 使用者
+#### 安装 FFmpeg
+
+##### Conda 用户
 
 ```bash
 conda install ffmpeg
 ```
 
-##### Ubuntu/Debian 使用者
+##### Ubuntu/Debian 用户
 
 ```bash
 sudo apt install ffmpeg
@@ -104,15 +95,22 @@ sudo apt install libsox-dev
 conda install -c conda-forge 'ffmpeg<7'
 ```
 
-##### MacOS 使用者
+##### Windows 用户
 
+下载并将 [ffmpeg.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffmpeg.exe) 和 [ffprobe.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffprobe.exe) 放置在 GPT-SoVITS 根目录下。
+
+安装 [Visual Studio 2017](https://aka.ms/vs/17/release/vc_redist.x86.exe) 环境(仅限韩语TTS)
+
+##### MacOS 用户
 ```bash
 brew install ffmpeg
 ```
 
-##### Windows 使用者
+#### 安装依赖
 
-下载并将 [ffmpeg.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffmpeg.exe) 和 [ffprobe.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffprobe.exe) 放置在 GPT-SoVITS 根目录下。
+```bash
+pip install -r requirements.txt
+```
 
 ### 在 Docker 中使用
 
@@ -141,19 +139,19 @@ docker compose -f "docker-compose.yaml" up -d
 docker run --rm -it --gpus=all --env=is_half=False --volume=G:\GPT-SoVITS-DockerTest\output:/workspace/output --volume=G:\GPT-SoVITS-DockerTest\logs:/workspace/logs --volume=G:\GPT-SoVITS-DockerTest\SoVITS_weights:/workspace/SoVITS_weights --workdir=/workspace -p 9880:9880 -p 9871:9871 -p 9872:9872 -p 9873:9873 -p 9874:9874 --shm-size="16G" -d breakstring/gpt-sovits:xxxxx
 ```
 
-### 预训练模型
+## 预训练模型
 
-从 [GPT-SoVITS Models](https://huggingface.co/lj1995/GPT-SoVITS) 下载预训练模型，并将它们放置在 `GPT_SoVITS\pretrained_models` 中。
+**中国地区的用户可以[在此处下载这些模型](https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e/dkxgpiy9zb96hob4#nVNhX)。**
 
-对于 UVR5（人声/伴奏分离和混响移除，另外），从 [UVR5 Weights](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main/uvr5_weights) 下载模型，并将它们放置在 `tools/uvr5/uvr5_weights` 中。
+1. 从 [GPT-SoVITS Models](https://huggingface.co/lj1995/GPT-SoVITS) 下载预训练模型，并将其放置在 `GPT_SoVITS/pretrained_models` 目录中。
 
-中国地区用户可以进入以下链接并点击“下载副本”下载以上两个模型：
+2. 从 [G2PWModel_1.1.zip](https://paddlespeech.bj.bcebos.com/Parakeet/released_models/g2p/G2PWModel_1.1.zip) 下载模型，解压并重命名为 `G2PWModel`，然后将其放置在 `GPT_SoVITS/text` 目录中。（仅限中文TTS）
 
-- [GPT-SoVITS Models](https://www.icloud.com.cn/iclouddrive/056y_Xog_HXpALuVUjscIwTtg#GPT-SoVITS_Models)
+3. 对于 UVR5（人声/伴奏分离和混响移除，额外功能），从 [UVR5 Weights](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main/uvr5_weights) 下载模型，并将其放置在 `tools/uvr5/uvr5_weights` 目录中。
 
-- [UVR5 Weights](https://www.icloud.com.cn/iclouddrive/0bekRKDiJXboFhbfm3lM2fVbA#UVR5_Weights)
+4. 对于中文 ASR（额外功能），从 [Damo ASR Model](https://modelscope.cn/models/damo/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch/files)、[Damo VAD Model](https://modelscope.cn/models/damo/speech_fsmn_vad_zh-cn-16k-common-pytorch/files) 和 [Damo Punc Model](https://modelscope.cn/models/damo/punc_ct-transformer_zh-cn-common-vocab272727-pytorch/files) 下载模型，并将它们放置在 `tools/asr/models` 目录中。
 
-对于中文自动语音识别（另外），从 [Damo ASR Model](https://modelscope.cn/models/damo/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch/files), [Damo VAD Model](https://modelscope.cn/models/damo/speech_fsmn_vad_zh-cn-16k-common-pytorch/files), 和 [Damo Punc Model](https://modelscope.cn/models/damo/punc_ct-transformer_zh-cn-common-vocab272727-pytorch/files) 下载模型，并将它们放置在 `tools/damo_asr/models` 中。
+5. 对于英语或日语 ASR（额外功能），从 [Faster Whisper Large V3](https://huggingface.co/Systran/faster-whisper-large-v3) 下载模型，并将其放置在 `tools/asr/models` 目录中。此外，[其他模型](https://huggingface.co/Systran) 可能具有类似效果且占用更少的磁盘空间。
 
 ## 数据集格式
 
@@ -165,45 +163,127 @@ vocal_path|speaker_name|language|text
 
 语言字典：
 
-- 'zh': Chinese
-- 'ja': Japanese
-- 'en': English
+- 'zh': 中文
+- 'ja': 日语
+- 'en': 英语
+- 'ko': 韩语
+- 'yue': 粤语
 
 示例：
 
 ```
-D:\GPT-SoVITS\xxx/xxx.wav|xxx|en|I like playing Genshin.
+D:\GPT-SoVITS\xxx/xxx.wav|xxx|zh|我爱玩原神。
 ```
+
+## 微调与推理
+
+### 打开WebUI
+
+#### 整合包用户
+
+双击`go-webui.bat`或者使用`go-webui.ps1`
+若想使用V1,则双击`go-webui-v1.bat`或者使用`go-webui-v1.ps1`
+
+#### 其他
+
+```bash
+python webui.py <language(optional)>
+```
+
+若想使用V1,则
+
+```bash
+python webui.py v1 <language(optional)>
+```
+或者在webUI内动态切换
+
+### 微调
+
+#### 现已支持自动填充路径
+
+    1.填入训练音频路径
+
+    2.切割音频
+
+    3.进行降噪(可选)
+
+    4.进行ASR
+
+    5.校对标注
+
+    6.前往下一个窗口,点击训练
+
+### 打开推理WebUI
+
+#### 整合包用户
+
+双击 `go-webui.bat` 或者使用 `go-webui.ps1` ,然后在 `1-GPT-SoVITS-TTS/1C-推理` 中打开推理webUI
+
+#### 其他
+
+```bash
+python GPT_SoVITS/inference_webui.py <language(optional)>
+```
+或者
+
+```bash
+python webui.py
+```
+然后在 `1-GPT-SoVITS-TTS/1C-推理` 中打开推理webUI
+
+## V2发布说明
+
+新特性:
+
+1. 支持韩语及粤语
+
+2. 更好的文本前端
+
+3. 底模由2k小时扩展至5k小时
+
+4. 对低音质参考音频（尤其是来源于网络的高频严重缺失、听着很闷的音频）合成出来音质更好
+
+    详见[wiki](https://github.com/RVC-Boss/GPT-SoVITS/wiki/GPT%E2%80%90SoVITS%E2%80%90v2%E2%80%90features-(%E6%96%B0%E7%89%B9%E6%80%A7))
+
+从v1环境迁移至v2
+
+1. 需要pip安装requirements.txt更新环境
+
+2. 需要克隆github上的最新代码
+
+3. 需要从[huggingface](https://huggingface.co/lj1995/GPT-SoVITS/tree/main/gsv-v2final-pretrained) 下载预训练模型文件放到GPT_SoVITS\pretrained_models\gsv-v2final-pretrained下
+
+    中文额外需要下载[G2PWModel_1.1.zip](https://paddlespeech.bj.bcebos.com/Parakeet/released_models/g2p/G2PWModel_1.1.zip)（下载G2PW模型,解压并重命名为`G2PWModel`,将其放到`GPT_SoVITS/text`目录下）
 
 ## 待办事项清单
 
-- [ ] **高优先级：**
+- [x] **高优先级：**
 
   - [x] 日语和英语的本地化。
-  - [ ] 用户指南。
+  - [x] 用户指南。
   - [x] 日语和英语数据集微调训练。
 
-- [ ] **Features:**
-  - [ ] 零样本声音转换（5 秒）/ 少样本声音转换（1 分钟）。
-  - [ ] TTS 语速控制。
-  - [ ] 增强的 TTS 情感控制。
+- [ ] **功能:**
+  - [x] 零样本声音转换（5 秒）/ 少样本声音转换（1 分钟）。
+  - [x] TTS 语速控制。
+  - [ ] ~~增强的 TTS 情感控制。~~
   - [ ] 尝试将 SoVITS 令牌输入更改为词汇的概率分布。
-  - [ ] 改进英语和日语文本前端。
+  - [x] 改进英语和日语文本前端。
   - [ ] 开发体积小和更大的 TTS 模型。
   - [x] Colab 脚本。
   - [ ] 扩展训练数据集（从 2k 小时到 10k 小时）。
-  - [ ] 更好的 sovits 基础模型（增强的音频质量）。
+  - [x] 更好的 sovits 基础模型（增强的音频质量）。
   - [ ] 模型混合。
 
-## （可选）命令行的操作方式
+## （附加）命令行运行方式
 使用命令行打开UVR5的WebUI
 ````
 python tools/uvr5/webui.py "<infer_device>" <is_half> <webui_port_uvr5>
 ````
-如果打不开浏览器，请按照下面的格式进行UVR处理，这是使用mdxnet进行音频处理的方式
+<!-- 如果打不开浏览器，请按照下面的格式进行UVR处理，这是使用mdxnet进行音频处理的方式
 ````
 python mdxnet.py --model --input_root --output_vocal --output_ins --agg_level --format --device --is_half_precision 
-````
+```` -->
 这是使用命令行完成数据集的音频切分的方式
 ````
 python audio_slicer.py \
@@ -216,33 +296,47 @@ python audio_slicer.py \
 ````
 这是使用命令行完成数据集ASR处理的方式（仅限中文）
 ````
-python tools/damo_asr/cmd-asr.py "<Path to the directory containing input audio files>"
+python tools/asr/funasr_asr.py -i <input> -o <output>
 ````
 通过Faster_Whisper进行ASR处理（除中文之外的ASR标记）
 
 （没有进度条，GPU性能可能会导致时间延迟）
-````
-python ./tools/damo_asr/WhisperASR.py -i <input> -o <output> -f <file_name.list> -l <language>
-````
+```
+python ./tools/asr/fasterwhisper_asr.py -i <input> -o <output> -l <language> -p <precision>
+```
 启用自定义列表保存路径
+
 ## 致谢
 
 特别感谢以下项目和贡献者：
 
+### 理论研究
 - [ar-vits](https://github.com/innnky/ar-vits)
 - [SoundStorm](https://github.com/yangdongchao/SoundStorm/tree/master/soundstorm/s1/AR)
 - [vits](https://github.com/jaywalnut310/vits)
 - [TransferTTS](https://github.com/hcy71o/TransferTTS/blob/master/models.py#L556)
-- [Chinese Speech Pretrain](https://github.com/TencentGameMate/chinese_speech_pretrain)
 - [contentvec](https://github.com/auspicious3000/contentvec/)
 - [hifi-gan](https://github.com/jik876/hifi-gan)
-- [Chinese-Roberta-WWM-Ext-Large](https://huggingface.co/hfl/chinese-roberta-wwm-ext-large)
 - [fish-speech](https://github.com/fishaudio/fish-speech/blob/main/tools/llama/generate.py#L41)
+### 预训练模型
+- [Chinese Speech Pretrain](https://github.com/TencentGameMate/chinese_speech_pretrain)
+- [Chinese-Roberta-WWM-Ext-Large](https://huggingface.co/hfl/chinese-roberta-wwm-ext-large)
+### 推理用文本前端
+- [paddlespeech zh_normalization](https://github.com/PaddlePaddle/PaddleSpeech/tree/develop/paddlespeech/t2s/frontend/zh_normalization)
+- [LangSegment](https://github.com/juntaosun/LangSegment)
+- [g2pW](https://github.com/GitYCC/g2pW)
+- [pypinyin-g2pW](https://github.com/mozillazg/pypinyin-g2pW)
+- [paddlespeech g2pw](https://github.com/PaddlePaddle/PaddleSpeech/tree/develop/paddlespeech/t2s/frontend/g2pw)
+### WebUI 工具
 - [ultimatevocalremovergui](https://github.com/Anjok07/ultimatevocalremovergui)
 - [audio-slicer](https://github.com/openvpi/audio-slicer)
 - [SubFix](https://github.com/cronrpc/SubFix)
 - [FFmpeg](https://github.com/FFmpeg/FFmpeg)
 - [gradio](https://github.com/gradio-app/gradio)
+- [faster-whisper](https://github.com/SYSTRAN/faster-whisper)
+- [FunASR](https://github.com/alibaba-damo-academy/FunASR)
+
+感谢 @Naozumi520 提供粤语训练集，并在粤语相关知识方面给予指导。
 
 ## 感谢所有贡献者的努力
 

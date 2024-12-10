@@ -4,6 +4,11 @@ import json
 import os
 import uuid
 
+try:
+    import gradio.analytics as analytics
+    analytics.version_check = lambda:None
+except:...
+
 import librosa
 import gradio as gr
 import numpy as np
@@ -313,11 +318,11 @@ if __name__ == "__main__":
 
         with gr.Row():
             btn_change_index = gr.Button("Change Index")
-            btn_submit_change = gr.Button("保存文本")
+            btn_submit_change = gr.Button("Submit Text")
             btn_merge_audio = gr.Button("Merge Audio")
             btn_delete_audio = gr.Button("Delete Audio")
-            btn_previous_index = gr.Button("上一页")
-            btn_next_index = gr.Button("下一页")
+            btn_previous_index = gr.Button("Previous Index")
+            btn_next_index = gr.Button("Next Index")
             
         with gr.Row():
             index_slider = gr.Slider(

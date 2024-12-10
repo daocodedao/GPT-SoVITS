@@ -15,7 +15,7 @@
 
 `-d` - `推理设备, "cuda","cpu"`
 `-a` - `绑定地址, 默认"127.0.0.1"`
-`-p` - `绑定端口, 默认9180, 可在 config.py 中指定`
+`-p` - `绑定端口, 默认9880, 可在 config.py 中指定`
 `-fp` - `覆盖 config.py 使用全精度`
 `-hp` - `覆盖 config.py 使用半精度`
 `-sm` - `流式返回模式, 默认不启用, "close","c", "normal","n", "keepalive","k"`
@@ -33,7 +33,7 @@ endpoint: `/`
 
 使用执行参数指定的参考音频:
 GET:
-    `http://127.0.0.1:9180?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
+    `http://127.0.0.1:9880?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
 POST:
 ```json
 {
@@ -44,7 +44,7 @@ POST:
 
 使用执行参数指定的参考音频并设定分割符号:
 GET:
-    `http://127.0.0.1:9180?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh&cut_punc=，。`
+    `http://127.0.0.1:9880?text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh&cut_punc=，。`
 POST:
 ```json
 {
@@ -56,7 +56,7 @@ POST:
 
 手动指定当次推理所使用的参考音频:
 GET:
-    `http://127.0.0.1:9180?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh&text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
+    `http://127.0.0.1:9880?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh&text=先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。&text_language=zh`
 POST:
 ```json
 {
@@ -80,7 +80,7 @@ endpoint: `/change_refer`
 key与推理端一样
 
 GET:
-    `http://127.0.0.1:9180/change_refer?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh`
+    `http://127.0.0.1:9880/change_refer?refer_wav_path=123.wav&prompt_text=一二三。&prompt_language=zh`
 POST:
 ```json
 {
@@ -104,7 +104,7 @@ command:
 "exit": 结束运行
 
 GET:
-    `http://127.0.0.1:9180/control?command=restart`
+    `http://127.0.0.1:9880/control?command=restart`
 POST:
 ```json
 {
@@ -130,7 +130,6 @@ import LangSegment
 from time import time as ttime
 import torch
 import librosa
-import time
 import soundfile as sf
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
@@ -150,7 +149,8 @@ import logging
 import subprocess
 from utility.logger_settings import api_logger
 from utility.rolejson import findRoleContent
-from utility.logger_settings import api_logger
+
+
 
 class DefaultRefer:
     def __init__(self, path, text, language):
@@ -758,6 +758,28 @@ async def tts_endpoint(
     
 
     return retResult
+
+
+
+# 定义一个用于接收语音文件的路由端点
+@app.post("/chat/voicefile")
+async def create_upload_file(file: UploadFile = File(...)):
+    file_name = file.filename
+    file_extension = os.path.splitext(file_name)[1]
+    # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
+    if file_extension not in [".wav", ".mp3", ".aac"]:
+        return {"error": "不支持的文件格式"}
+
+    # 将接收到的文件保存到本地（示例保存路径，可以根据实际需求修改）
+    saveDir = f"./received_files"
+    if not os.path.exists(saveDir):
+        os.makedirs(saveDir)
+
+    save_path = f"{saveDir}/{file_name}"
+    with open(save_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    return {"filename": file_name, "status": "文件接收成功"}
 
 
 if __name__ == "__main__":
