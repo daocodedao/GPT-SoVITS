@@ -811,8 +811,10 @@ async def create_upload_file(file: UploadFile = File(...)):
         retHandle = handle(text=answer, text_language="zh")
         return retHandle
     except Exception as e:
+        api_logger.error(str(e))
         return JSONResponse(status_code=400, content={"message": f"change sovits weight failed", "Exception": str(e)})
-    return JSONResponse(status_code=200, content={"message": "success"})
+    
+    # return JSONResponse(status_code=200, content={"message": "success"})
 
 
 
