@@ -130,6 +130,7 @@ import LangSegment
 from time import time as ttime
 import torch
 import librosa
+import time
 import soundfile as sf
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
@@ -149,6 +150,7 @@ import logging
 import subprocess
 from utility.logger_settings import api_logger
 from utility.rolejson import findRoleContent
+from utility.logger_settings import api_logger
 
 class DefaultRefer:
     def __init__(self, path, text, language):
@@ -196,7 +198,7 @@ def change_sovits_weights(sovits_path):
     vq_model.eval()
     vq_model.load_state_dict(dict_s2["weight"], strict=False)
 
-    print(f"hps.data.sampling_rate={hps.data.sampling_rate}")
+    api_logger.info(f"hps.data.sampling_rate={hps.data.sampling_rate}")
 
 
 def change_gpt_weights(gpt_path):
@@ -462,7 +464,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
                 top_k=config['inference']['top_k'],
                 early_stop_num=hz * max_sec)
         t3 = ttime()
-        # print(pred_semantic.shape,idx)
+        # api_logger.info(pred_semantic.shape,idx)
         pred_semantic = pred_semantic[:, -idx:].unsqueeze(0)  # .unsqueeze(0)#mq要多unsqueeze一次
         refer = get_spepc(hps, ref_wav_path)  # .to(device)
         if (is_half == True):
@@ -532,6 +534,7 @@ def handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cu
         if not default_refer.is_ready():
             return JSONResponse({"code": 400, "message": "未指定参考音频且接口无预设"}, status_code=400)
 
+    api_logger.info(f"请求 {text_language} ----- {text}" )
     if cut_punc == None:
         text = cut_text(text,default_cut_punc)
     else:
@@ -745,7 +748,16 @@ async def tts_endpoint(
         text_language: str = None,
         cut_punc: str = None,
 ):
-    return handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
+    start_time = time.time()
+    retResult = handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
+    end_time = time.time()
+    time_diff = end_time - start_time
+    print(f"http v1 语句执行前时间戳: {start_time}")
+    print(f"http v1 语句执行后时间戳: {end_time}")
+    print(f"http v1 时间差（单位：秒）: {time_diff}")
+    
+
+    return retResult
 
 
 if __name__ == "__main__":
