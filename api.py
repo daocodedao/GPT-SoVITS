@@ -800,10 +800,19 @@ async def create_upload_file(file: UploadFile = File(...)):
     answer = run_gpt(srcText)
     api_logger.info(f"返回答案: {answer}")
 
-    # 文字转语音
-    retHandle = handle(text=answer, text_language="zh")
 
-    return retHandle
+    try:
+        # 文字转语音
+        retHandle = handle(text=answer, text_language="zh")
+        return retHandle
+    except Exception as e:
+        return JSONResponse(status_code=400, content={"message": f"change sovits weight failed", "Exception": str(e)})
+    return JSONResponse(status_code=200, content={"message": "success"})
+
+
+
+
+
 
 
 if __name__ == "__main__":
