@@ -672,10 +672,11 @@ if is_half:
 else:
     bert_model = bert_model.to(device)
     ssl_model = ssl_model.to(device)
+
+api_logger.info(f"sovits_path:{sovits_path}")    
+api_logger.info(f"gpt_path:{gpt_path}")    
 change_sovits_weights(sovits_path)
 change_gpt_weights(gpt_path)
-
-
 
 
 # --------------------------------
