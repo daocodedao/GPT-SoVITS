@@ -801,6 +801,9 @@ async def create_upload_file(file: UploadFile = File(...)):
     srcText = only_asr(save_path, language="zh")
     api_logger.info(f"语音转文字: {srcText}")
     
+    if len(srcText) < 1:
+        return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
+    
     # 请求gpt
     answer = run_gpt(srcText)
     api_logger.info(f"返回答案: {answer}")
