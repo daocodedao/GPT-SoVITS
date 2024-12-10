@@ -136,14 +136,15 @@ from fastapi.responses import StreamingResponse, JSONResponse
 import uvicorn
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 import numpy as np
-from feature_extractor import cnhubert
+
 from io import BytesIO
-from module.models import SynthesizerTrn
-from AR.models.t2s_lightning_module import Text2SemanticLightningModule
-from text import cleaned_text_to_sequence
-from text.cleaner import clean_text
-from module.mel_processing import spectrogram_torch
-from my_utils import load_audio
+from GPT_SoVITS.feature_extractor import cnhubert
+from GPT_SoVITS.module.models import SynthesizerTrn
+from GPT_SoVITS.AR.models.t2s_lightning_module import Text2SemanticLightningModule
+from GPT_SoVITS.text import cleaned_text_to_sequence
+from GPT_SoVITS.text.cleaner import clean_text
+from GPT_SoVITS.module.mel_processing import spectrogram_torch
+from GPT_SoVITS.my_utils import load_audio
 import config as global_config
 import logging
 import subprocess
@@ -183,12 +184,18 @@ def change_sovits_weights(sovits_path):
     hps = DictToAttrRecursive(hps)
     hps.model.semantic_frame_rate = "25hz"
     model_params_dict = vars(hps.model)
+    versionStr = "v1"
+    if "v2" in sovits_path:
+        versionStr = "v2"
+
     vq_model = SynthesizerTrn(
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
         n_speakers=hps.data.n_speakers,
-        **model_params_dict
+        **model_params_dict,
+        version=versionStr
     )
+
     if ("pretrained" not in sovits_path):
         del vq_model.enc_q
     if is_half == True:
