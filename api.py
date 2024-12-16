@@ -790,7 +790,7 @@ async def tts_endpoint(
     return retResult
 
 
-@app.post("/voice/role")
+@app.get("/voice/role")
 async def tts_endpoint(
         text: str = None,
         text_language: str = "zh",
@@ -801,8 +801,6 @@ async def tts_endpoint(
 
     if not text or len(text) == 0:
         return JSONResponse(status_code=202, content={"message": f"没有可以处理的文本"})
-
-
 
     loadRole(role)
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
