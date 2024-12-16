@@ -132,7 +132,7 @@ from time import time as ttime
 import torch
 import librosa
 import soundfile as sf
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Form
 from fastapi import File, UploadFile
 
 from fastapi.responses import StreamingResponse, JSONResponse
@@ -559,6 +559,8 @@ def handle(refer_wav_path = None,
 
 def loadRole(role:str="FatiaoZhang"):
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+    if not role:
+        role = "FatiaoZhang"
     roleDic = findRoleContent(roleName=role)
     api_logger.info(f"{role} 找到角色 role {roleDic}")
     g_refer_path = roleDic["refer_path"]
@@ -791,7 +793,7 @@ async def tts_endpoint(
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
-async def create_upload_file(file: UploadFile = File(...), role="FaTiaoZhang"):
+async def create_upload_file(file: UploadFile = File(...), role=Form(...)):
     file_name = file.filename
     file_extension = os.path.splitext(file_name)[1]
     # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
