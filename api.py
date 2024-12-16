@@ -820,6 +820,7 @@ async def create_upload_file(file: UploadFile = File(...), role="FaTiaoZhang"):
     api_logger.info(f"返回答案: {answer}")
 
     try:
+        api_logger.info(f"Role is {role}")
         loadRole(role)
         global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
         # 4.文字转语音
