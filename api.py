@@ -797,7 +797,7 @@ async def tts_endpoint(
         role: str = "FaTiaoZhang",
 ):
     start_time = time.time()
-    api_logger.info(f"Role is {role}")
+    api_logger.info(f"Role is {role}, text is {text}")
     loadRole(role)
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
     # 4.文字转语音
