@@ -790,7 +790,7 @@ async def tts_endpoint(
     return retResult
 
 
-@app.post("/role")
+@app.post("/voice/role")
 async def tts_endpoint(
         text: str = None,
         text_language: str = "zh",
