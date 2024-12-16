@@ -557,7 +557,15 @@ def handle(refer_wav_path = None,
 
     return StreamingResponse(get_tts_wav(refer_wav_path, prompt_text, prompt_language, text, text_language), media_type="audio/"+media_type)
 
-
+def loadRole(role:str="FatiaoZhang"):
+    global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+    roleDic = findRoleContent(roleName=role)
+    api_logger.info(f"{role} 找到角色 role {roleDic}")
+    g_refer_path = roleDic["refer_path"]
+    g_refer_text = roleDic["refer_text"]
+    g_refer_language = roleDic["refer_language"]
+    g_sovits_path = roleDic["sovits_path"]
+    g_gpt_path = roleDic["gpt_path"]
 
 
 # --------------------------------
@@ -622,24 +630,27 @@ bert_path = args.bert_path
 default_cut_punc = args.cut_punc
 
 role = args.role
-roleDic = findRoleContent(roleName=role)
-api_logger.info(f"{role} 找到角色 role {roleDic}")
-refer_path = roleDic["refer_path"]
-refer_text = roleDic["refer_text"]
-refer_language = roleDic["refer_language"]
-sovits_path = roleDic["sovits_path"]
-gpt_path = roleDic["gpt_path"]
+loadRole(role)
+# roleDic = findRoleContent(roleName=role)
+# api_logger.info(f"{role} 找到角色 role {roleDic}")
+# refer_path = roleDic["refer_path"]
+# refer_text = roleDic["refer_text"]
+# refer_language = roleDic["refer_language"]
+# sovits_path = roleDic["sovits_path"]
+# gpt_path = roleDic["gpt_path"]
+
+
 
 # 应用参数配置
-default_refer = DefaultRefer(refer_path, refer_text, refer_language)
+default_refer = DefaultRefer(g_refer_path, g_refer_text, g_refer_language)
 
 # 模型路径检查
-if sovits_path == "":
-    sovits_path = g_config.pretrained_sovits_path
-    logger.warn(f"未指定SoVITS模型路径, fallback后当前值: {sovits_path}")
-if gpt_path == "":
-    gpt_path = g_config.pretrained_gpt_path
-    logger.warn(f"未指定GPT模型路径, fallback后当前值: {gpt_path}")
+if g_sovits_path == "":
+    g_sovits_path = g_config.pretrained_sovits_path
+    logger.warn(f"未指定SoVITS模型路径, fallback后当前值: {g_sovits_path}")
+if g_gpt_path == "":
+    g_gpt_path = g_config.pretrained_gpt_path
+    logger.warn(f"未指定GPT模型路径, fallback后当前值: {g_gpt_path}")
 
 # 指定默认参考音频, 调用方 未提供/未给全 参考音频参数时使用
 if default_refer.path == "" or default_refer.text == "" or default_refer.language == "":
@@ -688,10 +699,10 @@ else:
     bert_model = bert_model.to(device)
     ssl_model = ssl_model.to(device)
 
-api_logger.info(f"sovits_path:{sovits_path}")    
-api_logger.info(f"gpt_path:{gpt_path}")    
-change_sovits_weights(sovits_path)
-change_gpt_weights(gpt_path)
+api_logger.info(f"sovits_path:{g_sovits_path}")    
+api_logger.info(f"gpt_path:{g_gpt_path}")    
+change_sovits_weights(g_sovits_path)
+change_gpt_weights(g_gpt_path)
 
 
 # --------------------------------
@@ -702,13 +713,13 @@ app = FastAPI()
 @app.post("/set_model")
 async def set_model(request: Request):
     json_post_raw = await request.json()
-    global gpt_path
-    gpt_path=json_post_raw.get("gpt_model_path")
-    global sovits_path
-    sovits_path=json_post_raw.get("sovits_model_path")
-    logger.info("gptpath"+gpt_path+";vitspath"+sovits_path)
-    change_sovits_weights(sovits_path)
-    change_gpt_weights(gpt_path)
+    global g_gpt_path
+    g_gpt_path=json_post_raw.get("gpt_model_path")
+    global g_sovits_path
+    g_sovits_path=json_post_raw.get("sovits_model_path")
+    logger.info("gptpath"+g_gpt_path+";vitspath"+g_sovits_path)
+    change_sovits_weights(g_sovits_path)
+    change_gpt_weights(g_gpt_path)
     return "ok"
 
 
@@ -780,14 +791,14 @@ async def tts_endpoint(
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
-async def create_upload_file(file: UploadFile = File(...)):
+async def create_upload_file(file: UploadFile = File(...), role="FaTiaoZhang"):
     file_name = file.filename
     file_extension = os.path.splitext(file_name)[1]
     # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
     if file_extension not in [".wav", ".mp3", ".aac"]:
         return {"error": "不支持的文件格式"}
 
-    # 将接收到的文件保存到本地（示例保存路径，可以根据实际需求修改）
+    # 1. 将接收到的文件保存到本地（示例保存路径，可以根据实际需求修改）
     saveDir = f"./received_files"
     if not os.path.exists(saveDir):
         os.makedirs(saveDir)
@@ -796,7 +807,7 @@ async def create_upload_file(file: UploadFile = File(...)):
     with open(save_path, "wb") as buffer:
         buffer.write(await file.read())
 
-    # 语音识别  
+    # 2. 语音识别  
     from tools.asr.funasr_asr import only_asr  #如果用英文就不需要导入下载模型
     srcText = only_asr(save_path, language="zh")
     api_logger.info(f"语音转文字: {srcText}")
@@ -804,25 +815,25 @@ async def create_upload_file(file: UploadFile = File(...)):
     if len(srcText) < 1:
         return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
     
-    # 请求gpt
+    # 3. 请求gpt
     answer = run_gpt(srcText)
     api_logger.info(f"返回答案: {answer}")
 
-
     try:
-        # 文字转语音
-        retHandle = handle(text=answer, text_language="zh")
+        loadRole(role)
+        global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+        # 4.文字转语音
+        retHandle = handle(text=answer, 
+                           text_language="zh",
+                           prompt_text=g_refer_text,
+                           prompt_language=g_refer_language,
+                           refer_wav_path=g_refer_path)
         return retHandle
     except Exception as e:
         api_logger.error(str(e))
         return JSONResponse(status_code=400, content={"message": f"change sovits weight failed", "Exception": str(e)})
     
     # return JSONResponse(status_code=200, content={"message": "success"})
-
-
-
-
-
 
 
 if __name__ == "__main__":
