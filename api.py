@@ -560,7 +560,7 @@ def handle(refer_wav_path = None,
 def loadRole(role:str="FatiaoZhang"):
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
     if not role:
-        role = "FatiaoZhang"
+        role = "FaTiaoZhang"
     roleDic = findRoleContent(roleName=role)
     api_logger.info(f"{role} 找到角色 role {roleDic}")
     g_refer_path = roleDic["refer_path"]
@@ -794,7 +794,7 @@ async def tts_endpoint(
 async def tts_endpoint(
         text: str = None,
         text_language: str = "zh",
-        role: str = "FatiaoZhang",
+        role: str = "FaTiaoZhang",
 ):
     start_time = time.time()
     api_logger.info(f"Role is {role}")
