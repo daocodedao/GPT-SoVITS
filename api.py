@@ -798,6 +798,12 @@ async def tts_endpoint(
 ):
     start_time = time.time()
     api_logger.info(f"Role is {role}, text is {text}")
+
+    if not text or len(text) == 0:
+        return JSONResponse(status_code=202, content={"message": f"没有可以处理的文本"})
+
+
+
     loadRole(role)
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
     # 4.文字转语音
