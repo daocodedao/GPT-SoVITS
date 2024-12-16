@@ -790,6 +790,34 @@ async def tts_endpoint(
     return retResult
 
 
+@app.get("/role")
+async def tts_endpoint(
+        text: str = None,
+        text_language: str = "zh",
+        role: str = "FatiaoZhang",
+):
+    start_time = time.time()
+    api_logger.info(f"Role is {role}")
+    loadRole(role)
+    global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+    # 4.文字转语音
+    retHandle = handle(text=text, 
+                        text_language=text_language,
+                        prompt_text=g_refer_text,
+                        prompt_language=g_refer_language,
+                        refer_wav_path=g_refer_path)
+    
+    # retResult = handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
+    end_time = time.time()
+    time_diff = end_time - start_time
+    api_logger.info(f"http v1 语句请求: text_language={text_language} text={text}  ")
+    api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
+    api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
+    api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
+    
+
+    return retHandle
+
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
