@@ -12,7 +12,8 @@ echo "Python path:  $pythonPath"
 echo "${YELLOW}source ${venvBinDir}activate${NOCOLOR}"
 source ${venvBinDir}activate
 
-jobName=api.py 
+
+jobName=webui.py 
 echo "${YELLOW}check $jobName pid${NOCOLOR}"
 echo "ps aux | grep "$jobName" | grep -v grep  | awk '{print $2}'"
 TAILPID=`ps aux | grep "$jobName" | grep -v grep | awk '{print $2}'`  
@@ -23,7 +24,7 @@ fi
 
 
 echo -e "${YELLOW}${pythonPath} $jobName -p 9180 ${NOCOLOR}"
-nohup ${pythonPath} $jobName -p 9180 > logs/api.log 2>&1 &
+nohup ${pythonPath} $jobName  > logs/webui.log 2>&1 &
 
 
 

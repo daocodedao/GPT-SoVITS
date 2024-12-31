@@ -113,7 +113,7 @@ remote_port = 9871
 use_encryption = false
 use_compression = false
 
-[ssh-sovits-9871-api]
+[ssh-sovits-9880-api]
 type = tcp
 local_ip = 127.0.0.1
 local_port = 9880
@@ -122,7 +122,7 @@ use_encryption = false
 use_compression = false
 
 
-[ssh-gptsovits-9871-api]
+[ssh-gptsovits-6280-api]
 type = tcp
 local_ip = 127.0.0.1
 local_port = 9180
@@ -142,12 +142,15 @@ sudo supervisord
 nethogs
 ```
 ## 查看端口
-netstat -an | grep 9872
+netstat -an | grep 9874
 
 # 资源
 ## 拷贝
 ```
 scp -r -P 10062 /Users/linzhiji/Documents/code/GPT-SoVITS/resource/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
+
+
+scp -r -P 10062 /Users/linzhiji/Downloads/G2PWModel_1.1.zip fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
 
 scp -r -P 10062 /Users/linzhiji/Documents/code/GPT-SoVITS/refersample/ fxbox@bfrp.fxait.com:/data/work/GPT-SoVITS
 
