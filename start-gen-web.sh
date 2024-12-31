@@ -23,7 +23,7 @@ sudo kill -9 $TAILPID
 fi
 
 
-echo -e "${YELLOW}${pythonPath} $jobName -p 9180 ${NOCOLOR}"
+echo -e "${YELLOW}${pythonPath} $jobName  ${NOCOLOR}"
 nohup ${pythonPath} $jobName  > logs/webui.log 2>&1 &
 
 
