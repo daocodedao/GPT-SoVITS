@@ -116,9 +116,8 @@ RESP: 无
 
 """
 
-
 import argparse
-import os,re
+import os, re
 import sys
 import time
 
@@ -196,10 +195,10 @@ def change_sovits_weights(sovits_path):
         hps.train.segment_size // hps.data.hop_length,
         n_speakers=hps.data.n_speakers,
         **model_params_dict,
-        version=versionStr
+        version=versionStr,
     )
 
-    if ("pretrained" not in sovits_path):
+    if "pretrained" not in sovits_path:
         del vq_model.enc_q
     if is_half == True:
         vq_model = vq_model.half().to(device)
@@ -231,7 +230,9 @@ def get_bert_feature(text, word2ph):
     with torch.no_grad():
         inputs = tokenizer(text, return_tensors="pt")
         for i in inputs:
-            inputs[i] = inputs[i].to(device)  #####输入是long不用管精度问题，精度随bert_model
+            inputs[i] = inputs[i].to(
+                device
+            )  #####输入是long不用管精度问题，精度随bert_model
         res = bert_model(**inputs, output_hidden_states=True)
         res = torch.cat(res["hidden_states"][-3:-2], -1)[0].cpu()[1:-1]
     assert len(word2ph) == len(text)
@@ -251,9 +252,9 @@ def clean_text_inf(text, language):
 
 
 def get_bert_inf(phones, word2ph, norm_text, language):
-    language=language.replace("all_","")
+    language = language.replace("all_", "")
     if language == "zh":
-        bert = get_bert_feature(norm_text, word2ph).to(device)#.to(dtype)
+        bert = get_bert_feature(norm_text, word2ph).to(device)  # .to(dtype)
     else:
         bert = torch.zeros(
             (1024, len(phones)),
@@ -263,9 +264,9 @@ def get_bert_inf(phones, word2ph, norm_text, language):
     return bert
 
 
-def get_phones_and_bert(text,language):
-    if language in {"en","all_zh","all_ja"}:
-        language = language.replace("all_","")
+def get_phones_and_bert(text, language):
+    if language in {"en", "all_zh", "all_ja"}:
+        language = language.replace("all_", "")
         if language == "en":
             LangSegment.setfilters(["en"])
             formattext = " ".join(tmp["text"] for tmp in LangSegment.getTexts(text))
@@ -282,10 +283,10 @@ def get_phones_and_bert(text,language):
                 (1024, len(phones)),
                 dtype=torch.float16 if is_half == True else torch.float32,
             ).to(device)
-    elif language in {"zh", "ja","auto"}:
-        textlist=[]
-        langlist=[]
-        LangSegment.setfilters(["zh","ja","en","ko"])
+    elif language in {"zh", "ja", "auto"}:
+        textlist = []
+        langlist = []
+        LangSegment.setfilters(["zh", "ja", "en", "ko"])
         if language == "auto":
             for tmp in LangSegment.getTexts(text):
                 if tmp["lang"] == "ko":
@@ -316,9 +317,13 @@ def get_phones_and_bert(text,language):
             bert_list.append(bert)
         bert = torch.cat(bert_list, dim=1)
         phones = sum(phones_list, [])
-        norm_text = ''.join(norm_text_list)
+        norm_text = "".join(norm_text_list)
 
-    return phones,bert.to(torch.float16 if is_half == True else torch.float32),norm_text
+    return (
+        phones,
+        bert.to(torch.float16 if is_half == True else torch.float32),
+        norm_text,
+    )
 
 
 class DictToAttrRecursive:
@@ -336,8 +341,14 @@ def get_spepc(hps, filename):
     audio = torch.FloatTensor(audio)
     audio_norm = audio
     audio_norm = audio_norm.unsqueeze(0)
-    spec = spectrogram_torch(audio_norm, hps.data.filter_length, hps.data.sampling_rate, hps.data.hop_length,
-                             hps.data.win_length, center=False)
+    spec = spectrogram_torch(
+        audio_norm,
+        hps.data.filter_length,
+        hps.data.sampling_rate,
+        hps.data.hop_length,
+        hps.data.win_length,
+        center=False,
+    )
     return spec
 
 
@@ -354,7 +365,9 @@ def pack_audio(audio_bytes, data, rate):
 
 
 def pack_ogg(audio_bytes, data, rate):
-    with sf.SoundFile(audio_bytes, mode='w', samplerate=rate, channels=1, format='ogg') as audio_file:
+    with sf.SoundFile(
+        audio_bytes, mode="w", samplerate=rate, channels=1, format="ogg"
+    ) as audio_file:
         audio_file.write(data)
 
     return audio_bytes
@@ -367,26 +380,38 @@ def pack_raw(audio_bytes, data, rate):
 
 
 def pack_wav(audio_bytes, rate):
-    data = np.frombuffer(audio_bytes.getvalue(),dtype=np.int16)
+    data = np.frombuffer(audio_bytes.getvalue(), dtype=np.int16)
     wav_bytes = BytesIO()
-    sf.write(wav_bytes, data, rate, format='wav')
+    sf.write(wav_bytes, data, rate, format="wav")
 
     return wav_bytes
 
 
 def pack_aac(audio_bytes, data, rate):
-    process = subprocess.Popen([
-        'ffmpeg',
-        '-f', 's16le',  # 输入16位有符号小端整数PCM
-        '-ar', str(rate),  # 设置采样率
-        '-ac', '1',  # 单声道
-        '-i', 'pipe:0',  # 从管道读取输入
-        '-c:a', 'aac',  # 音频编码器为AAC
-        '-b:a', '192k',  # 比特率
-        '-vn',  # 不包含视频
-        '-f', 'adts',  # 输出AAC数据流格式
-        'pipe:1'  # 将输出写入管道
-    ], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        [
+            "ffmpeg",
+            "-f",
+            "s16le",  # 输入16位有符号小端整数PCM
+            "-ar",
+            str(rate),  # 设置采样率
+            "-ac",
+            "1",  # 单声道
+            "-i",
+            "pipe:0",  # 从管道读取输入
+            "-c:a",
+            "aac",  # 音频编码器为AAC
+            "-b:a",
+            "192k",  # 比特率
+            "-vn",  # 不包含视频
+            "-f",
+            "adts",  # 输出AAC数据流格式
+            "pipe:1",  # 将输出写入管道
+        ],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
     out, _ = process.communicate(input=data.tobytes())
     audio_bytes.write(out)
 
@@ -402,14 +427,18 @@ def read_clean_buffer(audio_bytes):
 
 
 def cut_text(text, punc):
-    punc_list = [p for p in punc if p in {",", ".", ";", "?", "!", "、", "，", "。", "？", "！", "；", "：", "…"}]
+    punc_list = [
+        p
+        for p in punc
+        if p in {",", ".", ";", "?", "!", "、", "，", "。", "？", "！", "；", "：", "…"}
+    ]
     if len(punc_list) > 0:
         punds = r"[" + "".join(punc_list) + r"]"
         text = text.strip("\n")
         items = re.split(f"({punds})", text)
         mergeitems = ["".join(group) for group in zip(items[::2], items[1::2])]
         # 在句子不存在符号或句尾无符号的时候保证文本完整
-        if len(items)%2 == 1:
+        if len(items) % 2 == 1:
             mergeitems.append(items[-1])
         text = "\n".join(mergeitems)
 
@@ -427,19 +456,26 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
     t0 = ttime()
     prompt_text = prompt_text.strip("\n")
     prompt_language, text = prompt_language, text.strip("\n")
-    zero_wav = np.zeros(int(hps.data.sampling_rate * 0.3), dtype=np.float16 if is_half == True else np.float32)
+    zero_wav = np.zeros(
+        int(hps.data.sampling_rate * 0.3),
+        dtype=np.float16 if is_half == True else np.float32,
+    )
     with torch.no_grad():
         wav16k, sr = librosa.load(ref_wav_path, sr=16000)
         wav16k = torch.from_numpy(wav16k)
         zero_wav_torch = torch.from_numpy(zero_wav)
-        if (is_half == True):
+        if is_half == True:
             wav16k = wav16k.half().to(device)
             zero_wav_torch = zero_wav_torch.half().to(device)
         else:
             wav16k = wav16k.to(device)
             zero_wav_torch = zero_wav_torch.to(device)
         wav16k = torch.cat([wav16k, zero_wav_torch])
-        ssl_content = ssl_model.model(wav16k.unsqueeze(0))["last_hidden_state"].transpose(1, 2)  # .float()
+        ssl_content = ssl_model.model(wav16k.unsqueeze(0))[
+            "last_hidden_state"
+        ].transpose(
+            1, 2
+        )  # .float()
         codes = vq_model.extract_latent(ssl_content)
         prompt_semantic = codes[0, 0]
     t1 = ttime()
@@ -471,35 +507,45 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
                 prompt,
                 bert,
                 # prompt_phone_len=ph_offset,
-                top_k=config['inference']['top_k'],
-                early_stop_num=hz * max_sec)
+                top_k=config["inference"]["top_k"],
+                early_stop_num=hz * max_sec,
+            )
         t3 = ttime()
         # api_logger.info(pred_semantic.shape,idx)
-        pred_semantic = pred_semantic[:, -idx:].unsqueeze(0)  # .unsqueeze(0)#mq要多unsqueeze一次
+        pred_semantic = pred_semantic[:, -idx:].unsqueeze(
+            0
+        )  # .unsqueeze(0)#mq要多unsqueeze一次
         refer = get_spepc(hps, ref_wav_path)  # .to(device)
-        if (is_half == True):
+        if is_half == True:
             refer = refer.half().to(device)
         else:
             refer = refer.to(device)
         # audio = vq_model.decode(pred_semantic, all_phoneme_ids, refer).detach().cpu().numpy()[0, 0]
-        audio = \
-            vq_model.decode(pred_semantic, torch.LongTensor(phones2).to(device).unsqueeze(0),
-                            refer).detach().cpu().numpy()[
-                0, 0]  ###试试重建不带上prompt部分
+        audio = (
+            vq_model.decode(
+                pred_semantic, torch.LongTensor(phones2).to(device).unsqueeze(0), refer
+            )
+            .detach()
+            .cpu()
+            .numpy()[0, 0]
+        )  ###试试重建不带上prompt部分
         audio_opt.append(audio)
         audio_opt.append(zero_wav)
         t4 = ttime()
-        audio_bytes = pack_audio(audio_bytes,(np.concatenate(audio_opt, 0) * 32768).astype(np.int16),hps.data.sampling_rate)
+        audio_bytes = pack_audio(
+            audio_bytes,
+            (np.concatenate(audio_opt, 0) * 32768).astype(np.int16),
+            hps.data.sampling_rate,
+        )
         # logger.info("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
         if stream_mode == "normal":
             audio_bytes, audio_chunk = read_clean_buffer(audio_bytes)
             yield audio_chunk
-    
-    if not stream_mode == "normal": 
-        if media_type == "wav":
-            audio_bytes = pack_wav(audio_bytes,hps.data.sampling_rate)
-        yield audio_bytes.getvalue()
 
+    if not stream_mode == "normal":
+        if media_type == "wav":
+            audio_bytes = pack_wav(audio_bytes, hps.data.sampling_rate)
+        yield audio_bytes.getvalue()
 
 
 def handle_control(command):
@@ -512,7 +558,13 @@ def handle_control(command):
 
 def handle_change(path, text, language):
     if is_empty(path, text, language):
-        return JSONResponse({"code": 400, "message": '缺少任意一项以下参数: "path", "text", "language"'}, status_code=400)
+        return JSONResponse(
+            {
+                "code": 400,
+                "message": '缺少任意一项以下参数: "path", "text", "language"',
+            },
+            status_code=400,
+        )
 
     if path != "" or path is not None:
         default_refer.path = path
@@ -526,20 +578,24 @@ def handle_change(path, text, language):
     logger.info(f"当前默认参考音频语种: {default_refer.language}")
     logger.info(f"is_ready: {default_refer.is_ready()}")
 
-
     return JSONResponse({"code": 0, "message": "Success"}, status_code=200)
 
 
-def handle(refer_wav_path = None, 
-           prompt_text = None, 
-           prompt_language = None, 
-           text = None, 
-           text_language = None, 
-           cut_punc = None):
+def handle(
+    refer_wav_path=None,
+    prompt_text=None,
+    prompt_language=None,
+    text=None,
+    text_language=None,
+    cut_punc=None,
+):
     if (
-            refer_wav_path == "" or refer_wav_path is None
-            or prompt_text == "" or prompt_text is None
-            or prompt_language == "" or prompt_language is None
+        refer_wav_path == ""
+        or refer_wav_path is None
+        or prompt_text == ""
+        or prompt_text is None
+        or prompt_language == ""
+        or prompt_language is None
     ):
         refer_wav_path, prompt_text, prompt_language = (
             default_refer.path,
@@ -547,17 +603,23 @@ def handle(refer_wav_path = None,
             default_refer.language,
         )
         if not default_refer.is_ready():
-            return JSONResponse({"code": 400, "message": "未指定参考音频且接口无预设"}, status_code=400)
+            return JSONResponse(
+                {"code": 400, "message": "未指定参考音频且接口无预设"}, status_code=400
+            )
 
-    api_logger.info(f"请求 {text_language} ----- {text}" )
+    api_logger.info(f"请求 {text_language} ----- {text}")
     if cut_punc == None:
-        text = cut_text(text,default_cut_punc)
+        text = cut_text(text, default_cut_punc)
     else:
-        text = cut_text(text,cut_punc)
+        text = cut_text(text, cut_punc)
 
-    return StreamingResponse(get_tts_wav(refer_wav_path, prompt_text, prompt_language, text, text_language), media_type="audio/"+media_type)
+    return StreamingResponse(
+        get_tts_wav(refer_wav_path, prompt_text, prompt_language, text, text_language),
+        media_type="audio/" + media_type,
+    )
 
-def loadRole(role:str="FatiaoZhang"):
+
+def loadRole(role: str = "FatiaoZhang"):
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
     if not role:
         role = "FaTiaoZhang"
@@ -579,7 +641,7 @@ dict_language = {
     "日文": "all_ja",
     "中英混合": "zh",
     "日英混合": "ja",
-    "多语种混合": "auto",    #多语种启动切分识别语种
+    "多语种混合": "auto",  # 多语种启动切分识别语种
     "all_zh": "all_zh",
     "en": "en",
     "all_ja": "all_ja",
@@ -590,7 +652,7 @@ dict_language = {
 
 # logger
 logging.config.dictConfig(uvicorn.config.LOGGING_CONFIG)
-logger = logging.getLogger('uvicorn')
+logger = logging.getLogger("uvicorn")
 
 # 获取配置
 g_config = global_config.Config()
@@ -601,24 +663,76 @@ parser = argparse.ArgumentParser(description="GPT-SoVITS api")
 
 parser.add_argument("-r", "--role", type=str, default="FaTiaoZhang", help="role name")
 
-parser.add_argument("-s", "--sovits_path", type=str, default=g_config.sovits_path, help="SoVITS模型路径")
-parser.add_argument("-g", "--gpt_path", type=str, default=g_config.gpt_path, help="GPT模型路径")
-parser.add_argument("-dr", "--default_refer_path", type=str, default="", help="默认参考音频路径")
-parser.add_argument("-dt", "--default_refer_text", type=str, default="", help="默认参考音频文本")
-parser.add_argument("-dl", "--default_refer_language", type=str, default="", help="默认参考音频语种")
-parser.add_argument("-d", "--device", type=str, default=g_config.infer_device, help="cuda / cpu")
-parser.add_argument("-a", "--bind_addr", type=str, default="0.0.0.0", help="default: 0.0.0.0")
+parser.add_argument(
+    "-s", "--sovits_path", type=str, default=g_config.sovits_path, help="SoVITS模型路径"
+)
+parser.add_argument(
+    "-g", "--gpt_path", type=str, default=g_config.gpt_path, help="GPT模型路径"
+)
+parser.add_argument(
+    "-dr", "--default_refer_path", type=str, default="", help="默认参考音频路径"
+)
+parser.add_argument(
+    "-dt", "--default_refer_text", type=str, default="", help="默认参考音频文本"
+)
+parser.add_argument(
+    "-dl", "--default_refer_language", type=str, default="", help="默认参考音频语种"
+)
+parser.add_argument(
+    "-d", "--device", type=str, default=g_config.infer_device, help="cuda / cpu"
+)
+parser.add_argument(
+    "-a", "--bind_addr", type=str, default="0.0.0.0", help="default: 0.0.0.0"
+)
 parser.add_argument("-p", "--port", type=int, default=9180, help="default: 9180")
-parser.add_argument("-fp", "--full_precision", action="store_true", default=False, help="覆盖config.is_half为False, 使用全精度")
-parser.add_argument("-hp", "--half_precision", action="store_true", default=False, help="覆盖config.is_half为True, 使用半精度")
+parser.add_argument(
+    "-fp",
+    "--full_precision",
+    action="store_true",
+    default=False,
+    help="覆盖config.is_half为False, 使用全精度",
+)
+parser.add_argument(
+    "-hp",
+    "--half_precision",
+    action="store_true",
+    default=False,
+    help="覆盖config.is_half为True, 使用半精度",
+)
 # bool值的用法为 `python ./api.py -fp ...`
 # 此时 full_precision==True, half_precision==False
-parser.add_argument("-sm", "--stream_mode", type=str, default="close", help="流式返回模式, close / normal / keepalive")
-parser.add_argument("-mt", "--media_type", type=str, default="wav", help="音频编码格式, wav / ogg / aac")
-parser.add_argument("-cp", "--cut_punc", type=str, default="", help="文本切分符号设定, 符号范围,.;?!、，。？！；：…")
+parser.add_argument(
+    "-sm",
+    "--stream_mode",
+    type=str,
+    default="close",
+    help="流式返回模式, close / normal / keepalive",
+)
+parser.add_argument(
+    "-mt", "--media_type", type=str, default="wav", help="音频编码格式, wav / ogg / aac"
+)
+parser.add_argument(
+    "-cp",
+    "--cut_punc",
+    type=str,
+    default="",
+    help="文本切分符号设定, 符号范围,.;?!、，。？！；：…",
+)
 # 切割常用分句符为 `python ./api.py -cp ".?!。？！"`
-parser.add_argument("-hb", "--hubert_path", type=str, default=g_config.cnhubert_path, help="覆盖config.cnhubert_path")
-parser.add_argument("-b", "--bert_path", type=str, default=g_config.bert_path, help="覆盖config.bert_path")
+parser.add_argument(
+    "-hb",
+    "--hubert_path",
+    type=str,
+    default=g_config.cnhubert_path,
+    help="覆盖config.cnhubert_path",
+)
+parser.add_argument(
+    "-b",
+    "--bert_path",
+    type=str,
+    default=g_config.bert_path,
+    help="覆盖config.bert_path",
+)
 
 args = parser.parse_args()
 
@@ -640,7 +754,6 @@ loadRole(role)
 # refer_language = roleDic["refer_language"]
 # sovits_path = roleDic["sovits_path"]
 # gpt_path = roleDic["gpt_path"]
-
 
 
 # 应用参数配置
@@ -674,14 +787,14 @@ if args.full_precision and args.half_precision:
 logger.info(f"半精: {is_half}")
 
 # 流式返回模式
-if args.stream_mode.lower() in ["normal","n"]:
+if args.stream_mode.lower() in ["normal", "n"]:
     stream_mode = "normal"
     logger.info("流式返回已开启")
 else:
     stream_mode = "close"
 
 # 音频编码格式
-if args.media_type.lower() in ["aac","ogg"]:
+if args.media_type.lower() in ["aac", "ogg"]:
     media_type = args.media_type.lower()
 elif stream_mode == "close":
     media_type = "wav"
@@ -701,8 +814,8 @@ else:
     bert_model = bert_model.to(device)
     ssl_model = ssl_model.to(device)
 
-api_logger.info(f"sovits_path:{g_sovits_path}")    
-api_logger.info(f"gpt_path:{g_gpt_path}")    
+api_logger.info(f"sovits_path:{g_sovits_path}")
+api_logger.info(f"gpt_path:{g_gpt_path}")
 change_sovits_weights(g_sovits_path)
 change_gpt_weights(g_gpt_path)
 
@@ -712,14 +825,15 @@ change_gpt_weights(g_gpt_path)
 # --------------------------------
 app = FastAPI()
 
+
 @app.post("/set_model")
 async def set_model(request: Request):
     json_post_raw = await request.json()
     global g_gpt_path
-    g_gpt_path=json_post_raw.get("gpt_model_path")
+    g_gpt_path = json_post_raw.get("gpt_model_path")
     global g_sovits_path
-    g_sovits_path=json_post_raw.get("sovits_model_path")
-    logger.info("gptpath"+g_gpt_path+";vitspath"+g_sovits_path)
+    g_sovits_path = json_post_raw.get("sovits_model_path")
+    logger.info("gptpath" + g_gpt_path + ";vitspath" + g_sovits_path)
     change_sovits_weights(g_sovits_path)
     change_gpt_weights(g_gpt_path)
     return "ok"
@@ -742,15 +856,13 @@ async def change_refer(request: Request):
     return handle_change(
         json_post_raw.get("refer_wav_path"),
         json_post_raw.get("prompt_text"),
-        json_post_raw.get("prompt_language")
+        json_post_raw.get("prompt_language"),
     )
 
 
 @app.get("/change_refer")
 async def change_refer(
-        refer_wav_path: str = None,
-        prompt_text: str = None,
-        prompt_language: str = None
+    refer_wav_path: str = None, prompt_text: str = None, prompt_language: str = None
 ):
     return handle_change(refer_wav_path, prompt_text, prompt_language)
 
@@ -770,31 +882,32 @@ async def tts_endpoint(request: Request):
 
 @app.get("/")
 async def tts_endpoint(
-        refer_wav_path: str = None,
-        prompt_text: str = None,
-        prompt_language: str = None,
-        text: str = None,
-        text_language: str = None,
-        cut_punc: str = None,
+    refer_wav_path: str = None,
+    prompt_text: str = None,
+    prompt_language: str = None,
+    text: str = None,
+    text_language: str = None,
+    cut_punc: str = None,
 ):
     start_time = time.time()
-    retResult = handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
+    retResult = handle(
+        refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc
+    )
     end_time = time.time()
     time_diff = end_time - start_time
     api_logger.info(f"http v1 语句请求: text_language={text_language} text={text}  ")
     api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
     api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
     api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
-    
 
     return retResult
 
 
 @app.get("/voice/role")
 async def tts_endpoint(
-        text: str = None,
-        text_language: str = "zh",
-        role: str = "FaTiaoZhang",
+    text: str = None,
+    text_language: str = "zh",
+    role: str = "FaTiaoZhang",
 ):
     start_time = time.time()
     api_logger.info(f"Role is {role}, text is {text}")
@@ -805,12 +918,14 @@ async def tts_endpoint(
     loadRole(role)
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
     # 4.文字转语音
-    retHandle = handle(text=text, 
-                        text_language=text_language,
-                        prompt_text=g_refer_text,
-                        prompt_language=g_refer_language,
-                        refer_wav_path=g_refer_path)
-    
+    retHandle = handle(
+        text=text,
+        text_language=text_language,
+        prompt_text=g_refer_text,
+        prompt_language=g_refer_language,
+        refer_wav_path=g_refer_path,
+    )
+
     # retResult = handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
     end_time = time.time()
     time_diff = end_time - start_time
@@ -818,7 +933,6 @@ async def tts_endpoint(
     api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
     api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
     api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
-    
 
     return retHandle
 
@@ -841,14 +955,15 @@ async def create_upload_file(file: UploadFile = File(...), role=Form(...)):
     with open(save_path, "wb") as buffer:
         buffer.write(await file.read())
 
-    # 2. 语音识别  
-    from tools.asr.funasr_asr import only_asr  #如果用英文就不需要导入下载模型
+    # 2. 语音识别
+    from tools.asr.funasr_asr import only_asr  # 如果用英文就不需要导入下载模型
+
     srcText = only_asr(save_path, language="zh")
     api_logger.info(f"语音转文字: {srcText}")
-    
+
     if len(srcText) < 1:
         return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
-    
+
     # 3. 请求gpt
     answer = run_gpt(srcText)
     api_logger.info(f"返回答案: {answer}")
@@ -858,16 +973,21 @@ async def create_upload_file(file: UploadFile = File(...), role=Form(...)):
         loadRole(role)
         global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
         # 4.文字转语音
-        retHandle = handle(text=answer, 
-                           text_language="zh",
-                           prompt_text=g_refer_text,
-                           prompt_language=g_refer_language,
-                           refer_wav_path=g_refer_path)
+        retHandle = handle(
+            text=answer,
+            text_language="zh",
+            prompt_text=g_refer_text,
+            prompt_language=g_refer_language,
+            refer_wav_path=g_refer_path,
+        )
         return retHandle
     except Exception as e:
         api_logger.error(str(e))
-        return JSONResponse(status_code=400, content={"message": f"change sovits weight failed", "Exception": str(e)})
-    
+        return JSONResponse(
+            status_code=400,
+            content={"message": f"change sovits weight failed", "Exception": str(e)},
+        )
+
     # return JSONResponse(status_code=200, content={"message": "success"})
 
 

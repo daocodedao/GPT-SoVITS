@@ -7,7 +7,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang_e24_s336.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/FaTiaoZhang/fatiaozhang-e50.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+        "ref_source":"https://www.bilibili.com/video/BV1o94y1z7nb/",
+        "version":"v1.0"
     },
     {
         "name":"he",
@@ -17,7 +18,8 @@
         "refer_language":"zh",
         "sovits_path":"GPT_SoVITS/pretrained_models/s2G488k.pth",
         "gpt_path":"GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt",
-        "ref_source":"官方"
+        "ref_source":"官方",
+        "version":"v1.0"
     },
     {
         "name":"otto",
@@ -27,7 +29,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/otto/otto_e39_s1638.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/otto/otto-e10.ckpt",
-        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS"
+        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS",
+        "version":"v1.0"
     },
     {
         "name":"XingTong",
@@ -37,7 +40,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/XingTong/XingTong_e40_s3440.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/XingTong/XingTong-e10.ckpt",
-        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS"
+        "ref_source":"https://huggingface.co/spaces/XzJosh/otto-GPT-SoVITS",
+        "version":"v1.0"
 
     },
     {
@@ -48,7 +52,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/chenzhe/Ze_e60_s1500.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/chenzhe/Ze-e21.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary",
+        "version":"v1.0"
     },
     {
         "name":"NaiLv",
@@ -58,7 +63,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/NaiLv/LAPLACE_e53_s2650.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/NaiLv/LAPLACE-e20.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary",
+        "version":"v1.0"
     },
     {
         "name":"XiangWan",
@@ -68,7 +74,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/XiangWan/Ava_e53_s2915.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/XiangWan/Ava-e21.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary",
+        "version":"v1.0"
     },
 
     {
@@ -79,7 +86,9 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/DiQiuJu/diqiuju_e24_s384.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/DiQiuJu/diqiuju-e20.ckpt",
-        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary"
+        "ref_source":"https://www.modelscope.cn/studios/xzjosh/Ze-GPT-SoVITS/summary",
+        "version":"v1.0"
+
     },
     {
         "name":"DuLiang",
@@ -89,7 +98,9 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/DuLiang/duliang_e24_s504.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/DuLiang/duliang-e50.ckpt",
-        "ref_source":"https://space.bilibili.com/272344192/video?tid=0&special_type=&pn=3&keyword=&order=pubdate"
+        "ref_source":"https://space.bilibili.com/272344192/video?tid=0&special_type=&pn=3&keyword=&order=pubdate",
+        "version":"v1.0"
+
     },
     {
         "name":"michael",
@@ -99,7 +110,8 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/michael/michael_e24_s312.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/michael/michael-e30.ckpt",
-        "ref_source":""
+        "ref_source":"",
+        "version":"v1.0"
     },
     {
         "name":"jasper",
@@ -109,6 +121,7 @@
         "refer_language":"zh",
         "sovits_path":"/data/work/GPT-SoVITS/resource/jasper/jasper_e20_s260.pth",
         "gpt_path":"/data/work/GPT-SoVITS/resource/jasper/jasper-e30.ckpt",
-        "ref_source":"https://www.youtube.com/shorts/dqqMx0ctbPo"
+        "ref_source":"https://www.youtube.com/shorts/dqqMx0ctbPo",
+        "version":"v1.0"
     }
 ]
