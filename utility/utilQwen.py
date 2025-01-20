@@ -21,7 +21,7 @@ kRequestTimeout = 60*2
 
 def composeV1Dic(systemContent, userContent):
     return {
-         "model": "Qwen/Qwen2-7B-Instruct",
+         "model": "qwen2.5:7b-instruct-fp16",
          "messages":[{
             "role": "system",
             "content": systemContent,
@@ -39,7 +39,10 @@ def normalQwen(messages):
     if response.status_code == 200:
         retJson = response.json()
         # api_logger.info(retJson)
-        ret_text = retJson["content"]
+        retTextList = retJson["choices"]
+        ret_text = ""
+        if retTextList and len(retJson) > 0:
+            ret_text = retTextList[0]["message"]["content"]
         return ret_text
     else:
         api_logger.info("请求失败，状态码：", response.status_code)
