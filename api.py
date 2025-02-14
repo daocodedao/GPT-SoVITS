@@ -903,7 +903,7 @@ async def tts_endpoint(
 
     return retResult
 
-
+# 文字转语音
 @app.get("/voice/role")
 async def tts_endpoint(
     text: str = None,
@@ -937,6 +937,35 @@ async def tts_endpoint(
 
     return retHandle
 
+# 定义一个用于接收语音文件的路由端点
+@app.post("/chat/asr")
+async def create_upload_file(file: UploadFile = File(...)):
+    file_name = file.filename
+    file_extension = os.path.splitext(file_name)[1]
+    # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
+    if file_extension not in [".wav", ".mp3", ".aac"]:
+        return {"error": "不支持的文件格式"}
+
+    # 1. 将接收到的文件保存到本地（示例保存路径，可以根据实际需求修改）
+    saveDir = f"./received_files"
+    if not os.path.exists(saveDir):
+        os.makedirs(saveDir)
+
+    save_path = f"{saveDir}/{file_name}"
+    with open(save_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    # 2. 语音识别
+    from tools.asr.funasr_asr import only_asr  # 如果用英文就不需要导入下载模型
+
+    srcText = only_asr(save_path, language="zh")
+    api_logger.info(f"语音转文字: {srcText}")
+
+    if len(srcText) < 1:
+        return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
+    else:
+        return srcText
+    
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
@@ -989,8 +1018,6 @@ async def create_upload_file(file: UploadFile = File(...), role=Form(...),  syst
             status_code=400,
             content={"message": f"change sovits weight failed", "Exception": str(e)},
         )
-
-    # return JSONResponse(status_code=200, content={"message": "success"})
 
 
 if __name__ == "__main__":
