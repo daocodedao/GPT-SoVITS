@@ -153,6 +153,7 @@ import subprocess
 from utility.logger_settings import api_logger
 from utility.rolejson import findRoleContent
 from utility.utilQwen import run_gpt
+import json
 
 
 class DefaultRefer:
@@ -939,7 +940,8 @@ async def tts_endpoint(
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
-async def create_upload_file(file: UploadFile = File(...), role=Form(...)):
+async def create_upload_file(file: UploadFile = File(...), role=Form(...),  system: str = Form(...)
+):
     file_name = file.filename
     file_extension = os.path.splitext(file_name)[1]
     # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
@@ -965,7 +967,7 @@ async def create_upload_file(file: UploadFile = File(...), role=Form(...)):
         return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
 
     # 3. 请求gpt
-    answer = run_gpt(srcText)
+    answer = run_gpt(srcText, system)
     api_logger.info(f"返回答案: {answer}")
 
     try:

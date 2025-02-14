@@ -5,7 +5,7 @@ import json
 import re
 import sys,os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-
+from openai import OpenAI
 
 from utility.logger_settings import api_logger
 
@@ -49,13 +49,20 @@ def normalQwen(messages):
         api_logger.info(response.text)
         return ""
 
-def run_gpt(text):
-    systemPrompt = f"""
-你是一个乐于解答各种问题的助手，你的任务是为用户提供专业、准确、有见地的建议。回答不要太长。
-    """.strip()
+def run_gpt(text, system=None):
+    if not system:
+        systemPrompt = f"""
+    你是一个乐于解答各种问题的助手，你的任务是为用户提供专业、准确、有见地的建议。回答不要太长。
+        """.strip()
+    else:
+        systemPrompt = system.strip()
 
     jsonData = composeV1Dic(systemContent=systemPrompt, userContent=text)
 
     content = normalQwen(messages=jsonData)
     # paragraphLen = len(queryList)
     return content
+
+
+def run_gpt_withDic(dic):
+    systemPrompt = f""
