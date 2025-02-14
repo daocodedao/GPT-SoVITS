@@ -535,6 +535,7 @@ def get_tts_wav(ref_wav_path, prompt_text, prompt_language, text, text_language)
             hps.data.sampling_rate,
         )
         # logger.info("%.3f\t%.3f\t%.3f\t%.3f" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
+        api_logger.info(f"streamMode:{stream_mode}")
         if stream_mode == "normal":
             audio_bytes, audio_chunk = read_clean_buffer(audio_bytes)
             yield audio_chunk
@@ -930,16 +931,7 @@ async def tts_endpoint(
     )
 
 
-    # end_time = time.time()
-    # time_diff = end_time - start_time
-    # api_logger.info(f"http v1 语句请求: text_language={text_language} text={text}  ")
-    # api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
-    # api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
-    # api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
-
-    # return retHandle
-
-# 定义一个用于接收语音文件的路由端点
+# 语音识别
 @app.post("/chat/asr")
 async def create_upload_file(file: UploadFile = File(...)):
     file_name = file.filename
@@ -969,7 +961,7 @@ async def create_upload_file(file: UploadFile = File(...)):
         return JSONResponse(content=srcText) 
     
 
-# 定义一个用于接收语音文件的路由端点
+# 输入语音文字-》识别文字-》大模型回答-》语音合成
 @app.post("/chat/voicefile")
 async def create_upload_file(file: UploadFile = File(...), 
                              role=Form(...),  
