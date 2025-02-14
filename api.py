@@ -940,7 +940,7 @@ async def tts_endpoint(
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
-async def create_upload_file(file: UploadFile = File(...), role=Form(...),  system: str = Form(...)
+async def create_upload_file(file: UploadFile = File(...), role=Form(...),  system: str = Form(None)
 ):
     file_name = file.filename
     file_extension = os.path.splitext(file_name)[1]
