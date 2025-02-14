@@ -5,7 +5,7 @@ import json
 import re
 import sys,os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from openai import OpenAI
+
 
 from utility.logger_settings import api_logger
 
