@@ -964,7 +964,7 @@ async def create_upload_file(file: UploadFile = File(...)):
     if len(srcText) < 1:
         return JSONResponse(status_code=201, content={"message": f"没有识别出内容"})
     else:
-        return srcText
+        return JSONResponse(content=srcText) 
     
 
 # 定义一个用于接收语音文件的路由端点
