@@ -155,7 +155,6 @@ from utility.rolejson import findRoleContent
 from utility.utilQwen import run_gpt
 import json
 
-
 class DefaultRefer:
     def __init__(self, path, text, language):
         self.path = path
@@ -165,20 +164,17 @@ class DefaultRefer:
     def is_ready(self) -> bool:
         return is_full(self.path, self.text, self.language)
 
-
 def is_empty(*items):  # 任意一项不为空返回False
     for item in items:
         if item is not None and item != "":
             return False
     return True
 
-
 def is_full(*items):  # 任意一项为空返回False
     for item in items:
         if item is None or item == "":
             return False
     return True
-
 
 def change_sovits_weights(sovits_path):
     global vq_model, hps
@@ -909,8 +905,8 @@ async def tts_endpoint(
     text: str = None,
     text_language: str = "zh",
     role: str = "FaTiaoZhang",
+    streamMode: bool = False,
 ):
-    start_time = time.time()
     api_logger.info(f"Role is {role}, text is {text}")
 
     if not text or len(text) == 0:
@@ -918,8 +914,14 @@ async def tts_endpoint(
 
     loadRole(role)
     global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+    global stream_mode
+    if streamMode:
+        stream_mode = "normal"
+    else:
+        stream_mode = "close"
+    
     # 4.文字转语音
-    retHandle = handle(
+    return handle(
         text=text,
         text_language=text_language,
         prompt_text=g_refer_text,
@@ -927,15 +929,15 @@ async def tts_endpoint(
         refer_wav_path=g_refer_path,
     )
 
-    # retResult = handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
-    end_time = time.time()
-    time_diff = end_time - start_time
-    api_logger.info(f"http v1 语句请求: text_language={text_language} text={text}  ")
-    api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
-    api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
-    api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
 
-    return retHandle
+    # end_time = time.time()
+    # time_diff = end_time - start_time
+    # api_logger.info(f"http v1 语句请求: text_language={text_language} text={text}  ")
+    # api_logger.info(f"http v1 语句执行前时间戳: {start_time}")
+    # api_logger.info(f"http v1 语句执行后时间戳: {end_time}")
+    # api_logger.info(f"http v1 时间差（单位：秒）: {time_diff}")
+
+    # return retHandle
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/asr")
@@ -969,8 +971,10 @@ async def create_upload_file(file: UploadFile = File(...)):
 
 # 定义一个用于接收语音文件的路由端点
 @app.post("/chat/voicefile")
-async def create_upload_file(file: UploadFile = File(...), role=Form(...),  system: str = Form(None)
-):
+async def create_upload_file(file: UploadFile = File(...), 
+                             role=Form(...),  
+                             system: str = Form(None),
+                             streamMode:bool = Form(False)):
     file_name = file.filename
     file_extension = os.path.splitext(file_name)[1]
     # 你可以在这里添加更多对语音文件的合法性验证等逻辑，比如限制文件类型为常见语音格式
@@ -1003,15 +1007,20 @@ async def create_upload_file(file: UploadFile = File(...), role=Form(...),  syst
         api_logger.info(f"Role is {role}")
         loadRole(role)
         global roleDic, g_refer_path, g_refer_text, g_refer_language, g_sovits_path, g_gpt_path
+        global stream_mode
+        if streamMode:
+            stream_mode = "normal"
+        else:
+            stream_mode = "close"
+        
         # 4.文字转语音
-        retHandle = handle(
+        return handle(
             text=answer,
             text_language="zh",
             prompt_text=g_refer_text,
             prompt_language=g_refer_language,
             refer_wav_path=g_refer_path,
         )
-        return retHandle
     except Exception as e:
         api_logger.error(str(e))
         return JSONResponse(
